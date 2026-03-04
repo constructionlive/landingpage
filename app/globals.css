@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Light theme (default) ─────────────────────────────────────────── */
+:root {
+	--do-bg: #ffffff;
+	--do-bg-card: #f8fafc;
+	--do-bg-light: #f1f5f9;
+	--do-bg-hover: #e2e8f0;
+	--do-text: #0f172a;
+	--do-text-secondary: #64748b;
+	--do-text-muted: #94a3b8;
+	--do-border: #e2e8f0;
+	--do-border-accent: #cbd5e1;
+	--do-accent-glow: rgba(249, 115, 22, 0.15);
+	--do-grid-color: rgba(249, 115, 22, 0.06);
+	--do-grid-color-dense: rgba(249, 115, 22, 0.08);
+	--do-blueprint-opacity: 0.12;
+}
+
+/* ── Dark theme ────────────────────────────────────────────────────── */
+.dark {
+	--do-bg: #0a0e1a;
+	--do-bg-card: #111827;
+	--do-bg-light: #1a2235;
+	--do-bg-hover: #1e2a3e;
+	--do-text: #e2e8f0;
+	--do-text-secondary: #8892a4;
+	--do-text-muted: #4a5568;
+	--do-border: #1e293b;
+	--do-border-accent: #334155;
+	--do-accent-glow: rgba(249, 115, 22, 0.25);
+	--do-grid-color: rgba(249, 115, 22, 0.03);
+	--do-grid-color-dense: rgba(249, 115, 22, 0.05);
+	--do-blueprint-opacity: 0.07;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background: var(--do-bg);
+	color: var(--do-text);
+	font-family: "Inter", system-ui, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+::selection {
+	background: rgba(249, 115, 22, 0.3);
+	color: #fff;
+}
+
+.do-section-label {
+	font-family: "JetBrains Mono", monospace;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--do-text-secondary);
+}
+
+.do-blueprint-grid {
+	background-image:
+		linear-gradient(var(--do-grid-color) 1px, transparent 1px),
+		linear-gradient(90deg, var(--do-grid-color) 1px, transparent 1px);
+	background-size: 40px 40px;
+}
+
+.do-blueprint-grid-dense {
+	background-image:
+		linear-gradient(var(--do-grid-color-dense) 1px, transparent 1px),
+		linear-gradient(90deg, var(--do-grid-color-dense) 1px, transparent 1px);
+	background-size: 20px 20px;
+}
+
+@layer utilities {
+	.text-balance {
+		text-wrap: balance;
+	}
+}
+
+@keyframes glow-pulse {
+	0%, 100% { opacity: 0.4; }
+	50% { opacity: 1; }
+}
+
+@keyframes float {
+	0%, 100% { transform: translateY(0px); }
+	50% { transform: translateY(-8px); }
+}
+
+.animate-glow-pulse {
+	animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-float {
+	animation: float 6s ease-in-out infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+	width: 6px;
+}
+::-webkit-scrollbar-track {
+	background: var(--do-bg);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--do-border);
+	border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--do-border-accent);
+}
