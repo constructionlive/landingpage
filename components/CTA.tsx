@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Shield, Zap, Clock } from "lucide-react";
+import WaitlistForm from "./WaitlistForm";
 
 export default function CTA() {
 	const ref = useRef(null);
@@ -30,13 +31,13 @@ export default function CTA() {
 						Join the construction teams who are already building faster, analyzing deeper, and delivering better results with AI that never sleeps.
 					</p>
 
-					<motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10" initial={{ opacity: 0, y: 15 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.4 }}>
-						<a href="#" className="group px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)] flex items-center gap-2">
+					<motion.div className="flex flex-col items-center gap-6 mb-10" initial={{ opacity: 0, y: 15 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.4 }}>
+						<div className="relative w-full flex justify-center">
+							<WaitlistForm />
+						</div>
+						<a href="https://app.construction.live" className="group px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)] flex items-center gap-2">
 							Get Started Free
 							<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-						</a>
-						<a href="#" className="px-8 py-4 text-base font-medium text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all hover:bg-do-bg-light/50">
-							Book a Demo
 						</a>
 					</motion.div>
 

@@ -147,7 +147,7 @@ export default function Hero() {
 						transition={{ delay: 0.7 }}
 					>
 						<a
-							href="#"
+							href="https://app.construction.live"
 							className="group px-8 py-3.5 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] flex items-center gap-2"
 						>
 							Start Building Smarter

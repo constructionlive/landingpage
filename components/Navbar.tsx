@@ -10,6 +10,7 @@ const navLinks = [
 	{ label: "Industries", href: "#industries" },
 	{ label: "Capabilities", href: "#systems" },
 	{ label: "Workflows", href: "#workflows" },
+	{ label: "Blog", href: "/blog" },
 ];
 
 export default function Navbar() {
@@ -61,13 +62,7 @@ export default function Navbar() {
 					<div className="hidden md:flex items-center gap-3">
 						<ThemeToggle />
 						<a
-							href="#"
-							className="px-4 py-2 text-sm text-do-text-secondary hover:text-do-text transition-colors"
-						>
-							Sign In
-						</a>
-						<a
-							href="#"
+							href="https://app.construction.live"
 							className="px-5 py-2.5 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-lg transition-all shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)]"
 						>
 							Get Started
@@ -106,10 +101,7 @@ export default function Navbar() {
 								</a>
 							))}
 							<div className="flex flex-col gap-3 mt-6">
-								<a href="#" className="px-4 py-3 text-center text-do-text-secondary border border-do-border rounded-lg">
-									Sign In
-								</a>
-								<a href="#" className="px-4 py-3 text-center text-white bg-do-orange rounded-lg font-medium">
+								<a href="https://app.construction.live" className="px-4 py-3 text-center text-white bg-do-orange rounded-lg font-medium">
 									Get Started
 								</a>
 							</div>
