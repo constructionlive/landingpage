@@ -109,6 +109,67 @@ body {
 	animation: float 6s ease-in-out infinite;
 }
 
+/* ── Blog content styles ─────────────────────────────────────────────── */
+.blog-content {
+	@apply text-base leading-8 text-do-text;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+.blog-content p {
+	@apply mb-4;
+}
+
+.blog-content h2 {
+	@apply text-xl font-semibold mt-6 mb-3 text-do-text;
+}
+
+.blog-content h3 {
+	@apply text-lg font-medium mt-5 mb-2 text-do-text;
+}
+
+.blog-content ul,
+.blog-content ol {
+	@apply mb-4 pl-6;
+}
+
+.blog-content li {
+	@apply mb-2;
+}
+
+.blog-content ul li {
+	list-style-type: disc;
+}
+
+.blog-content ol li {
+	list-style-type: decimal;
+}
+
+.blog-content blockquote {
+	@apply border-l-4 border-do-orange pl-4 my-4 italic text-do-text-secondary;
+}
+
+.blog-content a {
+	@apply text-do-orange underline hover:opacity-80;
+}
+
+.blog-content img {
+	@apply rounded-lg max-w-full h-auto my-4;
+}
+
+.blog-content hr {
+	@apply border-do-border my-6;
+}
+
+.blog-content strong {
+	@apply font-semibold;
+}
+
+.blog-content em {
+	@apply italic;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
 	width: 6px;
