@@ -36,7 +36,7 @@ export default function Navbar() {
 				transition={{ duration: 0.6, ease: "easeOut" }}
 			>
 				<div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-					<a href="#" className="flex items-center gap-2.5">
+					<a href="/" className="flex items-center gap-2.5">
 						<div className="h-8 w-8 rounded-lg bg-do-orange flex items-center justify-center">
 							<svg viewBox="0 0 24 24" className="h-4 w-4 text-white" fill="none" stroke="currentColor" strokeWidth={2.5}>
 								<path strokeLinecap="round" strokeLinejoin="round" d="M2 20h20M4 20V10l8-6 8 6v10M9 20v-6h6v6" />

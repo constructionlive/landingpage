@@ -14,6 +14,28 @@ export const metadata: Metadata = {
 		"engineering calculations",
 		"construction technology",
 	],
+	alternates: {
+		canonical: "https://construction.live",
+	},
+	openGraph: {
+		title: "construction.live — The Integrated AI Office for Construction",
+		description:
+			"AI-powered document analysis, engineering calculations, bid levelling, and project intelligence for construction professionals.",
+		type: "website",
+		url: "https://construction.live",
+		siteName: "construction.live",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "construction.live — The Integrated AI Office for Construction",
+		description:
+			"AI-powered document analysis, engineering calculations, bid levelling, and project intelligence for construction professionals.",
+		site: "@constructionlive",
+	},
+	robots: {
+		index: true,
+		follow: true,
+	},
 };
 
 export default function RootLayout({
