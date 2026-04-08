@@ -22,7 +22,7 @@ export default function Footer() {
 						<a href="/about" className="hover:text-do-text transition-colors">About</a>
 						<a href="#" className="hover:text-do-text transition-colors">Privacy</a>
 						<a href="#" className="hover:text-do-text transition-colors">Terms</a>
-						<a href="#" className="hover:text-do-text transition-colors">Contact</a>
+						<a href="mailto:rahul@construction.live" className="hover:text-do-text transition-colors">Contact</a>
 					</div>
 					<p className="text-xs text-do-text-muted font-mono">&copy; {new Date().getFullYear()} construction.live</p>
 				</div>
