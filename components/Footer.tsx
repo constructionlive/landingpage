@@ -16,6 +16,10 @@ export default function Footer() {
 						</span>
 					</div>
 					<div className="flex items-center gap-6 text-sm text-do-text-secondary">
+						<a href="/features" className="hover:text-do-text transition-colors">Features</a>
+						<a href="/use-cases" className="hover:text-do-text transition-colors">Use Cases</a>
+						<a href="/how-it-works" className="hover:text-do-text transition-colors">How It Works</a>
+						<a href="/about" className="hover:text-do-text transition-colors">About</a>
 						<a href="#" className="hover:text-do-text transition-colors">Privacy</a>
 						<a href="#" className="hover:text-do-text transition-colors">Terms</a>
 						<a href="#" className="hover:text-do-text transition-colors">Contact</a>

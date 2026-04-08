@@ -6,10 +6,10 @@ import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
-	{ label: "Use Cases", href: "#use-cases" },
-	{ label: "Industries", href: "#industries" },
-	{ label: "Capabilities", href: "#systems" },
-	{ label: "Workflows", href: "#workflows" },
+	{ label: "Features", href: "/features" },
+	{ label: "Use Cases", href: "/use-cases" },
+	{ label: "How It Works", href: "/how-it-works" },
+	{ label: "About", href: "/about" },
 	{ label: "Blog", href: "/blog" },
 ];
 
