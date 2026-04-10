@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 		"construction technology",
 	],
 	alternates: {
-		canonical: "https://construction.live",
+		canonical: "https://www.construction.live",
 	},
 	openGraph: {
 		title: "construction.live — The Integrated AI Office for Construction",

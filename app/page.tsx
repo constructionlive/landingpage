@@ -1,33 +1,15 @@
-"use client";
+import type { Metadata } from "next";
+import HomeContent from "./page-content";
 
-import { useQuery } from "convex/react";
-import { api } from "../convex/_generated/api";
-import Navbar from "@components/Navbar";
-import Hero from "@components/Hero";
-import UseCases from "@components/UseCases";
-import Industries from "@components/Industries";
-import Systems from "@components/Systems";
-import Workflows from "@components/Workflows";
-import Metrics from "@components/Metrics";
-import BlogCarouselSection from "@components/BlogCarouselSection";
-import CTA from "@components/CTA";
-import Footer from "@components/Footer";
+export const metadata: Metadata = {
+	title: "construction.live — The Integrated AI Office for Construction",
+	description:
+		"AI-powered document analysis, engineering calculations, bid leveling, and project intelligence for construction professionals.",
+	alternates: {
+		canonical: "https://www.construction.live",
+	},
+};
 
 export default function Home() {
-	const posts = useQuery(api.posts.listPublished) ?? [];
-
-	return (
-		<main className="min-h-screen bg-do-bg">
-			<Navbar />
-			<Hero />
-			<UseCases />
-			<Industries />
-			<Systems />
-			<Workflows />
-			<Metrics />
-			{posts.length > 0 && <BlogCarouselSection posts={posts} />}
-			<CTA />
-			<Footer />
-		</main>
-	);
+	return <HomeContent />;
 }

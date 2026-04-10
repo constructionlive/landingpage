@@ -89,7 +89,8 @@ export default function BlogEditor({ value, onChange, onUploadImage, onError }: 
       setIsUploadingImage(true);
       const url = await onUploadImage(file);
       if (!editor) return;
-      editor.chain().focus().setImage({ src: url }).run();
+      const alt = window.prompt("Enter alt text for this image (for accessibility)", "") ?? "";
+      editor.chain().focus().setImage({ src: url, alt: alt.trim() }).run();
     } catch (error) {
       const message = error instanceof Error ? error.message : "Image upload failed.";
       onError?.(message);
@@ -159,7 +160,8 @@ export default function BlogEditor({ value, onChange, onUploadImage, onError }: 
         <ToolButton label="Image URL" onClick={() => {
           const url = window.prompt("Enter image URL", "https://");
           if (!url || !url.trim()) return;
-          editor.chain().focus().setImage({ src: url.trim() }).run();
+          const alt = window.prompt("Enter alt text (for accessibility)", "") ?? "";
+          editor.chain().focus().setImage({ src: url.trim(), alt: alt.trim() }).run();
         }} />
         <ToolButton
           label="Upload Image"
