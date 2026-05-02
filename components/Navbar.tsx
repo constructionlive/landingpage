@@ -42,19 +42,19 @@ export default function Navbar() {
 							height="32"
 							viewBox="0 0 32 32"
 							xmlns="http://www.w3.org/2000/svg"
-							className="rounded-lg"
+							className="dark:rounded-lg"
 						>
 							<defs>
 								<linearGradient id="nav-bg" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
-									<stop offset="0" stopColor="#132238" />
-									<stop offset="1" stopColor="#0A1628" />
+									<stop offset="0" stopColor="var(--do-bg)" />
+									<stop offset="1" stopColor="var(--do-bg)" />
 								</linearGradient>
 								<linearGradient id="nav-orange" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
 									<stop offset="0" stopColor="#FF8458" />
 									<stop offset="1" stopColor="#FF6B35" />
 								</linearGradient>
 							</defs>
-							<rect width="32" height="32" rx="6" fill="url(#nav-bg)" />
+							<rect width="32" height="32" rx="6" fill="url(#nav-bg)" stroke="var(--do-border)" strokeWidth="1" />
 							<path
 								d="M 11 10 L 21 16 L 11 22 Z"
 								fill="url(#nav-orange)"
