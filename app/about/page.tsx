@@ -461,7 +461,7 @@ function AboutCTA() {
 							<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
 						</a>
 						<a
-							href="#"
+							href="/"
 							className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-do-text bg-do-bg-card hover:bg-do-bg-card/80 border border-do-border hover:border-do-border-accent rounded-xl transition-all"
 						>
 							Book a Demo

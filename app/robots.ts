@@ -6,6 +6,6 @@ rules: {
 userAgent: "*",
 allow: "/",
 },
-sitemap: "https://construction.live/sitemap.xml",
+sitemap: "https://www.construction.live/sitemap.xml",
 };
 }

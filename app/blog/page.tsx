@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { getPublishedPosts } from "@/lib/convexServer";
 import EditPostLink from "@components/blog/EditPostLink";
 
-const siteUrl = "https://www.construction.live";
+const siteUrl = "https://construction.live";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {

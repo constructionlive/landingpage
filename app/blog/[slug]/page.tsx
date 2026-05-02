@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getPostBySlug } from "@/lib/convexServer";
 import EditPostLink from "@components/blog/EditPostLink";
 
-const siteUrl = "https://www.construction.live";
+const siteUrl = "https://construction.live";
 export const dynamic = "force-dynamic";
 
 function stripHtml(html: string) {
