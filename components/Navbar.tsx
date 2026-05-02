@@ -37,11 +37,33 @@ export default function Navbar() {
 			>
 				<div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 					<a href="/" className="flex items-center gap-2.5">
-						<div className="h-8 w-8 rounded-lg bg-do-orange flex items-center justify-center">
-							<svg viewBox="0 0 24 24" className="h-4 w-4 text-white" fill="none" stroke="currentColor" strokeWidth={2.5}>
-								<path strokeLinecap="round" strokeLinejoin="round" d="M2 20h20M4 20V10l8-6 8 6v10M9 20v-6h6v6" />
-							</svg>
-						</div>
+						<svg
+							width="32"
+							height="32"
+							viewBox="0 0 32 32"
+							xmlns="http://www.w3.org/2000/svg"
+							className="rounded-lg"
+						>
+							<defs>
+								<linearGradient id="nav-bg" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
+									<stop offset="0" stopColor="#132238" />
+									<stop offset="1" stopColor="#0A1628" />
+								</linearGradient>
+								<linearGradient id="nav-orange" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+									<stop offset="0" stopColor="#FF8458" />
+									<stop offset="1" stopColor="#FF6B35" />
+								</linearGradient>
+							</defs>
+							<rect width="32" height="32" rx="6" fill="url(#nav-bg)" />
+							<path
+								d="M 11 10 L 21 16 L 11 22 Z"
+								fill="url(#nav-orange)"
+								stroke="#FF6B35"
+								strokeWidth="1.5"
+								strokeLinejoin="round"
+								strokeLinecap="round"
+							/>
+						</svg>
 						<span className="text-do-text font-semibold text-lg tracking-tight">
 							construction<span className="text-do-orange">.live</span>
 						</span>
