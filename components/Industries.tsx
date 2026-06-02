@@ -2,15 +2,15 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Building2, Factory, HardHat, Landmark, ShoppingBag, Home } from "lucide-react";
+import { Building2, Zap, Wrench, Hammer, ShoppingBag, UtensilsCrossed } from "lucide-react";
 
 const industries = [
-	{ icon: Building2, name: "Commercial Construction", border: "border-blue-500/20", iconColor: "text-blue-600 dark:text-blue-400", iconBg: "bg-blue-500/10", description: "Office towers, mixed-use developments, tenant fit-outs, and commercial renovations" },
-	{ icon: Factory, name: "Industrial & Manufacturing", border: "border-amber-500/20", iconColor: "text-amber-600 dark:text-amber-400", iconBg: "bg-amber-500/10", description: "Process facilities, warehouses, distribution centers, and plant expansions" },
-	{ icon: Landmark, name: "Institutional & Government", border: "border-violet-500/20", iconColor: "text-violet-600 dark:text-violet-400", iconBg: "bg-violet-500/10", description: "Schools, hospitals, government buildings, and public infrastructure" },
-	{ icon: HardHat, name: "Heavy Civil & Infrastructure", border: "border-emerald-500/20", iconColor: "text-emerald-600 dark:text-emerald-400", iconBg: "bg-emerald-500/10", description: "Roads, bridges, utilities, site development, and municipal projects" },
-	{ icon: Home, name: "Residential & Multi-Family", border: "border-pink-500/20", iconColor: "text-pink-600 dark:text-pink-400", iconBg: "bg-pink-500/10", description: "Custom homes, condo developments, townhouse complexes, and renovations" },
-	{ icon: ShoppingBag, name: "Retail & Hospitality", border: "border-cyan-500/20", iconColor: "text-cyan-600 dark:text-cyan-400", iconBg: "bg-cyan-500/10", description: "Retail build-outs, restaurants, hotels, and entertainment venues" },
+	{ icon: Building2, name: "Small & Mid-Size Commercial GCs", border: "border-blue-500/20", iconColor: "text-blue-600 dark:text-blue-400", iconBg: "bg-blue-500/10", description: "Tenant fit-outs, mixed-use, light commercial new build. Built for GCs running $5M–$100M projects where one super covers multiple jobs." },
+	{ icon: Zap, name: "Electrical Subs", border: "border-amber-500/20", iconColor: "text-amber-600 dark:text-amber-400", iconBg: "bg-amber-500/10", description: "Every outlet, every condition, every hour tracked as it happens. T&M billing on commercial fit-outs that doesn't get disputed." },
+	{ icon: Wrench, name: "Mechanical & Plumbing Subs", border: "border-violet-500/20", iconColor: "text-violet-600 dark:text-violet-400", iconBg: "bg-violet-500/10", description: "HVAC, plumbing, controls. Owner-supplied equipment delays, coordination issues, and rough-in changes captured the day they happen." },
+	{ icon: Hammer, name: "Specialty Subs (Drywall, Finishes, Framing)", border: "border-emerald-500/20", iconColor: "text-emerald-600 dark:text-emerald-400", iconBg: "bg-emerald-500/10", description: "Trade-stacking, schedule compression, late-changing finish selections. Voice notes route to the right T&M ticket automatically." },
+	{ icon: ShoppingBag, name: "Retail Fit-Out Contractors", border: "border-pink-500/20", iconColor: "text-pink-600 dark:text-pink-400", iconBg: "bg-pink-500/10", description: "National retail rollouts and one-offs. Tight schedules, owner-supplied finishes, late scope changes — catch every extra before opening day." },
+	{ icon: UtensilsCrossed, name: "Hospitality & Restaurant Build-Outs", border: "border-cyan-500/20", iconColor: "text-cyan-600 dark:text-cyan-400", iconBg: "bg-cyan-500/10", description: "Restaurants, hotels, entertainment. Owner changes during construction, equipment delays, and inspection-driven rework — documented as said." },
 ];
 
 export default function Industries() {
@@ -24,9 +24,9 @@ export default function Industries() {
 
 			<div className="relative z-10 max-w-6xl mx-auto px-6" ref={ref}>
 				<motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
-					<span className="do-section-label text-do-orange">Industry verticals</span>
-					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">Built for Every Sector</h2>
-					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">Whether you&apos;re building high-rises or highways, construction.live adapts to your project type with AI that understands your domain.</p>
+					<span className="do-section-label text-do-orange">Built for who, not just what</span>
+					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">For Small & Mid-Size Commercial Contractors</h2>
+					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">If you&apos;re a $5M–$100M commercial GC or one of the subs they hire, this is built for you. One super covering three jobs. PM doing their own pay apps. Margins thin enough that one disputed change order matters.</p>
 				</motion.div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -49,8 +49,8 @@ export default function Industries() {
 							</svg>
 						</div>
 						<div>
-							<p className="text-sm font-semibold text-do-orange font-mono uppercase tracking-wider mb-1">Domain-Aware AI</p>
-							<p className="text-do-text">construction.live doesn&apos;t just process text — it understands construction context. Upload a spec and it knows the difference between a structural section and a mechanical schedule. Ask about code compliance and it references the right jurisdiction.</p>
+							<p className="text-sm font-semibold text-do-orange font-mono uppercase tracking-wider mb-1">Construction-trained AI</p>
+							<p className="text-do-text">Our AI speaks contractor. It knows the difference between a change order and a back-charge, between an unforeseen condition and a coordination issue. When your super says &ldquo;the rebar wasn&apos;t on the prints,&rdquo; the AI hears &ldquo;potential change order, document immediately.&rdquo;</p>
 						</div>
 					</div>
 				</motion.div>

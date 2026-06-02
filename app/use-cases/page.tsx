@@ -4,18 +4,19 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
+import CallMeForm from "@components/CallMeForm";
 import {
-	FileSearch,
-	Calculator,
-	Settings2,
-	GraduationCap,
-	Bug,
-	FileText,
-	Table2,
-	Code2,
+	Mic,
+	AlertTriangle,
+	Receipt,
+	Clock,
+	CloudRain,
+	UserX,
+	PhoneCall,
 	ArrowRight,
 	Users,
 	ArrowLeft,
+	Phone,
 } from "lucide-react";
 
 /* ── Use case data ─────────────────────────────────────────────────── */
@@ -23,209 +24,211 @@ import {
 const useCases = [
 	{
 		number: "01",
-		icon: FileSearch,
+		icon: Mic,
 		badge: "Most used",
-		title: "Document Analysis and Review",
-		roles: ["Project managers", "Estimators", "Site engineers"],
-		tagline: "Stop reading every page. Start knowing what matters.",
+		title: "Unified Daily Reports",
+		roles: ["Superintendents", "Project managers", "Foremen"],
+		tagline: "30 seconds in the field. A complete daily log on your desk.",
 		description:
-			"Construction document analysis is the review of project specifications, submittals, contracts, RFIs, and drawings to extract requirements, identify conflicts, and flag risks. Traditionally done manually, this process can take several hours per document package. AI-powered analysis completes the same review in minutes.",
+			"A unified daily report combines voice notes, geotagged photos, integration data, and AI call summaries into a single timestamped record. Supers don't fill in forms — they talk for 30 seconds, drop a photo, or take a call from our AI. The platform builds the log automatically.",
 		detail:
-			"Every project runs on documents. Specs, submittals, RFIs, change orders, field reports, meeting minutes. The problem is the volume. A single specification package can run to 300 pages. Reviewing it properly before a bid takes time most teams do not have.",
+			"Daily logs only protect the contractor if they actually get created — every shift, every project, every day. Typed daily-log apps fail this test almost universally. Voice notes, AI outbound calls, and photo capture solve the adoption problem because they work the way supers already work.",
 		context:
-			"Upload any document to construction.live and it reads with full construction context. It knows the difference between a structural section and a mechanical schedule. It knows that Division 03 covers concrete work and that an item flagged in an RFI response has implications for the change order log. It surfaces what matters so you do not have to read every page yourself.",
-		before: "4 to 6 hours reviewing a spec package manually. Key exclusions missed. Conflicts found after the bid is awarded.",
-		after: "Upload the spec, get a full review in minutes. Every requirement, conflict, and ambiguity already flagged before you start bidding.",
+			"Voice transcription, geotagging, scope categorization, and routing happen automatically in the background. PMs see a complete picture of every project at end of shift — without anyone typing a report.",
+		before: "Daily logs filed days late, or not at all. Half the day's events forgotten by the time someone sits down to type. Pay-app review reconstructs from memory weeks later.",
+		after: "Daily logs created the same shift, automatically. Voice notes, photos, and AI call summaries unified into one timestamped record per project, per day.",
 		capabilities: [
-			"Spec review",
-			"Submittal analysis",
-			"Contract parsing",
-			"RFI drafting",
-			"Issue flagging",
-			"Cross-file reference",
+			"30-second voice updates",
+			"Geotagged photos",
+			"AI outbound calls",
+			"Auto-transcription",
+			"Same-day daily logs",
+			"Project + scope routing",
 		],
 		example:
-			"Review this submittal package and flag anything that does not match the spec, especially waterproofing requirements in Division 07.",
+			"Pouring Level 3 concrete today. Found unexpected rebar in the south footing. Taking photos. Crew stopped for 45 minutes.",
 	},
 	{
 		number: "02",
-		icon: Calculator,
+		icon: AlertTriangle,
 		badge: "",
-		title: "Engineering Calculations",
-		roles: ["Site engineers", "Estimators", "Project managers"],
-		tagline: "Get the right number with a method you can check.",
+		title: "Change Order Capture",
+		roles: ["Project managers", "Estimators", "Owner-operators"],
+		tagline: "Catch the change order the day it happens. Win it the week you submit.",
 		description:
-			"Engineering calculations in construction cover quantity takeoffs, material sizing, unit conversions, structural load analysis, and formula generation for cost estimating and procurement. These calculations are required at every stage of a project and need to be traceable and accurate enough to present to clients and engineers.",
+			"Change order capture is the automated detection of contract-extra work the moment it's mentioned in the field. Voice notes, AI call summaries, and integration data run through construction-trained models that flag extras, unforeseen conditions, and owner-directed changes for the PM the same day.",
 		detail:
-			"Over 50% of construction.live sessions involve formulas or data calculations. From concrete volume with waste factors to rebar density to pipe quantities from floor plans, the AI runs the numbers and shows its full working. You get an Excel-ready formula, the unit logic, and the assumptions, all written out clearly.",
+			"60 to 80 percent of construction change orders come from documentation problems, not scope problems. The work happens. The contract supports it. But the proof shows up late or never. Same-day capture closes that gap.",
 		context:
-			"You do not need to know the formula going in. You need the right answer with a method your team can verify. That is what construction.live delivers, fast enough to use in the middle of an estimate.",
-		before: "Manually building takeoff spreadsheets. Errors from wrong unit conversions. Calculations that take 30 minutes and cannot be easily checked.",
-		after: "Ask a question, get a traceable calculation with the full formula ready to paste into Excel. Done in under two minutes.",
+			"When a super's voice note mentions 'not in the contract' or 'wasn't on the drawings,' the PM gets an alert with a draft change-order notification ready to send. Day-one documentation makes the change order unanswerable by submission time.",
+		before: "Change orders submitted weeks late, with documentation reconstructed from memory. Owners push back. Half get denied or negotiated down.",
+		after: "Change orders submitted with day-one voice transcripts, geotagged photos, schedule impact quantified. Owners stop pushing back.",
 		capabilities: [
-			"Quantity takeoffs",
-			"Material calculations",
-			"Excel formula generation",
-			"Unit conversions",
-			"Load calculations",
-			"Waste factor analysis",
+			"Extra work detection",
+			"Day-one voice + photo evidence",
+			"Auto-drafted notifications",
+			"Schedule impact quantified",
+			"Owner-direct change capture",
+			"Claim-ready packets",
 		],
 		example:
-			"Calculate concrete volume for this foundation drawing with a 10% waste factor and give me a cost breakdown at $185 per cubic meter supply and place.",
+			"We won a $150K change order last month because we documented the unexpected rebar from day one.",
 	},
 	{
 		number: "03",
-		icon: Settings2,
-		badge: "",
-		title: "Project Optimization",
-		roles: ["Project managers", "GCs", "Owners"],
-		tagline: "Compare your options and pick the one that actually saves money.",
+		icon: Receipt,
+		badge: "Biggest ROI",
+		title: "Bulletproof Pay Applications",
+		roles: ["Project managers", "Project accountants", "GCs"],
+		tagline: "Pay apps approved in 7 days instead of 45.",
 		description:
-			"Project optimization in construction is the structured comparison of methods, materials, or approaches to identify the option that delivers the best outcome across cost, schedule, and risk. It moves decisions away from gut feel and toward evidence-based recommendations with clear trade-offs spelled out.",
+			"Bulletproof pay applications ship with auto-assembled backup packages — voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. Owners stop disputing. Cash flow returns.",
 		detail:
-			"Every project has decision points where one choice leads to a different cost or schedule outcome. Framing systems. Mechanical approaches. Procurement strategies. Most teams make these calls based on experience and available time. construction.live gives you a structured comparison on demand.",
+			"At pay-app time, the platform assembles every relevant voice log, photo, transcript, and integration data point — organized by scope item. What used to take a PM two days of digging through emails and notebooks is ready in 90 seconds.",
 		context:
-			"Describe the options you are considering. Upload any supporting documents. Ask construction.live to rank them by cost, schedule impact, and risk. You get a clear recommendation with the reasoning laid out, ready to take to the team or the client.",
-		before: "Decisions made on experience alone. No time to formally compare alternatives. Cost saving opportunities missed at the design stage.",
-		after: "Upload three options, get a ranked comparison by cost, schedule, and risk with clear reasoning. Decision-ready in minutes.",
+			"Pay applications push directly into Procore, Autodesk, and other systems your owner requires — no copy-paste, no manual assembly. First-try approval becomes the norm.",
+		before: "Pay app filed. Owner: 'Disputed. Please provide documentation.' PM digs through 30 days of emails and notebooks. 45-day cycles. Cash flow problems.",
+		after: "Pay app filed with full backup auto-assembled. Approved in 7 days. Cash flow completely different.",
 		capabilities: [
-			"Cost saving analysis",
-			"Alternative comparisons",
-			"ROI analysis",
-			"Risk ranking",
-			"Value engineering",
+			"Auto-assembled backup",
+			"Per-line-item evidence",
+			"Geotagged photos linked to scope",
+			"Quantified progress",
+			"Procore + Autodesk push",
+			"7-day approval cycles",
 		],
 		example:
-			"Compare these three framing approaches and rank them by cost, schedule, and risk. Flag any constructability issues.",
+			"Our pay apps used to take 45 days. Now they're approved in a week. Cash flow is completely different.",
 	},
 	{
 		number: "04",
-		icon: GraduationCap,
+		icon: Clock,
 		badge: "",
-		title: "Code and Standards Lookup",
-		roles: ["Site engineers", "Project managers", "GCs"],
-		tagline: "Get the code answer in seconds. Not after lunch.",
+		title: "T&M That Doesn't Get Disputed",
+		roles: ["Electrical subs", "Mechanical subs", "Specialty contractors"],
+		tagline: "Every hour timestamped. Zero pushback on T&M tickets.",
 		description:
-			"Building code and standards lookup is the process of finding and interpreting relevant requirements from building codes, fire codes, energy standards, and industry regulations for a specific project type, occupancy, and jurisdiction. This process is required at every stage of design and construction to confirm compliance and avoid costly rework.",
+			"T&M tracking captures every labor hour, every outlet, every condition as it happens — not reconstructed from memory three weeks later. Supers voice-log T&M directly from the field; integration data backs it up. When owners push back, you have the proof, hour by hour.",
 		detail:
-			"Code questions come up constantly on site and in the office. Fire separation requirements. Occupancy classifications. ASHRAE energy compliance. CSA material standards. OBC structural requirements. The answers are buried in reference manuals that take time to navigate and are updated regularly.",
+			"T&M disputes are won or lost on the quality of contemporaneous documentation. When a $41K invoice gets challenged, the contractor with timestamped voice logs and photos for every hour gets paid. The contractor with a typed summary doesn't.",
 		context:
-			"Ask construction.live a code question and it pulls the right requirement for your jurisdiction, occupancy type, and project context. More than 30% of sessions involve technical document analysis including code lookups. It is one of the most consistent time-savers on the platform.",
-		before: "Digging through reference manuals for 20 minutes. Calling a colleague to double-check. Uncertainty about which edition of the code applies.",
-		after: "Ask the question and get the relevant code section with the requirement stated clearly. Right jurisdiction, right occupancy, right answer.",
+			"Voice logs route to the right T&M ticket, the right scope, the right pay-app line — automatically. Owners see hour-by-hour proof when they ask for it.",
+		before: "T&M tickets reconstructed from memory at end of project. Owner disputes 350 of 800 hours. Negotiate, eat the loss, or fight it.",
+		after: "Every hour voice-logged in real time. T&M tickets ship with hour-by-hour proof. Full invoice paid. Zero pushback.",
 		capabilities: [
-			"Building codes",
-			"ASHRAE standards",
-			"CSA requirements",
-			"OBC compliance",
-			"Fire code lookup",
-			"Permit requirements",
+			"Real-time hour logging",
+			"Per-task voice notes",
+			"Photo + voice for every condition",
+			"Auto-routed to T&M ticket",
+			"Integration with payroll",
+			"Owner-ready timeline",
 		],
 		example:
-			"What are the fire separation requirements for this occupancy type under the Ontario Building Code? We have a Group A2 assembly space adjacent to Group B.",
+			"Full $41K invoice paid. Zero pushback. Every hour was timestamped with photos.",
 	},
 	{
 		number: "05",
-		icon: Bug,
+		icon: AlertTriangle,
 		badge: "",
-		title: "Troubleshooting and Diagnostics",
-		roles: ["Site engineers", "Project managers", "GCs"],
-		tagline: "Find out what went wrong and what to do about it. Fast.",
+		title: "Unforeseen Conditions Log",
+		roles: ["GCs", "Project managers", "Superintendents"],
+		tagline: "Soil, utilities, structure — day-by-day proof from the moment you find them.",
 		description:
-			"Construction troubleshooting and diagnostics is the process of identifying the root cause of a field issue, material failure, or system problem and developing a remediation plan. Getting this right quickly reduces downtime, avoids rework costs, and prevents small problems from becoming claim events.",
+			"Unforeseen conditions logging captures differing site conditions, hidden utilities, structural surprises, and owner-supplied material issues with voice notes, geotagged photos, and timestamps from the day they're discovered. Day-by-day proof is the difference between a winning claim and a denied one.",
 		detail:
-			"Something goes wrong on site. Concrete showing early-age cracking. A mechanical system not performing to spec. A waterproofing failure showing up during inspection. The normal process is to stop work, call a specialist, wait for a site visit, and wait again for a report.",
+			"Most unforeseen-conditions claims fail on documentation, not merit. The contractor knew on day one. The owner found out on day 30. The paper trail starts mid-claim. Same-day capture builds the trail from minute one.",
 		context:
-			"Upload the field report, the photos, the spec section, or the system logs. Ask construction.live what went wrong, why it happened, and what the remediation plan should be. You get a structured diagnosis with root cause and next steps, without waiting for a specialist callback.",
-		before: "Stop work. Call a specialist. Wait 24 to 48 hours for a response. Crew standing by. Cost clock running.",
-		after: "Upload the evidence, get a diagnosis with root cause and remediation steps in minutes. Specialist call becomes a confirmation, not a starting point.",
+			"When a super's voice note mentions soil conditions, hidden utilities, or anything 'not on the drawings,' the AI flags it as a potential differing site condition and starts the documentation timeline.",
+		before: "Claim filed at end of project. Owner: 'You should have notified us at the time.' Documentation reconstructed from memory. Claim denied.",
+		after: "Day-one voice log, photo, transcript, timestamp. By the time the claim is filed, the trail is irrefutable.",
 		capabilities: [
-			"Root cause analysis",
-			"Remediation planning",
-			"Field report review",
-			"Photo analysis",
-			"System diagnostics",
+			"Differing site conditions",
+			"Hidden utilities documentation",
+			"Day-one voice + photo",
+			"Timeline preservation",
+			"Owner notification drafts",
+			"Claim-ready packet",
 		],
 		example:
-			"Why is this concrete showing early-age cracking? Here is the mix design, the pour log, and photos from this morning. What is the remediation plan?",
+			"Our super documented unexpected soil conditions daily. When the owner pushed back, we had 3 days of logs with photos. Approved same week.",
 	},
 	{
 		number: "06",
-		icon: FileText,
+		icon: CloudRain,
 		badge: "",
-		title: "Report and Proposal Generation",
-		roles: ["Project managers", "GCs", "Owners"],
-		tagline: "Turn site notes into a client-ready report in minutes.",
+		title: "Weather & Delay Documentation",
+		roles: ["Project managers", "Superintendents", "Schedulers"],
+		tagline: "Weather, access, standby — quantified schedule extension proof.",
 		description:
-			"Construction report and proposal generation is the process of converting raw project data including inspection notes, meeting summaries, field observations, and progress updates into structured, professional documents suitable for owner reporting, project records, and business development.",
+			"Weather and delay documentation captures weather impact, access issues, standby crews, and schedule disruption with voice notes, timestamps, and integration data from weather services. Schedule extension requests ship with proof, not memory.",
 		detail:
-			"Writing reports takes time that most project teams do not budget for. Inspection notes sit in a notebook. Meeting summaries stay informal. Progress updates get sent as bullet points in an email. The information exists but the polished deliverable does not.",
+			"Weather days, owner-caused access issues, and standby crews are billable — if you can prove them. Most contractors can't, because the documentation never gets created. Voice logs from the field, plus integrated weather data, build the proof automatically.",
 		context:
-			"Feed construction.live your raw notes, site data, or meeting recordings and tell it what format you need. Progress report for the owner. Deficiency report after an inspection. Proposal for a new scope. RFI response for the consultant. The output is structured, professional, and ready to send.",
-		before: "45 minutes writing up a progress report from field notes. Formatting takes longer than the writing. Reports go out late or not at all.",
-		after: "Paste in your notes, specify the format, get a polished report ready to review and send. Done before you leave the site office.",
+			"Supers voice-log delays in real time. Integration data backs them up with weather service records. Standby crew hours route to the right T&M ticket.",
+		before: "Schedule extension filed at end of project. Owner: 'No proof. Denied.' Crews already absorbed as overhead.",
+		after: "Delays voice-logged the day they happen. Schedule extension requests come with hour-by-hour proof tied to weather records.",
 		capabilities: [
-			"Progress reports",
-			"Inspection reports",
-			"RFI responses",
-			"Proposals",
-			"Meeting summaries",
-			"Client presentations",
+			"Weather impact logging",
+			"Access issue documentation",
+			"Standby crew tracking",
+			"Schedule extension proof",
+			"Weather service integration",
+			"Owner-ready timeline",
 		],
 		example:
-			"Turn these inspection notes into a formal deficiency report for the owner. Include a summary, a numbered deficiency list with locations, and a recommended action for each item.",
+			"Site shut down for 4 hours — wind gusts over 40 mph, crane down. Two crews on standby.",
 	},
 	{
 		number: "07",
-		icon: Table2,
+		icon: UserX,
 		badge: "",
-		title: "Data Processing and Spreadsheets",
-		roles: ["Estimators", "Project managers", "GCs"],
-		tagline: "Build the spreadsheet you need without being an Excel expert.",
+		title: "Subcontractor No-Shows",
+		roles: ["GCs", "Project managers", "Superintendents"],
+		tagline: "Missing trades, undermanned crews, late starts — back-charge ready.",
 		description:
-			"Construction data processing involves building and maintaining project tracking models, cost breakdowns, schedule analysis tools, bid comparison templates, and other structured data workflows. These are typically created in Excel and require significant time and formula knowledge to build correctly from scratch.",
+			"Subcontractor no-show documentation captures missed crews, undermanned trades, late starts, and trade-stacking conflicts with voice notes, timestamps, and manpower counts. Back-charges, delay claims, and coordination disputes get the documentation they need.",
 		detail:
-			"Construction runs on spreadsheets. Cost trackers. Bid comparison matrices. Schedule analysis models. Change order logs. The problem is that building a good spreadsheet from scratch takes time, and most people on a project team are not Excel specialists.",
+			"GCs lose money every week to sub coordination problems. Most of it goes uncollected because the documentation isn't tight enough to back-charge. Voice logs and timestamped manpower counts close that gap.",
 		context:
-			"Tell construction.live what you need and it builds the structure, writes the formulas, and sets up the logic. Upload an existing spreadsheet and ask it to add a summary tab, fix a formula that breaks on multi-phase projects, or add a scoring system across six criteria. You get a working model without spending an afternoon on it.",
-		before: "Two hours building a bid comparison template. Formulas that break. No time to build the summary dashboard you actually want.",
-		after: "Describe what you need. Get a working spreadsheet with formulas, scoring logic, and a summary dashboard. Ready in minutes.",
+			"Supers voice-log no-shows and undermanning in real time. The platform routes the documentation to the right sub contract for back-charge processing.",
+		before: "Sub didn't show. GC ate the cost. No documentation. No back-charge.",
+		after: "Sub didn't show. Voice log + timestamp + manpower count filed. Back-charge processed with proof.",
 		capabilities: [
-			"Bid comparison models",
-			"Cost trackers",
-			"Schedule analysis",
-			"Change order logs",
-			"Scoring templates",
-			"Dashboard builds",
+			"No-show logging",
+			"Manpower counts",
+			"Late-start documentation",
+			"Trade-stacking conflicts",
+			"Auto-back-charge routing",
+			"Coordination meeting prep",
 		],
 		example:
-			"Build me a bid comparison spreadsheet that scores four bids across six criteria including price, schedule, exclusions, experience, bonding, and local content. Include a weighted scoring summary tab.",
+			"Electrical sub showed up at 10:30, supposed to be on site at 7. Two of our crews waiting. Coordination meeting needed.",
 	},
 	{
 		number: "08",
-		icon: Code2,
+		icon: PhoneCall,
 		badge: "",
-		title: "VBA and Code Analysis",
-		roles: ["Estimators", "Project managers", "GCs"],
-		tagline: "Fix your broken macro. Build a new one. No coding required.",
+		title: "AI Calls the Field",
+		roles: ["Project managers", "Operations leaders", "Owner-operators"],
+		tagline: "Our AI calls your supers — reporting stops depending on memory.",
 		description:
-			"VBA and code analysis in construction involves reviewing, debugging, and improving Excel macros, automation scripts, and custom templates used for project management tasks such as change order processing, cost reporting, and schedule tracking. It also covers building new automation tools from scratch without requiring coding knowledge.",
+			"AI outbound calls turn proactive reporting upside down. Instead of waiting for a super to remember to log a day, our AI calls them at shift change and prompts a quick update. Missed a log day? AI follows up. Reporting becomes automatic.",
 		detail:
-			"A lot of construction teams run on custom Excel macros built by someone who has since left the company. The macro works until it does not. It breaks on multi-phase projects, or throws an error when the data format changes slightly, or just produces wrong numbers that nobody notices until the report goes to the client.",
+			"Adoption is the killer of every field-reporting tool. AI outbound calls solve adoption because the platform calls the field, not the other way around. Supers describe it as easier than texting their office.",
 		context:
-			"Upload the macro. Tell construction.live what it is supposed to do and what it is actually doing. It reads the code, finds the issue, fixes it, and explains what was wrong. You can also build new macros from scratch, automate change order processing, generate report outputs, and add summary dashboards without writing a single line of code yourself.",
-		before: "A broken macro nobody knows how to fix. Manual workarounds that eat an hour every week. Automation that stopped working six months ago.",
-		after: "Upload the broken macro, get it fixed with a clear explanation of what changed. Or build a new one from a plain-language description.",
+			"Set the schedule, set the questions. Calls go out at shift change, capture a 30-second summary, transcribe, categorize, and route to the right project and scope.",
+		before: "Daily logs filed 40 percent of days. PMs chase supers for updates. Reporting depends on whether anyone remembered.",
+		after: "AI calls every super at shift change. Reporting rate goes to 95 percent+ within the first week. PMs stop chasing.",
 		capabilities: [
-			"VBA debugging",
-			"Macro analysis",
-			"New macro builds",
-			"Change order automation",
-			"Report generation scripts",
-			"Dashboard automation",
+			"Scheduled outbound calls",
+			"End-of-shift prompts",
+			"Follow-up on missed days",
+			"Multi-language support",
+			"Transcribed + categorized",
+			"Routes to right project",
 		],
 		example:
-			"Here is my cost tracking macro. It breaks on multi-phase projects and the totals are wrong after phase 2. Fix it and add a summary dashboard output by phase and cost category.",
+			"End-of-day check-in for Tower B. Quick summary of pours, any issues, any extras today?",
 	},
 ];
 
@@ -240,7 +243,7 @@ const colorMap: Record<string, { bg: string; border: string; text: string; tagBg
 	orange: { bg: "bg-orange-500/10", border: "border-orange-500/20", text: "text-orange-600 dark:text-orange-400", tagBg: "bg-orange-500/10" },
 };
 
-const colors = ["blue", "emerald", "amber", "violet", "red", "cyan", "pink", "orange"];
+const colors = ["blue", "amber", "emerald", "violet", "red", "cyan", "pink", "orange"];
 
 /* ── Use case card ─────────────────────────────────────────────────── */
 
@@ -339,7 +342,6 @@ function UseCaseDetail({
 			exit={{ opacity: 0 }}
 		>
 			<div className="min-h-screen max-w-4xl mx-auto px-6 py-24">
-				{/* Close button */}
 				<button
 					onClick={onClose}
 					className="fixed top-6 right-6 p-3 rounded-xl bg-do-bg-card border border-do-border hover:border-do-border-accent transition-colors"
@@ -348,7 +350,6 @@ function UseCaseDetail({
 				</button>
 
 				<div className="space-y-10">
-					{/* Header */}
 					<div>
 						<div className="flex items-center gap-3 mb-4">
 							<span className="text-xs font-mono font-bold text-do-orange">
@@ -369,7 +370,6 @@ function UseCaseDetail({
 							{uc.tagline}
 						</p>
 
-						{/* Roles */}
 						<div className="flex items-center gap-2 mb-8">
 							<Users className="h-4 w-4 text-do-text-muted" />
 							<div className="flex flex-wrap gap-2">
@@ -385,7 +385,6 @@ function UseCaseDetail({
 						</div>
 					</div>
 
-					{/* Main content */}
 					<div className="grid lg:grid-cols-5 gap-10">
 						<div className="lg:col-span-3 space-y-8">
 							<div>
@@ -406,7 +405,6 @@ function UseCaseDetail({
 								</p>
 							</div>
 
-							{/* Before/After */}
 							<div className="grid sm:grid-cols-2 gap-4">
 								<div className="rounded-xl border border-do-border bg-do-bg-card p-5">
 									<p className="text-[10px] font-mono text-do-text-muted uppercase tracking-wider mb-3">
@@ -428,12 +426,11 @@ function UseCaseDetail({
 						</div>
 
 						<div className="lg:col-span-2 space-y-6">
-							{/* Example prompt */}
 							<div className="rounded-xl bg-do-bg-card border border-do-border p-6">
 								<div className="flex items-center gap-2 mb-4">
 									<div className="h-2 w-2 rounded-full bg-do-orange animate-glow-pulse" />
 									<span className="text-[10px] font-mono text-do-text-muted uppercase tracking-wider">
-										Example prompt
+										From the field
 									</span>
 								</div>
 								<p className="text-sm text-do-text/80 italic leading-relaxed">
@@ -441,7 +438,6 @@ function UseCaseDetail({
 								</p>
 							</div>
 
-							{/* Capabilities */}
 							<div className="rounded-xl bg-do-bg-card border border-do-border p-6">
 								<p className="text-[10px] font-mono text-do-text-muted uppercase tracking-wider mb-4">
 									Capabilities
@@ -464,7 +460,6 @@ function UseCaseDetail({
 						</div>
 					</div>
 
-					{/* Navigation */}
 					<div className="flex items-center justify-between pt-8 border-t border-do-border">
 						<button
 							onClick={onPrev}
@@ -510,16 +505,22 @@ function UseCasesCTA() {
 						Pick a use case and try it on your next project.
 					</h2>
 					<p className="text-lg text-do-text-secondary mb-8">
-						No setup. No onboarding. Just upload a document and ask a question.
+						Leave a 30-second field update. See what gets documented in 60 seconds.
 					</p>
 
-					<a
-						href="https://app.construction.live"
-						className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
-					>
-						Get Started Free
-						<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-					</a>
+					<CallMeForm source="use-cases">
+						{({ open }) => (
+							<button
+								type="button"
+								onClick={open}
+								className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
+							>
+								<Phone className="h-4 w-4" />
+								Have Our AI Call You
+								<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+							</button>
+						)}
+					</CallMeForm>
 				</motion.div>
 			</div>
 		</section>
@@ -551,12 +552,13 @@ export default function UseCasesPage() {
 					>
 						<span className="do-section-label text-do-orange">Use Cases</span>
 						<h1 className="text-4xl md:text-6xl font-bold text-do-text mt-4 mb-6">
-							8 ways construction teams use AI to get more done.
+							8 ways small & mid-size commercial contractors protect $1M a year.
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
-							From reviewing a 300-page spec to building a bid comparison spreadsheet
-							in minutes, here is how project managers, estimators, and site
-							engineers use construction.live every day.
+							From voice daily reports to AI outbound calls to bulletproof pay-app
+							backup — every use case below is the difference between getting paid
+							and absorbing the loss. Built for the $5M–$100M commercial GC and
+							the subs they hire.
 						</p>
 					</motion.div>
 
@@ -568,20 +570,20 @@ export default function UseCasesPage() {
 						transition={{ delay: 0.3, duration: 0.5 }}
 					>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">8</p>
-							<p className="text-sm text-do-text-muted">core use cases</p>
+							<p className="text-3xl font-bold text-do-orange">7 days</p>
+							<p className="text-sm text-do-text-muted">pay-app approval</p>
 						</div>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">58%</p>
-							<p className="text-sm text-do-text-muted">include document uploads</p>
+							<p className="text-3xl font-bold text-do-orange">$150K</p>
+							<p className="text-sm text-do-text-muted">change orders won</p>
 						</div>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">50%+</p>
-							<p className="text-sm text-do-text-muted">involve formulas and data</p>
+							<p className="text-3xl font-bold text-do-orange">30 sec</p>
+							<p className="text-sm text-do-text-muted">per field update</p>
 						</div>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">30%+</p>
-							<p className="text-sm text-do-text-muted">technical document analysis</p>
+							<p className="text-3xl font-bold text-do-orange">$1M+</p>
+							<p className="text-sm text-do-text-muted">protected annually</p>
 						</div>
 					</motion.div>
 				</div>
@@ -599,19 +601,19 @@ export default function UseCasesPage() {
 								All roles
 							</span>
 							<span className="px-3 py-1.5 text-xs text-do-text-secondary bg-do-bg border border-do-border rounded-full">
+								Superintendents
+							</span>
+							<span className="px-3 py-1.5 text-xs text-do-text-secondary bg-do-bg border border-do-border rounded-full">
 								Project managers
 							</span>
 							<span className="px-3 py-1.5 text-xs text-do-text-secondary bg-do-bg border border-do-border rounded-full">
 								Estimators
 							</span>
 							<span className="px-3 py-1.5 text-xs text-do-text-secondary bg-do-bg border border-do-border rounded-full">
-								Site engineers
+								Commercial GCs
 							</span>
 							<span className="px-3 py-1.5 text-xs text-do-text-secondary bg-do-bg border border-do-border rounded-full">
-								GCs
-							</span>
-							<span className="px-3 py-1.5 text-xs text-do-text-secondary bg-do-bg border border-do-border rounded-full">
-								Owners
+								Electrical / Mechanical subs
 							</span>
 						</div>
 					</div>

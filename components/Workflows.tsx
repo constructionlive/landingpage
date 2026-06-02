@@ -2,13 +2,12 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Upload, Search, Lightbulb, FileOutput, ArrowDown } from "lucide-react";
+import { Mic, Brain, ShieldCheck, ArrowDown } from "lucide-react";
 
 const workflows = [
-	{ icon: Upload, step: "01", title: "Upload & Analyze", subtitle: "Most common pattern", description: "Upload project documents — specs, drawings, contracts, submittals, field reports. The AI parses everything and builds a working understanding of your project context.", example: "Upload a 200-page specification and ask: \"What are the key structural requirements in Division 03?\"" },
-	{ icon: Search, step: "02", title: "Ask & Understand", subtitle: "Exploration workflow", description: "Ask questions about your documents, compare sections across files, or get the AI to explain complex technical requirements in plain language. Great for onboarding new team members to a project.", example: "Compare the mechanical schedule in the drawings against what's specified in Section 23 00 00" },
-	{ icon: Lightbulb, step: "03", title: "Calculate & Solve", subtitle: "Engineering workflow", description: "Run quantities, generate formulas, convert units, and get engineering calculations validated. From material takeoffs to load calculations — fast and accurate.", example: "How many linear feet of 4-inch DWV pipe do I need based on these floor plans?" },
-	{ icon: FileOutput, step: "04", title: "Generate & Deliver", subtitle: "Output workflow", description: "Transform your analysis into professional deliverables — reports, proposals, bid comparisons, RFI responses, and client presentations. From raw data to polished output.", example: "Generate a bid levelling summary comparing these three mechanical sub-bids" },
+	{ icon: Mic, step: "01", title: "Tell us what happened", subtitle: "30 seconds, on site", description: "Walk the site. Talk to your phone. Or let our AI call you at end of shift. No forms, no app to fight with on a dirty jobsite phone — supers report the same way they call their office.", example: "Pouring Level 3 concrete today. Found unexpected rebar in the south footing — not on the drawings. Taking photos." },
+	{ icon: Brain, step: "02", title: "AI catches the money moments", subtitle: "Same-day flags to PMs", description: "Construction-trained AI listens for the words that cost contractors money — extras, unforeseen conditions, weather delays, subcontractor no-shows. Flags them automatically and drafts the owner notification. PMs see them the same day, not 30 days later in pay-app review.", example: "Auto-flagged: Unforeseen condition (rebar). Drafting owner notification + change order packet." },
+	{ icon: ShieldCheck, step: "03", title: "One click to approve", subtitle: "Pay apps, change orders, T&M", description: "Pay applications ship with auto-assembled backup packages — approved in 7 days instead of 45. Change orders come with day-one documentation owners can't dispute. T&M tickets ship with hour-by-hour proof. You review, you approve, the platform sends.", example: "Pay app #6 approved in 7 days. Change order #12 — $150K — approved same week with day-one documentation." },
 ];
 
 export default function Workflows() {
@@ -22,9 +21,9 @@ export default function Workflows() {
 
 			<div className="relative z-10 max-w-5xl mx-auto px-6" ref={ref}>
 				<motion.div className="text-center mb-20" initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
-					<span className="do-section-label text-do-orange">Real workflows</span>
-					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">How the Work Gets Done</h2>
-					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">Four patterns that define how construction teams work with construction.live every day.</p>
+					<span className="do-section-label text-do-orange">How it works</span>
+					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">The field-to-payment platform you can talk to</h2>
+					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">Three steps from a 30-second voice note to an approved pay app. No forms. No training. Built for how supers and PMs actually work.</p>
 				</motion.div>
 
 				<div className="relative">

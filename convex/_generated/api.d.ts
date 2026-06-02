@@ -9,6 +9,8 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as callbacks from "../callbacks.js";
+import type * as callbacksActions from "../callbacksActions.js";
 import type * as earlyAccess from "../earlyAccess.js";
 import type * as emails from "../emails.js";
 import type * as functions from "../functions.js";
@@ -24,6 +26,8 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  callbacks: typeof callbacks;
+  callbacksActions: typeof callbacksActions;
   earlyAccess: typeof earlyAccess;
   emails: typeof emails;
   functions: typeof functions;

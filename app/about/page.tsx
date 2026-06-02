@@ -4,58 +4,51 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
+import CallMeForm from "@components/CallMeForm";
 import {
 	Building2,
-	Factory,
-	Hospital,
-	HardHat,
-	Home,
-	Store,
+	Zap,
+	Wrench,
+	Hammer,
+	ShoppingBag,
+	UtensilsCrossed,
 	ArrowRight,
 	HelpCircle,
-	Mail,
-	Lock,
-	Globe,
-	Users,
-	Zap,
-	Eye,
-	Brain,
-	Clock,
-	MapPin,
+	Phone,
 } from "lucide-react";
 
-/* ── Industries data ───────────────────────────────────────────────── */
+/* ── Who we serve ──────────────────────────────────────────────────── */
 
 const industries = [
 	{
 		icon: Building2,
-		title: "Commercial Construction",
-		description: "Office towers, mixed-use, tenant fit-outs",
+		title: "Small & Mid-Size Commercial GCs",
+		description: "$5M–$100M tenant fit-out, mixed-use, light commercial new build",
 	},
 	{
-		icon: Factory,
-		title: "Industrial and Manufacturing",
-		description: "Warehouses, process facilities, plant expansions",
+		icon: Zap,
+		title: "Electrical Subs",
+		description: "Commercial fit-out, T&M-heavy projects, multi-site rollouts",
 	},
 	{
-		icon: Hospital,
-		title: "Institutional and Government",
-		description: "Schools, hospitals, public infrastructure",
+		icon: Wrench,
+		title: "Mechanical & Plumbing Subs",
+		description: "HVAC, controls, plumbing on commercial projects",
 	},
 	{
-		icon: HardHat,
-		title: "Heavy Civil and Infrastructure",
-		description: "Roads, bridges, utilities, site development",
+		icon: Hammer,
+		title: "Specialty Subs",
+		description: "Drywall, framing, finishes, millwork — trade-stacking-heavy work",
 	},
 	{
-		icon: Home,
-		title: "Residential and Multi-Family",
-		description: "Custom homes, condos, townhouse developments",
+		icon: ShoppingBag,
+		title: "Retail Fit-Out Contractors",
+		description: "National retail rollouts, big-box, tenant build-outs",
 	},
 	{
-		icon: Store,
-		title: "Retail and Hospitality",
-		description: "Retail build-outs, restaurants, hotels",
+		icon: UtensilsCrossed,
+		title: "Hospitality & Restaurant Build-Outs",
+		description: "Restaurants, hotels, entertainment — owner-change-heavy",
 	},
 ];
 
@@ -64,33 +57,33 @@ const industries = [
 const beliefs = [
 	{
 		number: "1",
-		title: "Construction people are not the problem. Their tools are.",
+		title: "Daily logs only matter if they protect payment.",
 		description:
-			"Project managers, estimators, and site engineers are some of the most capable professionals in any industry. They manage complex logistics, tight budgets, and real physical risk every day. The reason they are buried in admin work is not a lack of skill. It is a lack of tools built specifically for how they work.",
+			"Most field-reporting tools treat daily logs as compliance paperwork. We treat them as the front line of cash flow. Every voice note, every photo, every AI call summary is a piece of payment protection — or it's not worth capturing.",
 	},
 	{
 		number: "2",
-		title: "AI should show its work, not hide it.",
+		title: "Adoption is the only metric that matters.",
 		description:
-			"In construction, a wrong number has real consequences. A calculation that cannot be checked is a liability. Every output from construction.live is traceable. Formulas are shown in full. Assumptions are stated. Code references are cited. Your team should always be able to verify what the AI tells them.",
+			"A daily-log app with a 30 percent fill rate is worthless. Every product decision we make optimizes for whether the super actually uses it. That's why we built voice-first input, AI outbound calls, and offline-first sync — not because they're elegant, but because they're the only way logs actually get created.",
 	},
 	{
 		number: "3",
-		title: "Domain knowledge is not optional.",
+		title: "Construction-trained AI, not generic AI.",
 		description:
-			"A general-purpose AI that does not understand the difference between a structural submittal and a mechanical schedule is not useful on a construction project. construction.live is built with construction context at its core. It knows CSI MasterFormat. It knows the difference between an RFI and a change order. It understands what a project manager actually needs from a code lookup.",
+			"A general LLM that doesn't know what 'rebar not on the prints' means isn't useful on a jobsite. Our models are trained on construction context — they understand the difference between an extra and a back-charge, between an unforeseen condition and a coordination issue. The intelligence is the product.",
 	},
 	{
 		number: "4",
-		title: "The best tool is the one that keeps working when you stop watching.",
+		title: "Built for the contractor doing the work, not the consultant studying it.",
 		description:
-			"Most software tools require active input to do anything. construction.live is designed to run on schedule in the background. Checking emails. Tracking deadlines. Attending meetings. Compiling reports. You set it up once and it keeps going whether you are in the office, on site, or asleep.",
+			"Enterprise construction software is designed for committee approval at large GCs. We're built for the $5M–$100M commercial contractor where the PM is sometimes the owner and the super is covering three jobs. Different problem, different product.",
 	},
 	{
 		number: "5",
-		title: "Every sector builds differently. The AI should know that.",
+		title: "The dispute always comes later. Document like it's coming.",
 		description:
-			"A hospital project has different compliance requirements than a warehouse. A heavy civil contract reads differently than a residential fit-out. construction.live adapts to the sector and project type, not the other way around. The same platform covers commercial, industrial, institutional, civil, residential, and retail construction because it understands the context of each.",
+			"Eight months from now, the owner will dispute a change order. The contractor with timestamped voice transcripts, geotagged photos, and quantified scope changes from day one wins. The contractor relying on memory loses. We help you be the first one.",
 	},
 ];
 
@@ -99,27 +92,27 @@ const beliefs = [
 const problems = [
 	{
 		number: "01",
-		title: "Document volume that no team can keep up with",
+		title: "Documentation is the #1 cause of disputed payments.",
 		description:
-			"A mid-size commercial project generates tens of thousands of documents over its lifecycle. Specs, drawings, RFIs, submittals, change orders, meeting minutes, field reports. Reading all of them carefully is not possible. Missing something critical is common.",
+			"Industry data shows contractors lose $1M+ a year to disputed pay apps, denied change orders, and challenged T&M. Almost all of it comes from documentation that arrived too late or was too thin to defend.",
 	},
 	{
 		number: "02",
-		title: "Scope gaps that turn into expensive change orders",
+		title: "Daily-log apps have an adoption problem.",
 		description:
-			"Industry data shows that 60 to 80 percent of construction change orders come from incomplete scope definition at the bid stage. The information to prevent them exists. The time to review it thoroughly often does not.",
+			"Most field-reporting tools require typing on a phone. Most supers don't use them. The result: logs filed days late, half the day's events forgotten, no proof when the dispute comes.",
 	},
 	{
 		number: "03",
-		title: "Calculations that take too long and carry too much risk",
+		title: "Change orders get denied on documentation, not merit.",
 		description:
-			"Quantity takeoffs, load calculations, material estimates. Done manually, they take hours. Done quickly, they carry the risk of errors that show up weeks later on site or in the budget.",
+			"60 to 80 percent of change orders contractors lose come from documentation problems. The work happened. The contract supported it. But the paper trail started weeks too late.",
 	},
 	{
 		number: "04",
-		title: "Reporting that steals time from actual project work",
+		title: "Small and mid-size commercial contractors are underserved.",
 		description:
-			"Progress reports, deficiency logs, proposal documents, RFI responses. Every project needs them. Writing them from scratch every week takes time that most project teams do not have to spare.",
+			"Enterprise construction software is built and priced for large GCs with dedicated documentation staff. The $5M–$100M commercial contractor — where margins are thin and one disputed change order matters — gets no purpose-built tool.",
 	},
 ];
 
@@ -127,81 +120,36 @@ const problems = [
 
 const faqs = [
 	{
-		question: "What is construction.live and who is it built for?",
+		question: "Who exactly is construction.live built for?",
 		answer:
-			"construction.live is an AI platform built specifically for the construction industry. It is designed for project managers, estimators, site engineers, general contractors, and owners who work with construction documents, calculations, and reporting on a daily basis. It handles document analysis, bid leveling, engineering calculations, project intelligence, and scope gap detection in one workspace.",
+			"Small and mid-size commercial general contractors — typically $5M–$100M annual revenue — and the electrical, mechanical, and specialty subs they hire. We're focused on tenant fit-out, mixed-use, light commercial new build, retail, and hospitality. Not built for enterprise GCs, heavy civil, or institutional/healthcare.",
 	},
 	{
-		question: "Is construction.live a general AI tool or is it built specifically for construction?",
+		question: "Why focus on small and mid-size, not enterprise?",
 		answer:
-			"It is built specifically for construction. The platform understands construction document types, CSI MasterFormat structure, industry terminology, building codes by jurisdiction, and the workflows that project teams actually use. This is not a general chatbot adapted for construction. It was designed from the ground up for the way construction teams work.",
+			"Enterprise GCs already have dedicated documentation staff, PMO teams, and software budgets sized for committee evaluation. Their problem isn't ours. The $5M–$100M commercial contractor — where the PM is often the owner and the super is covering three jobs — has the documentation problem we solve, and they don't have a tool built for them. That's our market.",
 	},
 	{
-		question: "What makes construction.live different from other project management software?",
+		question: "What makes construction.live different from Raken, Fieldwire, or Procore field logs?",
 		answer:
-			"Most project management software helps you organize and track work. construction.live does the work. It reads and analyzes documents, runs calculations, detects scope gaps, generates reports, and monitors deadlines automatically. The closest comparison is having a highly experienced team member who is always available, never misses a detail, and keeps working after everyone else has gone home.",
+			"Those tools collect data — usually through typed forms supers don't fill out reliably. We unify voice notes, photos, AI outbound calls, and integration data into one intelligence layer that flags money moments same-day and auto-assembles pay-app backup. The output is payment protection, not just a daily log.",
 	},
 	{
-		question: "Is the platform secure enough for confidential project documents?",
+		question: "Do you replace Procore or work alongside it?",
 		answer:
-			"Yes. construction.live is built with enterprise-grade security. Project documents contain commercially sensitive information and the platform is designed to handle them accordingly. Contact the team for details on data handling, storage, and security protocols for your specific requirements.",
+			"Alongside. We push daily logs, change orders, and pay-app backup directly into Procore, Autodesk, Fieldwire, and Microsoft 365. Your owners see the same record you do. We're the unified field intelligence layer that feeds the systems your owner already requires.",
+	},
+	{
+		question: "Is my data secure?",
+		answer:
+			"Yes. Project documentation contains commercially sensitive information and construction.live is built to handle it accordingly — enterprise-grade encryption at rest and in transit, role-based access, and audit logging. Contact us for the details your IT team needs.",
 	},
 	{
 		question: "How do I get started?",
 		answer:
-			"You can get started for free with no setup required. There is no onboarding process or configuration before your first session. Upload a project document, ask a question, and the AI starts working. Most users see value in the first session.",
+			"Have our AI call you. Leave a 30-second field update like you're calling your office. See what gets documented in 60 seconds. No signup, no credit card, no app to install.",
 	},
 ];
-
-/* ── Team section ──────────────────────────────────────────────────── */
-
-function TeamSection() {
-	const ref = useRef(null);
-	const inView = useInView(ref, { once: true, margin: "-80px" });
-
-	return (
-		<section className="relative py-24 overflow-hidden" ref={ref}>
-			<div className="absolute inset-0 do-blueprint-grid pointer-events-none" />
-
-			<div className="relative z-10 max-w-4xl mx-auto px-6">
-				<motion.div
-					className="text-center mb-16"
-					initial={{ opacity: 0, y: 30 }}
-					animate={inView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.6 }}
-				>
-					<span className="do-section-label text-do-orange">The team</span>
-					<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 mb-4">
-						Built by people who understand construction.
-					</h2>
-					<p className="text-base text-do-text-secondary max-w-xl mx-auto">
-						construction.live was built by a team that combines hands-on
-						construction experience with deep technical expertise in AI.
-					</p>
-				</motion.div>
-
-				{/* Placeholder team card */}
-				<motion.div
-					className="max-w-sm mx-auto rounded-2xl border border-do-border bg-do-bg-card/80 backdrop-blur-sm p-8 text-center"
-					initial={{ opacity: 0, y: 20 }}
-					animate={inView ? { opacity: 1, y: 0 } : {}}
-					transition={{ delay: 0.2, duration: 0.5 }}
-				>
-					<div className="h-24 w-24 rounded-full bg-do-orange/10 border-2 border-do-orange/20 mx-auto mb-6 flex items-center justify-center">
-						<Users className="h-10 w-10 text-do-orange/60" />
-					</div>
-					<h3 className="text-lg font-semibold text-do-text mb-1">
-						Rahul Vaishnav
-					</h3>
-					<p className="text-sm text-do-orange font-medium mb-4">Founder</p>
-					<p className="text-xs text-do-text-muted">
-						[ Add team member details here ]
-					</p>
-				</motion.div>
-			</div>
-		</section>
-	);
-}
 
 /* ── Beliefs section ──────────────────────────────────────────────── */
 
@@ -277,21 +225,19 @@ function ProblemsSection() {
 					transition={{ duration: 0.6 }}
 				>
 					<span className="do-section-label text-do-orange">
-						The problem we are solving
+						The problem we&apos;re solving
 					</span>
 					<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 mb-4">
-						Construction is one of the least digitized industries in the world.
+						Contractors lose $1M a year to documentation problems.
 						<br />
 						<span className="text-do-text-secondary font-normal">
-							That is the opportunity.
+							That&apos;s the gap we close.
 						</span>
 					</h2>
 					<p className="text-base text-do-text-secondary max-w-2xl mx-auto">
-						The construction industry accounts for 13% of global GDP and employs
-						hundreds of millions of people. It is also one of the last major
-						industries where most knowledge work still happens manually, in
-						spreadsheets, PDF readers, and email threads. AI has transformed finance,
-						healthcare, and logistics. Construction is next.
+						Disputed pay apps. Denied change orders. Challenged T&M. The work
+						happened. The contract supported it. The documentation arrived too
+						late.
 					</p>
 				</motion.div>
 
@@ -341,6 +287,14 @@ function IndustriesSection() {
 					transition={{ duration: 0.6 }}
 				>
 					<span className="do-section-label text-do-orange">Who we serve</span>
+					<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 mb-4">
+						Built for commercial. Not for everyone.
+					</h2>
+					<p className="text-base text-do-text-secondary max-w-2xl mx-auto">
+						Small and mid-size commercial GCs and the subs they hire. If you run
+						$5M–$100M projects and your margins live or die by how well the field
+						gets documented, this is built for you.
+					</p>
 				</motion.div>
 
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -364,6 +318,63 @@ function IndustriesSection() {
 						</motion.div>
 					))}
 				</div>
+			</div>
+		</section>
+	);
+}
+
+/* ── Team section ──────────────────────────────────────────────────── */
+
+function TeamSection() {
+	const ref = useRef(null);
+	const inView = useInView(ref, { once: true, margin: "-80px" });
+
+	return (
+		<section className="relative py-24 overflow-hidden" ref={ref}>
+			<div className="absolute inset-0 do-blueprint-grid pointer-events-none" />
+
+			<div className="relative z-10 max-w-4xl mx-auto px-6">
+				<motion.div
+					className="text-center mb-16"
+					initial={{ opacity: 0, y: 30 }}
+					animate={inView ? { opacity: 1, y: 0 } : {}}
+					transition={{ duration: 0.6 }}
+				>
+					<span className="do-section-label text-do-orange">The team</span>
+					<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 mb-4">
+						Built by people who&apos;ve been on the losing side of a change-order dispute.
+					</h2>
+					<p className="text-base text-do-text-secondary max-w-xl mx-auto">
+						Construction operators and AI engineers. We know what gets disputed
+						and we know how to document it before the dispute starts.
+					</p>
+				</motion.div>
+
+				<motion.div
+					className="max-w-sm mx-auto rounded-2xl border border-do-border bg-do-bg-card/80 backdrop-blur-sm p-8 text-center"
+					initial={{ opacity: 0, y: 20 }}
+					animate={inView ? { opacity: 1, y: 0 } : {}}
+					transition={{ delay: 0.2, duration: 0.5 }}
+				>
+					<div className="relative h-28 w-28 rounded-full mx-auto mb-6 overflow-hidden border-2 border-do-orange/30 shadow-[0_0_30px_rgba(249,115,22,0.15)]">
+						{/* eslint-disable-next-line @next/next/no-img-element */}
+						<img
+							src="/profile.jpg"
+							alt="Rahul Vaishnav, founder of construction.live"
+							className="h-full w-full object-cover"
+							loading="lazy"
+						/>
+					</div>
+					<h3 className="text-lg font-semibold text-do-text mb-1">
+						Rahul Vaishnav
+					</h3>
+					<p className="text-sm text-do-orange font-medium mb-4">Founder</p>
+					<p className="text-xs text-do-text-secondary leading-relaxed">
+						10+ years across construction and AI. Built construction.live because
+						he&apos;s been on the losing side of enough change-order disputes to
+						know what the documentation gap actually costs.
+					</p>
+				</motion.div>
 			</div>
 		</section>
 	);
@@ -434,7 +445,7 @@ function AboutCTA() {
 	const inView = useInView(ref, { once: true, margin: "-80px" });
 
 	return (
-		<section className="relative py-24 overflow-hidden" ref={ref}>
+		<section className="relative py-24 overflow-hidden bg-do-bg-card" ref={ref}>
 			<div className="absolute inset-0 do-blueprint-grid-dense pointer-events-none" />
 			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-do-orange/[0.04] rounded-full blur-[150px]" />
 
@@ -445,28 +456,26 @@ function AboutCTA() {
 					transition={{ duration: 0.6 }}
 				>
 					<h2 className="text-3xl md:text-4xl font-bold text-do-text mb-5">
-						See what your team can do with an AI that never stops working.
+						Win one $50K change order. The platform pays for itself.
 					</h2>
 					<p className="text-lg text-do-text-secondary mb-8">
-						Join the construction teams already using construction.live to move
-						faster, catch more, and deliver better results.
+						Drop your number. Our AI calls within 60 seconds. Leave a 30-second
+						field update and see what gets documented.
 					</p>
 
-					<div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-						<a
-							href="https://app.construction.live"
-							className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
-						>
-							Get Started Free
-							<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-						</a>
-						<a
-							href="/"
-							className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-do-text bg-do-bg-card hover:bg-do-bg-card/80 border border-do-border hover:border-do-border-accent rounded-xl transition-all"
-						>
-							Book a Demo
-						</a>
-					</div>
+					<CallMeForm source="about">
+						{({ open }) => (
+							<button
+								type="button"
+								onClick={open}
+								className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
+							>
+								<Phone className="h-4 w-4" />
+								Have Our AI Call You
+								<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+							</button>
+						)}
+					</CallMeForm>
 				</motion.div>
 			</div>
 		</section>
@@ -476,15 +485,12 @@ function AboutCTA() {
 /* ── Page ──────────────────────────────────────────────────────────── */
 
 export default function AboutPage() {
-	const ref = useRef(null);
-	const inView = useInView(ref, { once: true, margin: "-80px" });
-
 	return (
 		<main className="min-h-screen bg-do-bg">
 			<Navbar />
 
 			{/* Hero */}
-			<section className="relative pt-40 pb-20 overflow-hidden" ref={ref}>
+			<section className="relative pt-40 pb-20 overflow-hidden">
 				<div className="absolute inset-0 do-blueprint-grid pointer-events-none" />
 				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-do-orange/[0.04] rounded-full blur-[150px]" />
 
@@ -496,22 +502,20 @@ export default function AboutPage() {
 					>
 						<span className="do-section-label text-do-orange">About</span>
 						<h1 className="text-4xl md:text-6xl font-bold text-do-text mt-4 mb-6">
-							We built the AI office
+							Built for small &amp; mid-size
 							<br />
 							<span className="text-do-text-secondary font-normal">
-								that construction never had.
+								commercial contractors.
 							</span>
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
-							construction.live is an AI platform built specifically for the
-							construction industry. It reads your documents, runs your
-							calculations, tracks your deadlines, and compiles your reports. You
-							set it up once. It works around the clock so your team does not have
-							to.
+							construction.live is unified field intelligence for the $5M–$100M
+							commercial GC and the electrical, mechanical, and specialty subs
+							they hire. We turn every signal from your jobsite into bulletproof
+							payment protection.
 						</p>
 					</motion.div>
 
-					{/* Stats */}
 					<motion.div
 						className="flex flex-wrap justify-center gap-8 mt-12"
 						initial={{ opacity: 0, y: 20 }}
@@ -519,22 +523,20 @@ export default function AboutPage() {
 						transition={{ delay: 0.3, duration: 0.5 }}
 					>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">2025</p>
-							<p className="text-sm text-do-text-muted">Founded</p>
+							<p className="text-3xl font-bold text-do-orange">$5M–$100M</p>
+							<p className="text-sm text-do-text-muted">target GC size</p>
 						</div>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">8</p>
-							<p className="text-sm text-do-text-muted">Core workflows covered</p>
+							<p className="text-3xl font-bold text-do-orange">$1M+</p>
+							<p className="text-sm text-do-text-muted">protected per contractor</p>
 						</div>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">58%</p>
-							<p className="text-sm text-do-text-muted">
-								Of sessions include uploads
-							</p>
+							<p className="text-3xl font-bold text-do-orange">7 days</p>
+							<p className="text-sm text-do-text-muted">pay-app approval</p>
 						</div>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">6</p>
-							<p className="text-sm text-do-text-muted">Industry sectors served</p>
+							<p className="text-3xl font-bold text-do-orange">30 sec</p>
+							<p className="text-sm text-do-text-muted">per field update</p>
 						</div>
 					</motion.div>
 				</div>
@@ -550,9 +552,9 @@ export default function AboutPage() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6 }}
 					>
-						<span className="do-section-label text-do-orange">Our Story</span>
+						<span className="do-section-label text-do-orange">Our story</span>
 						<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 mb-8">
-							Construction moves fast. The tools it runs on have not kept up.
+							Most contractors lose $1M a year because the daily log never got created.
 						</h2>
 					</motion.div>
 
@@ -563,42 +565,23 @@ export default function AboutPage() {
 						transition={{ delay: 0.2, duration: 0.5 }}
 					>
 						<p className="text-base text-do-text-secondary leading-relaxed">
-							Every day, construction project managers, estimators, and site
-							engineers spend hours on work that should take minutes. Reading
-							through 200-page specifications to find one clause. Building bid
-							comparison spreadsheets from scratch. Writing progress reports from
-							handwritten site notes. Waiting for a specialist callback to diagnose
-							a field issue.
+							It&apos;s not because the work didn&apos;t happen. It&apos;s because the
+							super was busy running three jobs, the PM was buried in pay apps, and
+							the daily log app on the phone never got opened. Eight months later,
+							the owner disputes a change order. The work is real. The contract
+							supports it. But the documentation isn&apos;t there.
 						</p>
 						<p className="text-base text-do-text-secondary leading-relaxed">
-							These are not small inefficiencies. They compound across every
-							project, every team, and every deadline. The construction industry
-							loses an estimated 35% of productive working time to administrative
-							tasks, document handling, and information retrieval. That is time
-							that should be going into building.
+							Enterprise GCs solve this with dedicated documentation staff and
+							software priced for committee approval. The $5M–$100M commercial
+							contractor — where the PM is sometimes the owner and one super
+							covers multiple jobs — doesn&apos;t have a tool built for them.
 						</p>
 						<p className="text-base text-do-text leading-relaxed">
-							construction.live was built to give that time back. Not by replacing
-							the people who do the work, but by handling the parts of the job
-							that slow them down. The document reviews. The calculations. The
-							reports. The deadline tracking. The email monitoring. The things
-							that need to get done but do not require a project manager&apos;s
-							judgment to do.
-						</p>
-					</motion.div>
-
-					{/* Placeholder for founding story */}
-					<motion.div
-						className="mt-12 p-6 rounded-xl border-2 border-dashed border-do-border bg-do-bg-card/50"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.4 }}
-					>
-						<p className="text-sm text-do-text-muted text-center">
-							[ Add your founding story here. Who built this, where you came from,
-							what you experienced firsthand that made you want to build it. Two
-							to three sentences about the specific moment or project that made
-							the problem impossible to ignore. ]
+							We built construction.live to be that tool. Voice notes. Photos. AI
+							outbound calls. Integration with the systems your owner already
+							uses. Unified into one defensible record. Pay apps get approved.
+							Change orders get won. Margins get protected.
 						</p>
 					</motion.div>
 				</div>

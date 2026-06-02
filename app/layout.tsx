@@ -3,33 +3,43 @@ import ConvexClientProvider from "./convex-client-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-	title: "construction.live — The Integrated AI Office for Construction",
+	title: "construction.live — Get Paid for Every Extra. Defend Every Change Order.",
 	description:
-		"AI-powered document analysis, engineering calculations, bid levelling, and project intelligence for construction professionals.",
+		"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations — unified into bulletproof pay-app and change-order documentation.",
 	keywords: [
-		"construction AI",
-		"construction management",
-		"bid levelling",
-		"document analysis",
-		"engineering calculations",
-		"construction technology",
+		"unified field intelligence",
+		"change order documentation",
+		"pay application backup",
+		"daily field reports",
+		"construction T&M tracking",
+		"jobsite documentation",
+		"construction payment protection",
 	],
 	alternates: {
 		canonical: "https://www.construction.live",
 	},
+	icons: {
+		icon: [
+			{ url: "/icon.svg", type: "image/svg+xml" },
+		],
+		apple: [
+			{ url: "/apple-icon.svg", type: "image/svg+xml" },
+		],
+		shortcut: ["/icon.svg"],
+	},
 	openGraph: {
-		title: "construction.live — The Integrated AI Office for Construction",
+		title: "construction.live — Get Paid for Every Extra. Defend Every Change Order.",
 		description:
-			"AI-powered document analysis, engineering calculations, bid levelling, and project intelligence for construction professionals.",
+			"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations — unified into bulletproof pay-app and change-order documentation.",
 		type: "website",
 		url: "https://construction.live",
 		siteName: "construction.live",
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "construction.live — The Integrated AI Office for Construction",
+		title: "construction.live — Get Paid for Every Extra. Defend Every Change Order.",
 		description:
-			"AI-powered document analysis, engineering calculations, bid levelling, and project intelligence for construction professionals.",
+			"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations — unified into bulletproof pay-app and change-order documentation.",
 		site: "@constructionlive",
 	},
 	robots: {

@@ -42,4 +42,26 @@ export default defineSchema({
     normalizedEmail: v.string(),
     createdAt: v.number(),
   }).index("by_normalizedEmail", ["normalizedEmail"]),
+  callbackRequests: defineTable({
+    name: v.optional(v.string()),
+    company: v.optional(v.string()),
+    projectName: v.optional(v.string()),
+    phone: v.string(),
+    normalizedPhone: v.string(),
+    source: v.optional(v.string()),
+    consent: v.optional(v.boolean()),
+    // Vapi call lifecycle
+    vapiCallId: v.optional(v.string()),
+    status: v.optional(v.string()), // queued | ringing | in-progress | ended | failed | not-configured
+    failureReason: v.optional(v.string()),
+    transcript: v.optional(v.string()),
+    summary: v.optional(v.string()),
+    durationSeconds: v.optional(v.number()),
+    recordingUrl: v.optional(v.string()),
+    costCents: v.optional(v.number()),
+    endedAt: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index("by_normalizedPhone", ["normalizedPhone"])
+    .index("by_vapiCallId", ["vapiCallId"]),
 });

@@ -2,27 +2,17 @@
 
 import { motion } from "framer-motion";
 import {
-	Building2,
 	HardHat,
-	Zap,
-	FileSearch,
-	Video,
+	Phone,
 	ArrowRight,
-	Mail,
-	FileUp,
-	CalendarClock,
-	Clock,
-	Bot,
-	Smartphone,
+	Mic,
+	AlertTriangle,
+	Camera,
+	ClipboardCheck,
+	FileText,
+	DollarSign,
 } from "lucide-react";
-
-const floatingTags = [
-	{ label: "RFI Analysis", icon: FileSearch, x: "10%", y: "20%", delay: 0 },
-	{ label: "Cost Estimates", icon: Zap, x: "78%", y: "15%", delay: 0.8 },
-	{ label: "Bid Levelling", icon: HardHat, x: "5%", y: "70%", delay: 1.6 },
-	{ label: "Project Docs", icon: Building2, x: "82%", y: "65%", delay: 2.2 },
-	{ label: "Meetings", icon: Video, x: "85%", y: "40%", delay: 1.2 },
-];
+import CallMeForm from "./CallMeForm";
 
 export default function Hero() {
 	return (
@@ -86,21 +76,6 @@ export default function Hero() {
 				<div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-do-orange/[0.04] dark:bg-do-orange/[0.03] rounded-full blur-[120px]" />
 			</div>
 
-			{/* Floating tags */}
-			{floatingTags.map((tag) => (
-				<motion.div
-					key={tag.label}
-					className="absolute hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-do-bg-card/80 border border-do-border backdrop-blur-sm text-xs text-do-text-secondary"
-					style={{ left: tag.x, top: tag.y }}
-					initial={{ opacity: 0, scale: 0.8 }}
-					animate={{ opacity: 1, scale: 1 }}
-					transition={{ delay: tag.delay + 0.8, duration: 0.5, type: "spring" }}
-				>
-					<tag.icon className="h-3.5 w-3.5 text-do-orange" />
-					{tag.label}
-				</motion.div>
-			))}
-
 			{/* Hero content */}
 			<div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 pb-20">
 				<div className="text-center">
@@ -112,7 +87,7 @@ export default function Hero() {
 					>
 						<span className="h-1.5 w-1.5 rounded-full bg-do-orange animate-glow-pulse" />
 						<span className="text-xs font-mono text-do-orange tracking-wider uppercase">
-							The Integrated AI Office for Construction
+							Unified field intelligence platform
 						</span>
 					</motion.div>
 
@@ -122,22 +97,33 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.35, duration: 0.7 }}
 					>
-						<span className="text-do-text">The Only AI That</span>
+						<span className="text-do-text">Get Paid for Every Extra.</span>
 						<br />
 						<span className="bg-gradient-to-r from-do-orange via-orange-400 to-amber-400 bg-clip-text text-transparent">
-							Works While You Sleep
+							Defend Every Change Order.
 						</span>
 					</motion.h1>
 
 					<motion.p
-						className="text-lg sm:text-xl text-do-text-secondary max-w-2xl mx-auto mb-10 text-balance leading-relaxed"
+						className="text-lg sm:text-xl text-do-text-secondary max-w-2xl mx-auto mb-4 text-balance leading-relaxed"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.55 }}
 					>
-						construction.live is a sentient AI agent for construction — it checks your emails,
-						drafts responses, tracks deadlines, and compiles reports on schedule.
-						You set it up once. It never stops working.
+						The unified field intelligence platform that catches change orders the
+						day they happen — and turns every signal from your jobsite into
+						bulletproof payment protection.
+					</motion.p>
+
+					<motion.p
+						className="text-sm sm:text-base text-do-text-muted max-w-xl mx-auto mb-10 text-balance"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.65 }}
+					>
+						Voice notes, photos, AI calls, and your existing tools — unified into
+						one defensible record. Built for the $5M–$100M commercial GC and the
+						subs they hire.
 					</motion.p>
 
 					<motion.div
@@ -146,23 +132,38 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.7 }}
 					>
+						<CallMeForm source="hero">
+							{({ open }) => (
+								<button
+									type="button"
+									onClick={open}
+									className="group px-8 py-3.5 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] flex items-center gap-2"
+								>
+									<Phone className="h-4 w-4" />
+									Have Our AI Call You
+									<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+								</button>
+							)}
+						</CallMeForm>
 						<a
-							href="https://app.construction.live"
-							className="group px-8 py-3.5 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] flex items-center gap-2"
-						>
-							Start Building Smarter
-							<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-						</a>
-						<a
-							href="#use-cases"
+							href="#workflows"
 							className="px-8 py-3.5 text-base font-medium text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all hover:bg-do-bg-light/50"
 						>
-							See How Teams Use It
+							See How It Protects Margins
 						</a>
 					</motion.div>
+
+					<motion.p
+						className="mt-6 text-xs font-mono text-do-text-muted uppercase tracking-wider"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.9 }}
+					>
+						Helping contractors protect $50M+ in annual billings
+					</motion.p>
 				</div>
 
-				{/* Sentient AI showcase — animated scheduled tasks */}
+				{/* Unified field intelligence showcase */}
 				<motion.div
 					className="mt-16 max-w-3xl mx-auto"
 					initial={{ opacity: 0, y: 30 }}
@@ -172,10 +173,10 @@ export default function Hero() {
 					<div className="rounded-2xl border border-do-border bg-do-bg-card/80 backdrop-blur-sm overflow-hidden shadow-lg">
 						<div className="px-5 py-3 border-b border-do-border flex items-center gap-3">
 							<div className="h-7 w-7 rounded-lg bg-do-orange/10 flex items-center justify-center">
-								<Bot className="h-4 w-4 text-do-orange" />
+								<Mic className="h-4 w-4 text-do-orange" />
 							</div>
 							<span className="text-xs font-mono text-do-text-secondary uppercase tracking-wider">
-								Your AI Agent — Always On
+								Unified intelligence — Tower B, 8:47 AM
 							</span>
 							<div className="ml-auto flex items-center gap-1.5">
 								<motion.div
@@ -183,15 +184,36 @@ export default function Hero() {
 									animate={{ opacity: [0.4, 1, 0.4] }}
 									transition={{ duration: 2, repeat: Infinity }}
 								/>
-								<span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">Active</span>
+								<span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">Documenting</span>
 							</div>
 						</div>
+
+						{/* Voice note */}
+						<div className="px-5 py-4 border-b border-do-border bg-do-bg/40">
+							<div className="flex items-start gap-3">
+								<div className="h-9 w-9 rounded-full bg-do-bg border border-do-border flex items-center justify-center shrink-0">
+									<HardHat className="h-4 w-4 text-do-text-secondary" />
+								</div>
+								<div className="flex-1 min-w-0">
+									<p className="text-[11px] font-mono text-do-text-muted mb-1">
+										Mike, Superintendent — 0:28
+									</p>
+									<p className="text-sm text-do-text leading-relaxed italic">
+										&ldquo;Pouring Level 3 concrete today. Found unexpected rebar in
+										the south footing — not on the drawings. Taking photos. Crew
+										stopped for 45 minutes while we figured it out.&rdquo;
+									</p>
+								</div>
+							</div>
+						</div>
+
+						{/* AI catches */}
 						<div className="p-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
 							{[
-								{ icon: Mail, label: "Check project emails", time: "Every day, 8:00 AM", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-500/10" },
-								{ icon: FileUp, label: "Draft RFI responses", time: "Every day, 8:15 AM", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500/10" },
-								{ icon: CalendarClock, label: "Weekly progress report", time: "Every Monday, 9:00 AM", color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-500/10" },
-								{ icon: Clock, label: "Submittal deadline tracker", time: "Every day, 7:00 AM", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
+								{ icon: AlertTriangle, label: "Unforeseen conditions flagged", time: "Unexpected rebar — not in contract", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
+								{ icon: DollarSign, label: "Change order candidate", time: "Owner notification drafted", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500/10" },
+								{ icon: Camera, label: "Photos geotagged", time: "3 photos — south footing, 8:47 AM", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-500/10" },
+								{ icon: ClipboardCheck, label: "Daily log entry created", time: "Logged — Level 3 concrete pour", color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-500/10" },
 							].map((task, i) => (
 								<motion.div
 									key={task.label}
@@ -205,26 +227,12 @@ export default function Hero() {
 									</div>
 									<div className="flex-1 min-w-0">
 										<p className="text-sm text-do-text font-medium truncate">{task.label}</p>
-										<p className="text-[11px] text-do-text-muted font-mono">{task.time}</p>
+										<p className="text-[11px] text-do-text-muted truncate">{task.time}</p>
 									</div>
 								</motion.div>
 							))}
-							{/* P.E. prep — spans full width */}
-							<motion.div
-								className="sm:col-span-2 flex items-center gap-3 px-3 py-3 rounded-xl bg-cyan-500/[0.04] border border-cyan-500/15"
-								initial={{ opacity: 0, y: 10 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 1.48, duration: 0.4, type: "spring" }}
-							>
-								<div className="h-9 w-9 rounded-lg bg-cyan-500/10 flex items-center justify-center shrink-0">
-									<Smartphone className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
-								</div>
-								<div className="flex-1 min-w-0">
-									<p className="text-sm text-do-text font-medium">Send me a P.E. prep question via SMS</p>
-									<p className="text-[11px] text-do-text-muted font-mono">Every day, 6:00 AM</p>
-								</div>
-							</motion.div>
-							{/* Featured complex task — spans full width */}
+
+							{/* Featured payment-protection summary — spans full width */}
 							<motion.div
 								className="sm:col-span-2 flex items-start gap-3 px-3 py-3 rounded-xl bg-do-orange/[0.04] border border-do-orange/15"
 								initial={{ opacity: 0, y: 10 }}
@@ -232,16 +240,16 @@ export default function Hero() {
 								transition={{ delay: 1.5, duration: 0.4, type: "spring" }}
 							>
 								<div className="h-9 w-9 rounded-lg bg-do-orange/10 flex items-center justify-center shrink-0 mt-0.5">
-									<Video className="h-4 w-4 text-do-orange" />
+									<FileText className="h-4 w-4 text-do-orange" />
 								</div>
 								<div className="flex-1 min-w-0">
-									<p className="text-sm text-do-text font-medium">Attend HVAC installation meeting</p>
-									<p className="text-[11px] text-do-text-muted font-mono mb-1.5">Tomorrow, 8:00 AM</p>
+									<p className="text-sm text-do-text font-medium">Pay app backup package — auto-assembled</p>
+									<p className="text-[11px] text-do-text-muted font-mono mb-1.5">Ready in 90 seconds</p>
 									<div className="flex flex-col gap-1">
 										{[
-											"Join meeting & capture discussion notes",
-											"Cross-check discussion against specs on Procore",
-											"Send me findings with flagged discrepancies",
+											"Timestamped voice log + transcript",
+											"4 geotagged photos linked to scope items",
+											"Quantified delay: 45 min + change-order packet",
 										].map((step, i) => (
 											<motion.div
 												key={i}
@@ -269,10 +277,10 @@ export default function Hero() {
 					transition={{ delay: 1.3 }}
 				>
 					{[
-						{ value: "58%", label: "Doc Uploads", sub: "of sessions include files" },
-						{ value: "8", label: "Use Cases", sub: "across construction workflows" },
-						{ value: "50%+", label: "Calculations", sub: "involve formulas & data" },
-						{ value: "30%+", label: "Code Review", sub: "technical doc analysis" },
+						{ value: "30 sec", label: "Per Update", sub: "not 15 minutes typing" },
+						{ value: "7 days", label: "Pay Apps", sub: "approved (was 45)" },
+						{ value: "$150K", label: "Change Order", sub: "won with day-one proof" },
+						{ value: "$1M+", label: "Protected", sub: "annually per contractor" },
 					].map((stat) => (
 						<div key={stat.label} className="text-center">
 							<p className="text-3xl md:text-4xl font-bold text-do-text">{stat.value}</p>

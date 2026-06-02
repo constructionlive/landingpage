@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "How It Works | construction.live — The Integrated AI Office for Construction",
+	title: "How It Works | construction.live — Voice to Payment in 4 Steps",
 	description:
-		"See how construction.live works: upload documents, ask questions, get calculations, and generate reports. No setup required.",
+		"From 30-second field voice notes to approved pay applications: how unified field intelligence turns every signal from your jobsite into payment protection.",
 	alternates: {
 		canonical: "https://www.construction.live/how-it-works",
 	},

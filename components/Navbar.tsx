@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
@@ -10,6 +10,7 @@ const navLinks = [
 	{ label: "Use Cases", href: "/use-cases" },
 	{ label: "How It Works", href: "/how-it-works" },
 	{ label: "About", href: "/about" },
+	{ label: "Book Demo", href: "/book" },
 	{ label: "Blog", href: "/blog" },
 ];
 
@@ -37,33 +38,14 @@ export default function Navbar() {
 			>
 				<div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 					<a href="/" className="flex items-center gap-2.5">
-						<svg
-							width="32"
-							height="32"
-							viewBox="0 0 32 32"
-							xmlns="http://www.w3.org/2000/svg"
-							className="dark:rounded-lg"
-						>
-							<defs>
-								<linearGradient id="nav-bg" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
-									<stop offset="0" stopColor="var(--do-bg)" />
-									<stop offset="1" stopColor="var(--do-bg)" />
-								</linearGradient>
-								<linearGradient id="nav-orange" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-									<stop offset="0" stopColor="#FF8458" />
-									<stop offset="1" stopColor="#FF6B35" />
-								</linearGradient>
-							</defs>
-							<rect width="32" height="32" rx="6" fill="url(#nav-bg)" stroke="var(--do-border)" strokeWidth="1" />
-							<path
-								d="M 11 10 L 21 16 L 11 22 Z"
-								fill="url(#nav-orange)"
-								stroke="#FF6B35"
-								strokeWidth="1.5"
-								strokeLinejoin="round"
-								strokeLinecap="round"
-							/>
-						</svg>
+						{/* eslint-disable-next-line @next/next/no-img-element */}
+						<img
+							src="/icon.svg"
+							alt="construction.live"
+							width={32}
+							height={32}
+							className="rounded-md"
+						/>
 						<span className="text-do-text font-semibold text-lg tracking-tight">
 							construction<span className="text-do-orange">.live</span>
 						</span>
@@ -85,9 +67,10 @@ export default function Navbar() {
 						<ThemeToggle />
 						<a
 							href="https://app.construction.live"
-							className="px-5 py-2.5 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-lg transition-all shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)]"
+							className="group px-5 py-2.5 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-lg transition-all shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] flex items-center gap-1.5"
 						>
-							Get Started
+							Try It Free
+							<ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
 						</a>
 					</div>
 
@@ -124,7 +107,7 @@ export default function Navbar() {
 							))}
 							<div className="flex flex-col gap-3 mt-6">
 								<a href="https://app.construction.live" className="px-4 py-3 text-center text-white bg-do-orange rounded-lg font-medium">
-									Get Started
+									Try It Free
 								</a>
 							</div>
 						</div>

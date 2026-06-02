@@ -3,14 +3,14 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
-	FileSearch,
-	Calculator,
-	Settings2,
-	GraduationCap,
-	Bug,
-	FileText,
-	Table2,
-	Code2,
+	Mic,
+	AlertTriangle,
+	Receipt,
+	Clock,
+	CloudRain,
+	UserX,
+	Camera,
+	PhoneCall,
 } from "lucide-react";
 
 /* ── Animated blueprint building background ────────────────────────── */
@@ -105,68 +105,68 @@ function BlueprintBuilding() {
 
 const useCases = [
 	{
-		icon: FileSearch,
-		title: "Document Analysis & Review",
+		icon: Mic,
+		title: "Unified Daily Reports",
 		color: "blue",
-		description: "Upload specs, submittals, contracts, or technical documents — get detailed analysis with issues and key items flagged instantly. No more line-by-line manual review.",
-		example: "Review this submittal package and flag anything that doesn't match the spec",
-		tags: ["Specs", "Submittals", "Contracts"],
+		description: "Voice notes, photos, integration data, and AI call summaries — unified into one daily log. Superintendents talk for 30 seconds, drop a photo, or get a call from our AI. Everything routes to the same timestamped record.",
+		example: "Pouring Level 3 concrete today. Found unexpected rebar in the south footing. Taking photos.",
+		tags: ["Multi-input", "30 sec updates", "Same-day logs"],
 	},
 	{
-		icon: Calculator,
-		title: "Engineering Calculations",
-		color: "emerald",
-		description: "Generate Excel formulas, run unit conversions, calculate material quantities, and solve engineering equations. From takeoffs to load calcs — verified and ready to use.",
-		example: "Calculate concrete volume for this foundation with 10% waste factor",
-		tags: ["Formulas", "Unit Conversion", "Quantities"],
-	},
-	{
-		icon: Settings2,
-		title: "Project Optimization",
+		icon: AlertTriangle,
+		title: "Change Order Capture",
 		color: "amber",
-		description: "Identify cost-saving opportunities, compare alternatives, and prioritize by impact. Get structured recommendations your team can act on with clear ROI.",
-		example: "Compare these three framing approaches and rank by cost, schedule, and risk",
-		tags: ["Cost Savings", "Alternatives", "ROI Analysis"],
+		description: "AI flags every 'extra work' moment the second it's spoken — unforeseen conditions, scope creep, owner-directed changes. PMs get a draft notification ready to send before the day is over.",
+		example: "We won a $150K change order last month because we documented the unexpected rebar from day one.",
+		tags: ["Day-one proof", "Auto-drafted", "Owner-ready"],
 	},
 	{
-		icon: GraduationCap,
-		title: "Code & Standards Lookup",
+		icon: Receipt,
+		title: "Bulletproof Pay Applications",
+		color: "emerald",
+		description: "Every pay app ships with a complete backup package — timestamped voice logs, geotagged photos, quantified scope, daily progress. Owners stop disputing. Pay cycles drop from 45 days to 7.",
+		example: "Our pay apps used to take 45 days. Now they're approved in a week. Cash flow is completely different.",
+		tags: ["7-day cycles", "Full backup", "First-try approval"],
+	},
+	{
+		icon: Clock,
+		title: "T&M That Doesn't Get Disputed",
 		color: "violet",
-		description: "Instantly access building codes, ASHRAE standards, CSA requirements, and industry best practices. Stop digging through reference manuals.",
-		example: "What are the fire separation requirements for this occupancy type under OBC?",
-		tags: ["Building Codes", "Standards", "Compliance"],
+		description: "Every outlet, every condition, every labor hour tracked as it happens — not reconstructed from memory three weeks later. When owners push back on T&M tickets, you have the proof, hour by hour.",
+		example: "Full $41K invoice paid. Zero pushback. Every hour was timestamped with photos.",
+		tags: ["Hour-by-hour", "Timestamped", "Zero pushback"],
 	},
 	{
-		icon: Bug,
-		title: "Troubleshooting & Diagnostics",
+		icon: AlertTriangle,
+		title: "Unforeseen Conditions Log",
 		color: "red",
-		description: "Upload field reports, system logs, or photos of issues. Get rapid diagnosis of what went wrong, why, and how to fix it — without waiting for a specialist.",
-		example: "Why is this concrete showing early-age cracking and what's the remediation plan?",
-		tags: ["Diagnostics", "Root Cause", "Remediation"],
+		description: "Soil conditions, hidden utilities, structural surprises, owner-supplied material issues. AI catches the words contractors say but rarely document — and builds the day-by-day record you need to win the claim.",
+		example: "Our super documented unexpected soil conditions daily. When the owner pushed back, we had 3 days of logs with photos. Approved same week.",
+		tags: ["Differing site conditions", "Day-by-day", "Claim-ready"],
 	},
 	{
-		icon: FileText,
-		title: "Report & Proposal Generation",
+		icon: CloudRain,
+		title: "Weather & Delay Documentation",
 		color: "cyan",
-		description: "Turn raw project data into professional reports, proposals, case studies, and client-ready presentations. From site notes to polished deliverables.",
-		example: "Turn these inspection notes into a formal progress report for the owner",
-		tags: ["Reports", "Proposals", "Presentations"],
+		description: "Weather delays, schedule impacts, access issues, and standby crews — captured live from the field with timestamps. Schedule extension requests now come with proof, not memory.",
+		example: "Site shut down for 4 hours — wind gusts over 40 mph, crane down. Two crews on standby.",
+		tags: ["Schedule impacts", "Standby tracking", "Extension proof"],
 	},
 	{
-		icon: Table2,
-		title: "Data Processing & Spreadsheets",
+		icon: UserX,
+		title: "Subcontractor No-Shows",
 		color: "pink",
-		description: "Build complex project tracking models, cost breakdowns, schedule analysis, and comparison templates. Get spreadsheet solutions without deep Excel expertise.",
-		example: "Build me a bid comparison spreadsheet that scores across 6 criteria",
-		tags: ["Spreadsheets", "Tracking", "Templates"],
+		description: "Missed crews, undermanned trades, and trade-stacking conflicts logged the moment they happen. Back-charges, delay claims, and coordination disputes get the documentation they need.",
+		example: "Electrical sub showed up at 10:30, supposed to be on site at 7. Two of our crews waiting. Coordination meeting needed.",
+		tags: ["Back-charges", "Manpower tracking", "Coordination proof"],
 	},
 	{
-		icon: Code2,
-		title: "VBA & Code Analysis",
+		icon: PhoneCall,
+		title: "AI Calls the Field for You",
 		color: "orange",
-		description: "Upload your existing VBA macros, Excel templates, or automation scripts and get them analyzed, debugged, and improved. Build new custom macros from scratch — automate change orders, generate reports, or crunch project data without writing a line yourself.",
-		example: "Here's my cost tracking macro — it breaks on multi-phase projects. Fix it and add a summary dashboard output",
-		tags: ["VBA Analysis", "Debugging", "Macro Builder"],
+		description: "End of shift? AI calls your supers and asks for their report. Missed a log day? AI follows up. Reporting stops depending on whether someone remembered to open the app — because the app calls them.",
+		example: "End-of-day check-in for the Tower B project. Quick summary of pours, any issues, any extras?",
+		tags: ["Outbound calls", "Reminder follow-ups", "Zero missed days"],
 	},
 ];
 
@@ -224,13 +224,14 @@ export default function UseCases() {
 					animate={inView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6 }}
 				>
-					<span className="do-section-label text-do-orange">How professionals use it</span>
+					<span className="do-section-label text-do-orange">Three ways you get paid faster</span>
 					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">
-						8 Ways Teams Use construction.live
+						8 Money Moments We Catch Automatically
 					</h2>
 					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">
-						From uploading project documents for instant analysis to generating client-ready
-						reports, here&apos;s what real construction teams do every day.
+						Voice notes, photos, AI calls, and integrations — unified into one
+						defensible record. Here&apos;s what happens between &ldquo;something
+						changed on site&rdquo; and &ldquo;the change order got approved.&rdquo;
 					</p>
 				</motion.div>
 
@@ -263,10 +264,10 @@ export default function UseCases() {
 											{uc.description}
 										</p>
 
-										{/* Example query */}
+										{/* Example quote */}
 										<div className="rounded-lg bg-do-bg/80 dark:bg-do-bg/50 border border-do-border px-5 py-4 mb-5">
 											<p className="text-[10px] font-mono text-do-text-muted mb-1.5 uppercase tracking-wider">
-												Example prompt
+												What gets said in the field
 											</p>
 											<p className="text-sm text-do-text/80 italic leading-relaxed">
 												&ldquo;{uc.example}&rdquo;

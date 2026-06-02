@@ -4,20 +4,18 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
+import CallMeForm from "@components/CallMeForm";
 import {
-	Upload,
-	MessageSquare,
-	Calculator,
-	FileOutput,
+	Mic,
+	Brain,
+	FileText,
+	ShieldCheck,
 	ArrowRight,
 	HelpCircle,
-	Clock,
-	Shield,
-	Zap,
-	Globe,
-	Mail,
-	Smartphone,
-	Users,
+	Phone,
+	PhoneCall,
+	Camera,
+	Plug,
 } from "lucide-react";
 
 /* ── Steps data ────────────────────────────────────────────────────── */
@@ -25,59 +23,59 @@ import {
 const steps = [
 	{
 		number: "01",
-		icon: Upload,
-		title: "Upload your documents",
+		icon: Mic,
+		title: "Talk, don't type",
 		description:
-			"Specs, drawings, contracts, submittals, field reports. Drop any file in and the AI builds a working understanding of your project.",
+			"Supers walk the site and talk for 30 seconds. Or send a photo. Or take a quick call from our AI at end of shift. Three inputs, same unified record. No forms, no app to fight with on a dirty phone.",
 		detail: [
-			"PDFs, Word docs, Excel, CAD exports",
-			"Drawings, specs, submittals",
-			"Contracts, change orders, RFIs",
-			"Field reports, meeting minutes",
+			"30-second voice notes from any phone",
+			"Geotagged + timestamped photos",
+			"AI outbound calls at shift change",
+			"Works offline — syncs when service returns",
 		],
-		example: "Upload a 200-page spec and ask about structural requirements in Division 03.",
+		example: "Pouring Level 3 concrete today. Found unexpected rebar in the south footing — not on the drawings. Taking photos.",
 	},
 	{
 		number: "02",
-		icon: MessageSquare,
-		title: "Ask your question",
+		icon: Brain,
+		title: "AI catches the money moments",
 		description:
-			"Ask anything. Compare sections across files. Get technical requirements explained in plain language. No training required.",
+			"Construction-trained AI listens for the words that cost contractors money — extras, unforeseen conditions, weather delays, no-shows, owner changes. PMs see the alert the same day, not 30 days later.",
 		detail: [
-			"Cross-reference multiple documents",
-			"Compare specs to drawings",
-			"Explain technical requirements",
-			"Flag conflicts and gaps",
+			"Eight categories of money moments tracked",
+			"Same-day alerts to PMs",
+			"Auto-drafted owner notifications",
+			"Routes to right project + scope",
 		],
-		example: "Compare the mechanical schedule in the drawings against what's specified in Section 23 00 00.",
+		example: "Auto-flagged: Unforeseen condition (rebar in south footing). Drafting owner notification + change-order packet.",
 	},
 	{
 		number: "03",
-		icon: Calculator,
-		title: "Calculate and solve",
+		icon: FileText,
+		title: "Documentation assembles itself",
 		description:
-			"Run quantities, generate formulas, convert units, and validate calculations. From material takeoffs to load calculations, fast and traceable.",
+			"Voice transcripts, geotagged photos, integration data, and AI call summaries — unified into one timestamped record per project, per day, per scope item. Searchable when the dispute comes 8 months later.",
 		detail: [
-			"Quantity takeoffs with waste factors",
-			"Excel-ready formula generation",
-			"Unit conversions and checks",
-			"Full working shown for verification",
+			"Voice transcript + audio backup",
+			"Photos linked to scope items",
+			"Quantified delays + schedule impact",
+			"Searchable by project, trade, date",
 		],
-		example: "Calculate concrete volume for this foundation with a 10% waste factor.",
+		example: "Day 47 record: voice log + transcript, 4 photos (south footing 8:47 AM), 45-min delay quantified.",
 	},
 	{
 		number: "04",
-		icon: FileOutput,
-		title: "Generate your deliverable",
+		icon: ShieldCheck,
+		title: "Pay apps & change orders get approved",
 		description:
-			"Turn analysis into reports, bid comparisons, RFI responses, and presentations. From raw data to a polished output, ready to send.",
+			"Pay apps ship with auto-assembled backup packages — approved in 7 days instead of 45. Change orders submit with day-one documentation owners can't dispute. T&M tickets come with hour-by-hour proof.",
 		detail: [
-			"Progress and inspection reports",
-			"Bid leveling summaries",
-			"RFI and proposal drafts",
-			"Client-ready presentations",
+			"Pay app backup auto-assembled",
+			"Change orders with day-one proof",
+			"T&M tickets with hour-by-hour evidence",
+			"Pushes to Procore, Autodesk, Fieldwire",
 		],
-		example: "Generate a bid leveling summary comparing these three mechanical sub-bids.",
+		example: "Pay App #6 approved in 7 days. Change order #12 ($150K) approved same week with day-one rebar documentation.",
 	},
 ];
 
@@ -85,34 +83,34 @@ const steps = [
 
 const faqs = [
 	{
-		question: "Who uses construction.live on a typical project team?",
+		question: "Who is construction.live built for?",
 		answer:
-			"Project managers, estimators, site engineers, and general contractors are the most common users. Owners and developers also use it for document review and progress reporting. The platform is built for anyone who works with construction documents, numbers, or reports as part of their job.",
+			"Small and mid-size commercial general contractors and the subs they hire. Specifically, $5M–$100M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects — plus the electrical, mechanical, and specialty subs working on those jobs. Not built for enterprise GCs, heavy civil, or institutional construction.",
 	},
 	{
-		question: "Do I need to learn how to use it or does it work like a conversation?",
+		question: "Do supers need to learn an app?",
 		answer:
-			"It works like a conversation. There is no training required and no workflow to configure before you start. Upload a document, ask a question, and get an answer. Most users are productive from the first session without any onboarding.",
+			"No. The whole point is that they don't. Supers talk for 30 seconds, send a photo, or take a call from our AI — the same way they already work. No forms, no typing, no training. The platform handles the rest.",
 	},
 	{
-		question: "Can construction.live handle multiple documents at the same time?",
+		question: "What does the AI outbound call sound like?",
 		answer:
-			"Yes. You can upload multiple files and ask construction.live to cross-reference them. Compare the mechanical drawings against the spec. Cross-check a bid against the estimate. Map field report observations against the RFI log. The AI reads all the files together and answers in full context.",
+			"A 30 to 60 second conversational check-in. The AI asks for a quick summary — pours, extras, delays, issues. The super answers, the AI transcribes, categorizes, and routes everything to the right project and scope. Easier than texting the office.",
 	},
 	{
-		question: "How accurate are the calculations and code lookups?",
+		question: "How does same-day flagging actually work?",
 		answer:
-			"Calculations are shown with full working including the formula, unit logic, and assumptions, so your team can check every step. Code lookups reference the relevant section and jurisdiction. For anything requiring a professional engineer stamp or legal sign-off, the outputs are a strong starting point for review rather than a final certified answer.",
+			"Voice notes, photos, and AI call summaries run through construction-trained models that track eight categories of money moments — extras not in contract, unforeseen conditions, weather delays, subcontractor no-shows, owner-supplied issues, coordination conflicts, T&M hours, and owner-directed changes. When any of them show up in field input, the PM gets a same-day alert.",
 	},
 	{
-		question: "Is construction.live useful outside of the office or only at a desk?",
+		question: "Does it integrate with Procore, Autodesk, and Fieldwire?",
 		answer:
-			"It works anywhere. Site engineers use it on their phones between walks. Project managers pull it up in site meetings to answer questions on the spot. The platform is browser-based and works on any device, so it fits into how construction teams actually move through their day.",
+			"Yes. Daily logs, change orders, and pay-app backup push directly into the systems your owner already requires. Nobody copy-pastes documentation between tools.",
 	},
 	{
-		question: "Can I automate repetitive tasks so construction.live runs without me asking?",
+		question: "What does this cost?",
 		answer:
-			"Yes. You can set up scheduled tasks that run automatically. Daily email checks, weekly progress report compilation, submittal deadline tracking, and meeting attendance with notes and discrepancy flags are all examples of tasks teams have already automated on the platform. You set it up once and it runs on schedule.",
+			"$100/month per active project. Win one $50K change order or speed up one pay app by 30 days and the platform pays for itself for a lifetime. Built and priced for small and mid-size commercial contractors.",
 	},
 ];
 
@@ -142,7 +140,6 @@ function StepCard({
 			onClick={onClick}
 		>
 			<div className="flex gap-6 items-start">
-				{/* Step number circle */}
 				<div className="hidden md:flex flex-col items-center shrink-0">
 					<div
 						className={`h-16 w-16 rounded-2xl border-2 flex items-center justify-center transition-all ${
@@ -158,7 +155,6 @@ function StepCard({
 					)}
 				</div>
 
-				{/* Content card */}
 				<div className="flex-1 rounded-2xl border bg-do-bg-card/80 backdrop-blur-sm p-8 transition-all hover:border-do-border-accent">
 					<div className="flex items-center gap-4 mb-4">
 						<div
@@ -184,7 +180,6 @@ function StepCard({
 						{step.description}
 					</p>
 
-					{/* Detail list */}
 					<div className="grid sm:grid-cols-2 gap-3 mb-6">
 						{step.detail.map((item) => (
 							<div key={item} className="flex items-center gap-2">
@@ -194,7 +189,6 @@ function StepCard({
 						))}
 					</div>
 
-					{/* Example */}
 					<div className="rounded-lg bg-do-bg/80 border border-do-border p-4">
 						<p className="text-[10px] font-mono text-do-text-muted uppercase tracking-wider mb-1.5">
 							Example
@@ -211,20 +205,12 @@ function StepCard({
 
 function InteractiveDemo() {
 	const [activeStep, setActiveStep] = useState(0);
-	const [inputValue, setInputValue] = useState("");
 
-	const demoInputs = [
-		"Upload your spec package, drawing set, or any project document here...",
-		"Ask anything about your project documents...",
-		"Request calculations, formulas, or conversions...",
-		"Generate reports, summaries, or proposals...",
-	];
+	const inputIcons = [Mic, Brain, FileText, ShieldCheck];
 
 	return (
 		<div className="relative max-w-2xl mx-auto">
-			{/* Main demo card */}
 			<div className="rounded-2xl border border-do-border bg-do-bg-card/80 backdrop-blur-xl overflow-hidden shadow-2xl">
-				{/* Header */}
 				<div className="flex items-center gap-3 px-5 py-4 border-b border-do-border bg-do-bg/50">
 					<div className="flex gap-1.5">
 						<div className="h-3 w-3 rounded-full bg-red-500/60" />
@@ -235,138 +221,152 @@ function InteractiveDemo() {
 						<div className="h-7 rounded-lg bg-do-bg-light border border-do-border px-4 flex items-center gap-2">
 							<div className="h-3 w-3 rounded bg-do-orange/30" />
 							<span className="text-xs text-do-text-muted font-mono">
-								app.construction.live
+								Unified intelligence — Tower B
 							</span>
 						</div>
 					</div>
 				</div>
 
-				{/* Step tabs */}
 				<div className="flex border-b border-do-border">
-					{steps.map((step, i) => (
-						<button
-							key={step.number}
-							onClick={() => setActiveStep(i)}
-							className={`flex-1 px-4 py-3 text-xs font-mono transition-colors ${
-								activeStep === i
-									? "text-do-orange border-b-2 border-do-orange bg-do-orange/5"
-									: "text-do-text-muted hover:text-do-text hover:bg-do-bg-light"
-							}`}
-						>
-							{step.number} {step.title.split(" ")[0]}
-						</button>
-					))}
+					{steps.map((step, i) => {
+						const Icon = inputIcons[i];
+						return (
+							<button
+								key={step.number}
+								onClick={() => setActiveStep(i)}
+								className={`flex-1 px-4 py-3 text-xs font-mono transition-colors flex items-center justify-center gap-1.5 ${
+									activeStep === i
+										? "text-do-orange border-b-2 border-do-orange bg-do-orange/5"
+										: "text-do-text-muted hover:text-do-text hover:bg-do-bg-light"
+								}`}
+							>
+								<Icon className="h-3.5 w-3.5" />
+								{step.number}
+							</button>
+						);
+					})}
 				</div>
 
-				{/* Content area */}
 				<div className="p-6">
-					{/* Upload state */}
 					{activeStep === 0 && (
 						<motion.div
-							className="border-2 border-dashed border-do-border rounded-xl p-12 text-center"
+							className="space-y-3"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 						>
-							<div className="h-14 w-14 rounded-xl bg-do-orange/10 flex items-center justify-center mx-auto mb-4">
-								<Upload className="h-7 w-7 text-do-orange" />
+							<div className="flex items-center gap-3 p-3 rounded-xl bg-do-bg-light/40 border border-do-border">
+								<div className="h-10 w-10 rounded-full bg-do-orange/10 flex items-center justify-center">
+									<Mic className="h-5 w-5 text-do-orange" />
+								</div>
+								<div className="flex-1">
+									<p className="text-xs font-mono text-do-text-muted">Mike, Super — 0:28</p>
+									<p className="text-sm text-do-text italic">&quot;Found unexpected rebar — south footing&quot;</p>
+								</div>
 							</div>
-							<p className="text-sm text-do-text mb-2">
-								Drag and drop files here
-							</p>
-							<p className="text-xs text-do-text-muted">
-								or click to browse
-							</p>
-							<div className="flex flex-wrap justify-center gap-2 mt-4">
-								{["PDF", "DOCX", "XLSX", "CAD"].map((ext) => (
-									<span
-										key={ext}
-										className="px-2 py-1 text-[10px] font-mono bg-do-bg-light border border-do-border rounded"
-									>
-										{ext}
-									</span>
-								))}
+							<div className="flex items-center gap-3 p-3 rounded-xl bg-do-bg-light/40 border border-do-border">
+								<div className="h-10 w-10 rounded-full bg-do-orange/10 flex items-center justify-center">
+									<Camera className="h-5 w-5 text-do-orange" />
+								</div>
+								<div className="flex-1">
+									<p className="text-xs font-mono text-do-text-muted">3 photos — 8:51 AM</p>
+									<p className="text-sm text-do-text">Geotagged, south footing</p>
+								</div>
+							</div>
+							<div className="flex items-center gap-3 p-3 rounded-xl bg-do-bg-light/40 border border-do-border">
+								<div className="h-10 w-10 rounded-full bg-do-orange/10 flex items-center justify-center">
+									<PhoneCall className="h-5 w-5 text-do-orange" />
+								</div>
+								<div className="flex-1">
+									<p className="text-xs font-mono text-do-text-muted">AI call — end of shift</p>
+									<p className="text-sm text-do-text">Scheduled 5:30 PM</p>
+								</div>
 							</div>
 						</motion.div>
 					)}
 
-					{/* Chat state */}
-					{activeStep > 0 && (
-						<motion.div
-							className="space-y-4"
-							initial={{ opacity: 0, y: 10 }}
-							animate={{ opacity: 1, y: 0 }}
-						>
-							{/* AI message */}
-							<div className="flex gap-3">
-								<div className="h-8 w-8 rounded-lg bg-do-orange/10 flex items-center justify-center shrink-0">
-									<svg
-										viewBox="0 0 24 24"
-										className="h-4 w-4 text-do-orange"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth={2}
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											d="M2 20h20M4 20V10l8-6 8 6v10M9 20v-6h6v6"
-										/>
-									</svg>
+					{activeStep === 1 && (
+						<motion.div className="space-y-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+							{[
+								{ label: "Unforeseen condition flagged", detail: "Rebar — not in contract" },
+								{ label: "Change order candidate", detail: "Owner notification drafted" },
+								{ label: "Delay quantified", detail: "45 min crew standby" },
+							].map((item, i) => (
+								<motion.div
+									key={i}
+									className="flex items-center gap-3 p-3 rounded-xl bg-do-orange/5 border border-do-orange/20"
+									initial={{ opacity: 0, x: 15 }}
+									animate={{ opacity: 1, x: 0 }}
+									transition={{ delay: i * 0.2 }}
+								>
+									<div className="h-9 w-9 rounded-lg bg-do-orange/10 flex items-center justify-center">
+										<Brain className="h-4 w-4 text-do-orange" />
+									</div>
+									<div className="flex-1">
+										<p className="text-sm font-medium text-do-text">{item.label}</p>
+										<p className="text-xs text-do-text-secondary">{item.detail}</p>
+									</div>
+								</motion.div>
+							))}
+						</motion.div>
+					)}
+
+					{activeStep === 2 && (
+						<motion.div className="space-y-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+							{[
+								{ name: "VoiceLog-Aug04-0847.mp3", detail: "Mike, Super — 28 sec + transcript" },
+								{ name: "Photo-Aug04-0851.jpg", detail: "South footing — geotagged" },
+								{ name: "DailyLog-Aug04.pdf", detail: "Unforeseen condition record" },
+							].map((item, i) => (
+								<motion.div
+									key={i}
+									className="flex items-center gap-3 p-3 rounded-xl bg-do-bg-light/40 border border-do-border"
+									initial={{ opacity: 0, x: 15 }}
+									animate={{ opacity: 1, x: 0 }}
+									transition={{ delay: i * 0.2 }}
+								>
+									<FileText className="h-4 w-4 text-do-orange shrink-0" />
+									<div className="flex-1 min-w-0">
+										<p className="text-xs font-mono text-do-text truncate">{item.name}</p>
+										<p className="text-[11px] text-do-text-secondary">{item.detail}</p>
+									</div>
+								</motion.div>
+							))}
+						</motion.div>
+					)}
+
+					{activeStep === 3 && (
+						<motion.div className="space-y-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+							<div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+								<div className="h-9 w-9 rounded-lg bg-emerald-500/15 flex items-center justify-center">
+									<ShieldCheck className="h-4 w-4 text-emerald-500" />
 								</div>
-								<div className="flex-1 rounded-xl bg-do-bg-light border border-do-border p-4">
-									<p className="text-sm text-do-text leading-relaxed">
-										{steps[activeStep].description}
-									</p>
+								<div className="flex-1">
+									<p className="text-sm font-medium text-do-text">Pay App #6 — approved in 7 days</p>
+									<p className="text-xs text-do-text-secondary">Backup auto-assembled, owner first-try approval</p>
 								</div>
 							</div>
-
-							{/* User message */}
-							<div className="flex gap-3 justify-end">
-								<div className="rounded-xl bg-do-orange/10 border border-do-orange/20 p-4 max-w-[80%]">
-									<p className="text-sm text-do-text italic">
-										{steps[activeStep].example}
-									</p>
+							<div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+								<div className="h-9 w-9 rounded-lg bg-emerald-500/15 flex items-center justify-center">
+									<ShieldCheck className="h-4 w-4 text-emerald-500" />
+								</div>
+								<div className="flex-1">
+									<p className="text-sm font-medium text-do-text">Change Order #12 — $150K approved</p>
+									<p className="text-xs text-do-text-secondary">Day-one rebar documentation — no pushback</p>
 								</div>
 							</div>
-
-							{/* Input */}
-							<div className="relative mt-4">
-								<input
-									type="text"
-									value={inputValue}
-									onChange={(e) => setInputValue(e.target.value)}
-									placeholder={demoInputs[activeStep]}
-									className="w-full rounded-xl border border-do-border bg-do-bg px-4 py-3 pr-12 text-sm text-do-text placeholder:text-do-text-muted focus:outline-none focus:border-do-orange"
-								/>
-								<button className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-do-orange/10 hover:bg-do-orange/20 transition-colors">
-									<ArrowRight className="h-4 w-4 text-do-orange" />
-								</button>
+							<div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+								<div className="h-9 w-9 rounded-lg bg-emerald-500/15 flex items-center justify-center">
+									<Plug className="h-4 w-4 text-emerald-500" />
+								</div>
+								<div className="flex-1">
+									<p className="text-sm font-medium text-do-text">Synced to Procore + Autodesk</p>
+									<p className="text-xs text-do-text-secondary">Owner sees the same record you do</p>
+								</div>
 							</div>
 						</motion.div>
 					)}
 				</div>
 			</div>
-
-			{/* Floating indicators */}
-			<motion.div
-				className="absolute -left-4 top-1/4"
-				animate={{ y: [0, -8, 0] }}
-				transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-			>
-				<div className="rounded-lg bg-do-orange/10 border border-do-orange/20 px-3 py-1.5 text-xs text-do-orange font-mono">
-					{steps[activeStep].number} Active
-				</div>
-			</motion.div>
-
-			<motion.div
-				className="absolute -right-4 top-1/3"
-				animate={{ y: [0, 8, 0] }}
-				transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-			>
-				<div className="rounded-lg bg-do-bg-card border border-do-border px-3 py-1.5 text-xs text-do-text-muted font-mono">
-					AI Powered
-				</div>
-			</motion.div>
 		</div>
 	);
 }
@@ -447,28 +447,26 @@ function HowItWorksCTA() {
 					transition={{ duration: 0.6 }}
 				>
 					<h2 className="text-3xl md:text-4xl font-bold text-do-text mb-5">
-						See what your team can do with an AI that never stops working.
+						The best way to understand is to try it.
 					</h2>
 					<p className="text-lg text-do-text-secondary mb-8">
-						Join the construction teams already using construction.live to move
-						faster, catch more, and deliver better results.
+						Drop your number. Our AI calls within 60 seconds. Leave a 30-second
+						field update and see what gets documented.
 					</p>
 
-					<div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-						<a
-							href="https://app.construction.live"
-							className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
-						>
-							Get Started Free
-							<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-						</a>
-						<a
-							href="/"
-							className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-do-text bg-do-bg-card hover:bg-do-bg-card/80 border border-do-border hover:border-do-border-accent rounded-xl transition-all"
-						>
-							Book a Demo
-						</a>
-					</div>
+					<CallMeForm source="how-it-works">
+						{({ open }) => (
+							<button
+								type="button"
+								onClick={open}
+								className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
+							>
+								<Phone className="h-4 w-4" />
+								Have Our AI Call You
+								<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+							</button>
+						)}
+					</CallMeForm>
 				</motion.div>
 			</div>
 		</section>
@@ -499,16 +497,15 @@ export default function HowItWorksPage() {
 							How it works
 						</span>
 						<h1 className="text-4xl md:text-6xl font-bold text-do-text mt-4 mb-6">
-							One workspace.
+							30 seconds in the field.
 							<br />
 							<span className="text-do-text-secondary font-normal">
-								Endless possibilities.
+								Pay app approved 38 days faster.
 							</span>
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
-							Four simple steps connect your documents to AI-powered analysis,
-							calculations, and deliverable generation. No training. No setup.
-							Just results.
+							Four steps from voice note to approved payment. Built for small and
+							mid-size commercial GCs and the subs they hire.
 						</p>
 					</motion.div>
 				</div>
