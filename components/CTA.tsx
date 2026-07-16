@@ -2,8 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Phone, ArrowRight, Calendar, CheckCircle2 } from "lucide-react";
-import CallMeForm from "./CallMeForm";
+import { ArrowRight, Calendar, CheckCircle2 } from "lucide-react";
 
 const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
@@ -96,18 +95,6 @@ export default function CTA() {
 									Book a 15-Min Demo
 									<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
 								</a>
-								<CallMeForm source="cta">
-									{({ open }) => (
-										<button
-											type="button"
-											onClick={open}
-											className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-medium text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all hover:bg-do-bg-light/50"
-										>
-											<Phone className="h-4 w-4 text-do-orange" />
-											Or have our AI call you
-										</button>
-									)}
-								</CallMeForm>
 							</motion.div>
 						</div>
 

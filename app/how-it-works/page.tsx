@@ -4,7 +4,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
-import CallMeForm from "@components/CallMeForm";
 import {
 	Mic,
 	Brain,
@@ -12,7 +11,6 @@ import {
 	ShieldCheck,
 	ArrowRight,
 	HelpCircle,
-	Phone,
 	PhoneCall,
 	Camera,
 	Plug,
@@ -450,23 +448,17 @@ function HowItWorksCTA() {
 						The best way to understand is to try it.
 					</h2>
 					<p className="text-lg text-do-text-secondary mb-8">
-						Drop your number. Our AI calls within 60 seconds. Leave a 30-second
-						field update and see what gets documented.
+						Book a 15-minute demo and we&apos;ll show you exactly how it works
+						on your projects. No deck, no sales pitch.
 					</p>
 
-					<CallMeForm source="how-it-works">
-						{({ open }) => (
-							<button
-								type="button"
-								onClick={open}
-								className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
-							>
-								<Phone className="h-4 w-4" />
-								Have Our AI Call You
-								<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-							</button>
-						)}
-					</CallMeForm>
+					<a
+						href="/book"
+						className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
+					>
+						Book a Demo
+						<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+					</a>
 				</motion.div>
 			</div>
 		</section>

@@ -4,7 +4,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
-import CallMeForm from "@components/CallMeForm";
 import {
 	Building2,
 	Zap,
@@ -14,7 +13,6 @@ import {
 	UtensilsCrossed,
 	ArrowRight,
 	HelpCircle,
-	Phone,
 } from "lucide-react";
 
 /* ── Who we serve ──────────────────────────────────────────────────── */
@@ -147,7 +145,7 @@ const faqs = [
 	{
 		question: "How do I get started?",
 		answer:
-			"Have our AI call you. Leave a 30-second field update like you're calling your office. See what gets documented in 60 seconds. No signup, no credit card, no app to install.",
+			"Book a 15-minute demo. We'll ask about your current projects — disputed pay apps, lost change orders, T&M pushback — and show you exactly how we'd protect those margins. No deck, no sales pitch.",
 	},
 ];
 
@@ -459,23 +457,17 @@ function AboutCTA() {
 						Win one $50K change order. The platform pays for itself.
 					</h2>
 					<p className="text-lg text-do-text-secondary mb-8">
-						Drop your number. Our AI calls within 60 seconds. Leave a 30-second
-						field update and see what gets documented.
+						Book a 15-minute demo. We&apos;ll show you exactly how we&apos;d
+						protect those margins on your projects — no deck, no sales pitch.
 					</p>
 
-					<CallMeForm source="about">
-						{({ open }) => (
-							<button
-								type="button"
-								onClick={open}
-								className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
-							>
-								<Phone className="h-4 w-4" />
-								Have Our AI Call You
-								<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-							</button>
-						)}
-					</CallMeForm>
+					<a
+						href="/book"
+						className="group inline-flex items-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
+					>
+						Book a Demo
+						<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+					</a>
 				</motion.div>
 			</div>
 		</section>

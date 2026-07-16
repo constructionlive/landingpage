@@ -18,15 +18,6 @@ export const metadata: Metadata = {
 	alternates: {
 		canonical: "https://www.construction.live",
 	},
-	icons: {
-		icon: [
-			{ url: "/icon.svg", type: "image/svg+xml" },
-		],
-		apple: [
-			{ url: "/apple-icon.svg", type: "image/svg+xml" },
-		],
-		shortcut: ["/icon.svg"],
-	},
 	openGraph: {
 		title: "construction.live — Get Paid for Every Extra. Defend Every Change Order.",
 		description:

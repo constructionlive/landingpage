@@ -35,12 +35,35 @@ export default function Footer() {
 			<div className="max-w-7xl mx-auto px-6 py-10">
 				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
 					<div className="flex items-center gap-2.5">
-						<a href="/" className="flex items-center gap-2.5">
-							<div className="h-7 w-7 rounded-lg bg-do-orange flex items-center justify-center">
-								<svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5}>
-									<path strokeLinecap="round" strokeLinejoin="round" d="M2 20h20M4 20V10l8-6 8 6v10M9 20v-6h6v6" />
-								</svg>
-							</div>
+						<a href="/" className="flex items-center gap-2.5" aria-label="construction.live home">
+							<svg
+								width={28}
+								height={28}
+								viewBox="0 0 32 32"
+								className="rounded-md shrink-0"
+								role="img"
+								aria-hidden="true"
+							>
+								<defs>
+									<linearGradient id="footer-logo-bg" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
+										<stop offset="0" stopColor="#132238" />
+										<stop offset="1" stopColor="#0A1628" />
+									</linearGradient>
+									<linearGradient id="footer-logo-orange" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+										<stop offset="0" stopColor="#FF8458" />
+										<stop offset="1" stopColor="#FF6B35" />
+									</linearGradient>
+								</defs>
+								<rect width="32" height="32" rx="6" fill="url(#footer-logo-bg)" />
+								<path
+									d="M 11 10 L 21 16 L 11 22 Z"
+									fill="url(#footer-logo-orange)"
+									stroke="#FF6B35"
+									strokeWidth="1.5"
+									strokeLinejoin="round"
+									strokeLinecap="round"
+								/>
+							</svg>
 							<span className="text-do-text font-semibold tracking-tight">
 								construction<span className="text-do-orange">.live</span>
 							</span>
@@ -52,11 +75,13 @@ export default function Footer() {
 						<a href="/how-it-works" className="hover:text-do-text transition-colors">How It Works</a>
 						<a href="/about" className="hover:text-do-text transition-colors">About</a>
 						<a href="/book" className="hover:text-do-text transition-colors">Book Demo</a>
-						<a href="/" className="hover:text-do-text transition-colors">Privacy</a>
-						<a href="/" className="hover:text-do-text transition-colors">Terms</a>
+						<a href="/privacy" className="hover:text-do-text transition-colors">Privacy</a>
 						<a href="mailto:rahul@construction.live" className="hover:text-do-text transition-colors">Contact</a>
 					</div>
-					<p className="text-xs text-do-text-muted font-mono">&copy; {new Date().getFullYear()} construction.live</p>
+					<div className="text-center md:text-right">
+						<p className="text-xs text-do-text-muted font-mono">&copy; {new Date().getFullYear()} Neuratwin Inc.</p>
+						<p className="text-xs text-do-text-muted font-mono mt-1">Toronto, Canada</p>
+					</div>
 				</div>
 			</div>
 		</footer>

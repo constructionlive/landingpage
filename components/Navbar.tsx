@@ -37,15 +37,35 @@ export default function Navbar() {
 				transition={{ duration: 0.6, ease: "easeOut" }}
 			>
 				<div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-					<a href="/" className="flex items-center gap-2.5">
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img
-							src="/icon.svg"
-							alt="construction.live"
+					<a href="/" className="flex items-center gap-2.5" aria-label="construction.live home">
+						<svg
 							width={32}
 							height={32}
-							className="rounded-md"
-						/>
+							viewBox="0 0 32 32"
+							className="rounded-md shrink-0"
+							role="img"
+							aria-hidden="true"
+						>
+							<defs>
+								<linearGradient id="nav-logo-bg" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
+									<stop offset="0" stopColor="#132238" />
+									<stop offset="1" stopColor="#0A1628" />
+								</linearGradient>
+								<linearGradient id="nav-logo-orange" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+									<stop offset="0" stopColor="#FF8458" />
+									<stop offset="1" stopColor="#FF6B35" />
+								</linearGradient>
+							</defs>
+							<rect width="32" height="32" rx="6" fill="url(#nav-logo-bg)" />
+							<path
+								d="M 11 10 L 21 16 L 11 22 Z"
+								fill="url(#nav-logo-orange)"
+								stroke="#FF6B35"
+								strokeWidth="1.5"
+								strokeLinejoin="round"
+								strokeLinecap="round"
+							/>
+						</svg>
 						<span className="text-do-text font-semibold text-lg tracking-tight">
 							construction<span className="text-do-orange">.live</span>
 						</span>

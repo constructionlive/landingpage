@@ -3,11 +3,9 @@
 import { motion } from "framer-motion";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
-import CallMeForm from "@components/CallMeForm";
 import {
 	Calendar,
 	ArrowRight,
-	Phone,
 	Clock,
 	CheckCircle2,
 	DollarSign,
@@ -169,43 +167,6 @@ export default function BookPage() {
 							</motion.div>
 						))}
 					</div>
-				</div>
-			</section>
-
-			{/* Alt CTA — call instead */}
-			<section className="relative py-20 overflow-hidden">
-				<div className="absolute inset-0 do-blueprint-grid pointer-events-none" />
-				<div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5 }}
-					>
-						<p className="text-sm font-mono text-do-text-muted uppercase tracking-wider mb-3">
-							Not ready to book?
-						</p>
-						<h3 className="text-2xl md:text-3xl font-bold text-do-text mb-4">
-							Have our AI call you instead.
-						</h3>
-						<p className="text-base text-do-text-secondary mb-6">
-							Drop your number. Our AI calls in 60 seconds. Leave a 30-second
-							field update and see what gets documented.
-						</p>
-
-						<CallMeForm source="book">
-							{({ open }) => (
-								<button
-									type="button"
-									onClick={open}
-									className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-do-text bg-do-bg-card hover:bg-do-bg-card/80 border border-do-border hover:border-do-border-accent rounded-xl transition-all"
-								>
-									<Phone className="h-4 w-4 text-do-orange" />
-									Have Our AI Call You
-									<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-								</button>
-							)}
-						</CallMeForm>
-					</motion.div>
 				</div>
 			</section>
 

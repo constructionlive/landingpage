@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import {
 	HardHat,
-	Phone,
-	ArrowRight,
 	Mic,
 	AlertTriangle,
 	Camera,
@@ -12,7 +10,6 @@ import {
 	FileText,
 	DollarSign,
 } from "lucide-react";
-import CallMeForm from "./CallMeForm";
 
 export default function Hero() {
 	return (
@@ -132,19 +129,12 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.7 }}
 					>
-						<CallMeForm source="hero">
-							{({ open }) => (
-								<button
-									type="button"
-									onClick={open}
-									className="group px-8 py-3.5 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] flex items-center gap-2"
-								>
-									<Phone className="h-4 w-4" />
-									Have Our AI Call You
-									<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-								</button>
-							)}
-						</CallMeForm>
+						<a
+							href="/book"
+							className="group px-8 py-3.5 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] flex items-center gap-2"
+						>
+							Book a Demo
+						</a>
 						<a
 							href="#workflows"
 							className="px-8 py-3.5 text-base font-medium text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all hover:bg-do-bg-light/50"
