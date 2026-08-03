@@ -9,7 +9,7 @@ const results = [
 		icon: TrendingUp,
 		value: "$1.2M",
 		label: "Margin protected",
-		description: "Average per-contractor revenue defended across a 90-day pilot — pay apps approved, change orders won, T&M paid in full.",
+		description: "Average per-contractor revenue defended across a 90-day pilot, pay apps approved, change orders won, T&M paid in full.",
 		color: "emerald",
 	},
 	{

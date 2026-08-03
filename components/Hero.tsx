@@ -108,7 +108,7 @@ export default function Hero() {
 						transition={{ delay: 0.55 }}
 					>
 						The unified field intelligence platform that catches change orders the
-						day they happen — and turns every signal from your jobsite into
+						day they happen, and turns every signal from your jobsite into
 						bulletproof payment protection.
 					</motion.p>
 
@@ -118,7 +118,7 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.65 }}
 					>
-						Voice notes, photos, AI calls, and your existing tools — unified into
+						Voice notes, photos, AI calls, and your existing tools, unified into
 						one defensible record. Built for the $5M–$100M commercial GC and the
 						subs they hire.
 					</motion.p>
@@ -166,7 +166,7 @@ export default function Hero() {
 								<Mic className="h-4 w-4 text-do-orange" />
 							</div>
 							<span className="text-xs font-mono text-do-text-secondary uppercase tracking-wider">
-								Unified intelligence — Tower B, 8:47 AM
+								Unified intelligence, Tower B, 8:47 AM
 							</span>
 							<div className="ml-auto flex items-center gap-1.5">
 								<motion.div
@@ -186,11 +186,11 @@ export default function Hero() {
 								</div>
 								<div className="flex-1 min-w-0">
 									<p className="text-[11px] font-mono text-do-text-muted mb-1">
-										Mike, Superintendent — 0:28
+										Mike, Superintendent, 0:28
 									</p>
 									<p className="text-sm text-do-text leading-relaxed italic">
 										&ldquo;Pouring Level 3 concrete today. Found unexpected rebar in
-										the south footing — not on the drawings. Taking photos. Crew
+										the south footing, not on the drawings. Taking photos. Crew
 										stopped for 45 minutes while we figured it out.&rdquo;
 									</p>
 								</div>
@@ -200,10 +200,10 @@ export default function Hero() {
 						{/* AI catches */}
 						<div className="p-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
 							{[
-								{ icon: AlertTriangle, label: "Unforeseen conditions flagged", time: "Unexpected rebar — not in contract", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
+								{ icon: AlertTriangle, label: "Unforeseen conditions flagged", time: "Unexpected rebar, not in contract", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
 								{ icon: DollarSign, label: "Change order candidate", time: "Owner notification drafted", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-500/10" },
-								{ icon: Camera, label: "Photos geotagged", time: "3 photos — south footing, 8:47 AM", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-500/10" },
-								{ icon: ClipboardCheck, label: "Daily log entry created", time: "Logged — Level 3 concrete pour", color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-500/10" },
+								{ icon: Camera, label: "Photos geotagged", time: "3 photos, south footing, 8:47 AM", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-500/10" },
+								{ icon: ClipboardCheck, label: "Daily log entry created", time: "Logged, Level 3 concrete pour", color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-500/10" },
 							].map((task, i) => (
 								<motion.div
 									key={task.label}
@@ -222,7 +222,7 @@ export default function Hero() {
 								</motion.div>
 							))}
 
-							{/* Featured payment-protection summary — spans full width */}
+							{/* Featured payment-protection summary, spans full width */}
 							<motion.div
 								className="sm:col-span-2 flex items-start gap-3 px-3 py-3 rounded-xl bg-do-orange/[0.04] border border-do-orange/15"
 								initial={{ opacity: 0, y: 10 }}
@@ -233,7 +233,7 @@ export default function Hero() {
 									<FileText className="h-4 w-4 text-do-orange" />
 								</div>
 								<div className="flex-1 min-w-0">
-									<p className="text-sm text-do-text font-medium">Pay app backup package — auto-assembled</p>
+									<p className="text-sm text-do-text font-medium">Pay app backup package, auto-assembled</p>
 									<p className="text-[11px] text-do-text-muted font-mono mb-1.5">Ready in 90 seconds</p>
 									<div className="flex flex-col gap-1">
 										{[

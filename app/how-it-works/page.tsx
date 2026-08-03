@@ -29,16 +29,16 @@ const steps = [
 			"30-second voice notes from any phone",
 			"Geotagged + timestamped photos",
 			"AI outbound calls at shift change",
-			"Works offline — syncs when service returns",
+			"Works offline: syncs when service returns",
 		],
-		example: "Pouring Level 3 concrete today. Found unexpected rebar in the south footing — not on the drawings. Taking photos.",
+		example: "Pouring Level 3 concrete today. Found unexpected rebar in the south footing, not on the drawings. Taking photos.",
 	},
 	{
 		number: "02",
 		icon: Brain,
 		title: "AI catches the money moments",
 		description:
-			"Construction-trained AI listens for the words that cost contractors money — extras, unforeseen conditions, weather delays, no-shows, owner changes. PMs see the alert the same day, not 30 days later.",
+			"Construction-trained AI listens for the words that cost contractors money , extras, unforeseen conditions, weather delays, no-shows, owner changes. PMs see the alert the same day, not 30 days later.",
 		detail: [
 			"Eight categories of money moments tracked",
 			"Same-day alerts to PMs",
@@ -52,7 +52,7 @@ const steps = [
 		icon: FileText,
 		title: "Documentation assembles itself",
 		description:
-			"Voice transcripts, geotagged photos, integration data, and AI call summaries — unified into one timestamped record per project, per day, per scope item. Searchable when the dispute comes 8 months later.",
+			"Voice transcripts, geotagged photos, integration data, and AI call summaries: unified into one timestamped record per project, per day, per scope item. Searchable when the dispute comes 8 months later.",
 		detail: [
 			"Voice transcript + audio backup",
 			"Photos linked to scope items",
@@ -66,7 +66,7 @@ const steps = [
 		icon: ShieldCheck,
 		title: "Pay apps & change orders get approved",
 		description:
-			"Pay apps ship with auto-assembled backup packages — approved in 7 days instead of 45. Change orders submit with day-one documentation owners can't dispute. T&M tickets come with hour-by-hour proof.",
+			"Pay apps ship with auto-assembled backup packages, approved in 7 days instead of 45. Change orders submit with day-one documentation owners can't dispute. T&M tickets come with hour-by-hour proof.",
 		detail: [
 			"Pay app backup auto-assembled",
 			"Change orders with day-one proof",
@@ -83,22 +83,22 @@ const faqs = [
 	{
 		question: "Who is construction.live built for?",
 		answer:
-			"Small and mid-size commercial general contractors and the subs they hire. Specifically, $5M–$100M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects — plus the electrical, mechanical, and specialty subs working on those jobs. Not built for enterprise GCs, heavy civil, or institutional construction.",
+			"Small and mid-size commercial general contractors and the subs they hire. Specifically, $5M–$100M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects, plus the electrical, mechanical, and specialty subs working on those jobs. Not built for enterprise GCs, heavy civil, or institutional construction.",
 	},
 	{
 		question: "Do supers need to learn an app?",
 		answer:
-			"No. The whole point is that they don't. Supers talk for 30 seconds, send a photo, or take a call from our AI — the same way they already work. No forms, no typing, no training. The platform handles the rest.",
+			"No. The whole point is that they don't. Supers talk for 30 seconds, send a photo, or take a call from our AI , the same way they already work. No forms, no typing, no training. The platform handles the rest.",
 	},
 	{
 		question: "What does the AI outbound call sound like?",
 		answer:
-			"A 30 to 60 second conversational check-in. The AI asks for a quick summary — pours, extras, delays, issues. The super answers, the AI transcribes, categorizes, and routes everything to the right project and scope. Easier than texting the office.",
+			"A 30 to 60 second conversational check-in. The AI asks for a quick summary , pours, extras, delays, issues. The super answers, the AI transcribes, categorizes, and routes everything to the right project and scope. Easier than texting the office.",
 	},
 	{
 		question: "How does same-day flagging actually work?",
 		answer:
-			"Voice notes, photos, and AI call summaries run through construction-trained models that track eight categories of money moments — extras not in contract, unforeseen conditions, weather delays, subcontractor no-shows, owner-supplied issues, coordination conflicts, T&M hours, and owner-directed changes. When any of them show up in field input, the PM gets a same-day alert.",
+			"Voice notes, photos, and AI call summaries run through construction-trained models that track eight categories of money moments, extras not in contract, unforeseen conditions, weather delays, subcontractor no-shows, owner-supplied issues, coordination conflicts, T&M hours, and owner-directed changes. When any of them show up in field input, the PM gets a same-day alert.",
 	},
 	{
 		question: "Does it integrate with Procore, Autodesk, and Fieldwire?",
@@ -219,7 +219,7 @@ function InteractiveDemo() {
 						<div className="h-7 rounded-lg bg-do-bg-light border border-do-border px-4 flex items-center gap-2">
 							<div className="h-3 w-3 rounded bg-do-orange/30" />
 							<span className="text-xs text-do-text-muted font-mono">
-								Unified intelligence — Tower B
+								Unified intelligence, Tower B
 							</span>
 						</div>
 					</div>
@@ -257,8 +257,8 @@ function InteractiveDemo() {
 									<Mic className="h-5 w-5 text-do-orange" />
 								</div>
 								<div className="flex-1">
-									<p className="text-xs font-mono text-do-text-muted">Mike, Super — 0:28</p>
-									<p className="text-sm text-do-text italic">&quot;Found unexpected rebar — south footing&quot;</p>
+									<p className="text-xs font-mono text-do-text-muted">Mike, Super, 0:28</p>
+									<p className="text-sm text-do-text italic">&quot;Found unexpected rebar, south footing&quot;</p>
 								</div>
 							</div>
 							<div className="flex items-center gap-3 p-3 rounded-xl bg-do-bg-light/40 border border-do-border">
@@ -266,7 +266,7 @@ function InteractiveDemo() {
 									<Camera className="h-5 w-5 text-do-orange" />
 								</div>
 								<div className="flex-1">
-									<p className="text-xs font-mono text-do-text-muted">3 photos — 8:51 AM</p>
+									<p className="text-xs font-mono text-do-text-muted">3 photos, 8:51 AM</p>
 									<p className="text-sm text-do-text">Geotagged, south footing</p>
 								</div>
 							</div>
@@ -275,7 +275,7 @@ function InteractiveDemo() {
 									<PhoneCall className="h-5 w-5 text-do-orange" />
 								</div>
 								<div className="flex-1">
-									<p className="text-xs font-mono text-do-text-muted">AI call — end of shift</p>
+									<p className="text-xs font-mono text-do-text-muted">AI call, end of shift</p>
 									<p className="text-sm text-do-text">Scheduled 5:30 PM</p>
 								</div>
 							</div>
@@ -285,7 +285,7 @@ function InteractiveDemo() {
 					{activeStep === 1 && (
 						<motion.div className="space-y-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 							{[
-								{ label: "Unforeseen condition flagged", detail: "Rebar — not in contract" },
+								{ label: "Unforeseen condition flagged", detail: "Rebar, not in contract" },
 								{ label: "Change order candidate", detail: "Owner notification drafted" },
 								{ label: "Delay quantified", detail: "45 min crew standby" },
 							].map((item, i) => (
@@ -311,8 +311,8 @@ function InteractiveDemo() {
 					{activeStep === 2 && (
 						<motion.div className="space-y-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 							{[
-								{ name: "VoiceLog-Aug04-0847.mp3", detail: "Mike, Super — 28 sec + transcript" },
-								{ name: "Photo-Aug04-0851.jpg", detail: "South footing — geotagged" },
+								{ name: "VoiceLog-Aug04-0847.mp3", detail: "Mike, Super, 28 sec + transcript" },
+								{ name: "Photo-Aug04-0851.jpg", detail: "South footing, geotagged" },
 								{ name: "DailyLog-Aug04.pdf", detail: "Unforeseen condition record" },
 							].map((item, i) => (
 								<motion.div
@@ -339,7 +339,7 @@ function InteractiveDemo() {
 									<ShieldCheck className="h-4 w-4 text-emerald-500" />
 								</div>
 								<div className="flex-1">
-									<p className="text-sm font-medium text-do-text">Pay App #6 — approved in 7 days</p>
+									<p className="text-sm font-medium text-do-text">Pay App #6, approved in 7 days</p>
 									<p className="text-xs text-do-text-secondary">Backup auto-assembled, owner first-try approval</p>
 								</div>
 							</div>
@@ -348,8 +348,8 @@ function InteractiveDemo() {
 									<ShieldCheck className="h-4 w-4 text-emerald-500" />
 								</div>
 								<div className="flex-1">
-									<p className="text-sm font-medium text-do-text">Change Order #12 — $150K approved</p>
-									<p className="text-xs text-do-text-secondary">Day-one rebar documentation — no pushback</p>
+									<p className="text-sm font-medium text-do-text">Change Order #12, $150K approved</p>
+									<p className="text-xs text-do-text-secondary">Day-one rebar documentation, no pushback</p>
 								</div>
 							</div>
 							<div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">

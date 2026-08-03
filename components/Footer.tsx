@@ -3,7 +3,7 @@
 import { Mic, Clock, WifiOff, Plug, MapPin, Brain } from "lucide-react";
 
 const trustBuilders = [
-	{ icon: Mic, label: "Voice, photos, AI calls — unified into one record" },
+	{ icon: Mic, label: "Voice, photos, AI calls, unified into one record" },
 	{ icon: Clock, label: "30 seconds per update (not 15 minutes)" },
 	{ icon: WifiOff, label: "Works offline (jobsites have bad reception)" },
 	{ icon: Plug, label: "Integrates with Procore, Autodesk, Fieldwire" },

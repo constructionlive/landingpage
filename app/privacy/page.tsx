@@ -69,7 +69,7 @@ const sections = [
 	{
 		heading: "AI processing and model providers",
 		paragraphs: [
-			"We use large language models and other AI services to transcribe voice notes, summarize calls, and structure your field records. When we send content to these providers for processing, we do so under agreements that require zero data retention — the providers do not store your content beyond the moment of processing, and they do not use it to train their models.",
+			"We use large language models and other AI services to transcribe voice notes, summarize calls, and structure your field records. When we send content to these providers for processing, we do so under agreements that require zero data retention. The providers do not store your content beyond the moment of processing, and they do not use it to train their models.",
 			"We do not use your data to train or fine-tune AI models without your specific, explicit consent. If we ever offer a feature that would benefit from training on your data, it will be opt-in, clearly described, and revocable.",
 		],
 	},

@@ -6,9 +6,9 @@ import { AlertTriangle, DollarSign, CloudRain, UserX, FileWarning, Wrench, Clock
 
 const capabilities = [
 	{ icon: DollarSign, name: "Extra work not in contract", description: "AI flags every 'extra' the second it's spoken in the field", color: "emerald" },
-	{ icon: AlertTriangle, name: "Unforeseen conditions", description: "Hidden utilities, soil surprises, undisclosed structure — documented day one", color: "amber" },
-	{ icon: CloudRain, name: "Weather & schedule delays", description: "Wind, rain, heat, access issues — with quantified schedule impact", color: "cyan" },
-	{ icon: UserX, name: "Subcontractor no-shows", description: "Missing trades, undermanned crews, late starts — back-charge ready", color: "violet" },
+	{ icon: AlertTriangle, name: "Unforeseen conditions", description: "Hidden utilities, soil surprises, undisclosed structure, documented day one", color: "amber" },
+	{ icon: CloudRain, name: "Weather & schedule delays", description: "Wind, rain, heat, access issues, with quantified schedule impact", color: "cyan" },
+	{ icon: UserX, name: "Subcontractor no-shows", description: "Missing trades, undermanned crews, late starts, back-charge ready", color: "violet" },
 	{ icon: FileWarning, name: "Owner-supplied issues", description: "Late finishes, design changes, owner-direct decisions captured as said", color: "red" },
 	{ icon: Wrench, name: "Coordination conflicts", description: "Trade stacking, RFI delays, sequencing disputes flagged automatically", color: "pink" },
 	{ icon: Clock, name: "T&M hours & standby", description: "Every labor hour, every standby crew, timestamped as it happens", color: "blue" },
@@ -37,7 +37,7 @@ export default function Systems() {
 				<motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
 					<span className="do-section-label text-do-orange">The money moments AI catches</span>
 					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">PMs Get Alerts the Same Day</h2>
-					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">Eight categories that buried in old daily logs cost contractors $1M a year. Our AI flags them the moment they&apos;re mentioned in the field — not 30 days later in a pay-app meeting.</p>
+					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">Eight categories that buried in old daily logs cost contractors $1M a year. Our AI flags them the moment they&apos;re mentioned in the field, not 30 days later in a pay-app meeting.</p>
 				</motion.div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

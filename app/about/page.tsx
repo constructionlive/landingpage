@@ -36,7 +36,7 @@ const industries = [
 	{
 		icon: Hammer,
 		title: "Specialty Subs",
-		description: "Drywall, framing, finishes, millwork — trade-stacking-heavy work",
+		description: "Drywall, framing, finishes, millwork, trade-stacking-heavy work",
 	},
 	{
 		icon: ShoppingBag,
@@ -46,7 +46,7 @@ const industries = [
 	{
 		icon: UtensilsCrossed,
 		title: "Hospitality & Restaurant Build-Outs",
-		description: "Restaurants, hotels, entertainment — owner-change-heavy",
+		description: "Restaurants, hotels, entertainment: owner-change-heavy",
 	},
 ];
 
@@ -57,19 +57,19 @@ const beliefs = [
 		number: "1",
 		title: "Daily logs only matter if they protect payment.",
 		description:
-			"Most field-reporting tools treat daily logs as compliance paperwork. We treat them as the front line of cash flow. Every voice note, every photo, every AI call summary is a piece of payment protection — or it's not worth capturing.",
+			"Most field-reporting tools treat daily logs as compliance paperwork. We treat them as the front line of cash flow. Every voice note, every photo, every AI call summary is a piece of payment protection or it's not worth capturing.",
 	},
 	{
 		number: "2",
 		title: "Adoption is the only metric that matters.",
 		description:
-			"A daily-log app with a 30 percent fill rate is worthless. Every product decision we make optimizes for whether the super actually uses it. That's why we built voice-first input, AI outbound calls, and offline-first sync — not because they're elegant, but because they're the only way logs actually get created.",
+			"A daily-log app with a 30 percent fill rate is worthless. Every product decision we make optimizes for whether the super actually uses it. That's why we built voice-first input, AI outbound calls, and offline-first sync, not because they're elegant, but because they're the only way logs actually get created.",
 	},
 	{
 		number: "3",
 		title: "Construction-trained AI, not generic AI.",
 		description:
-			"A general LLM that doesn't know what 'rebar not on the prints' means isn't useful on a jobsite. Our models are trained on construction context — they understand the difference between an extra and a back-charge, between an unforeseen condition and a coordination issue. The intelligence is the product.",
+			"A general LLM that doesn't know what 'rebar not on the prints' means isn't useful on a jobsite. Our models are trained on construction context, they understand the difference between an extra and a back-charge, between an unforeseen condition and a coordination issue. The intelligence is the product.",
 	},
 	{
 		number: "4",
@@ -110,7 +110,7 @@ const problems = [
 		number: "04",
 		title: "Small and mid-size commercial contractors are underserved.",
 		description:
-			"Enterprise construction software is built and priced for large GCs with dedicated documentation staff. The $5M–$100M commercial contractor — where margins are thin and one disputed change order matters — gets no purpose-built tool.",
+			"Enterprise construction software is built and priced for large GCs with dedicated documentation staff. The $5M–$100M commercial contractor, where margins are thin and one disputed change order matters, gets no purpose-built tool.",
 	},
 ];
 
@@ -120,17 +120,17 @@ const faqs = [
 	{
 		question: "Who exactly is construction.live built for?",
 		answer:
-			"Small and mid-size commercial general contractors — typically $5M–$100M annual revenue — and the electrical, mechanical, and specialty subs they hire. We're focused on tenant fit-out, mixed-use, light commercial new build, retail, and hospitality. Not built for enterprise GCs, heavy civil, or institutional/healthcare.",
+			"Small and mid-size commercial general contractors, typically $5M–$100M annual revenue, and the electrical, mechanical, and specialty subs they hire. We're focused on tenant fit-out, mixed-use, light commercial new build, retail, and hospitality. Not built for enterprise GCs, heavy civil, or institutional/healthcare.",
 	},
 	{
 		question: "Why focus on small and mid-size, not enterprise?",
 		answer:
-			"Enterprise GCs already have dedicated documentation staff, PMO teams, and software budgets sized for committee evaluation. Their problem isn't ours. The $5M–$100M commercial contractor — where the PM is often the owner and the super is covering three jobs — has the documentation problem we solve, and they don't have a tool built for them. That's our market.",
+			"Enterprise GCs already have dedicated documentation staff, PMO teams, and software budgets sized for committee evaluation. Their problem isn't ours. The $5M–$100M commercial contractor, where the PM is often the owner and the super is covering three jobs, has the documentation problem we solve, and they don't have a tool built for them. That's our market.",
 	},
 	{
 		question: "What makes construction.live different from Raken, Fieldwire, or Procore field logs?",
 		answer:
-			"Those tools collect data — usually through typed forms supers don't fill out reliably. We unify voice notes, photos, AI outbound calls, and integration data into one intelligence layer that flags money moments same-day and auto-assembles pay-app backup. The output is payment protection, not just a daily log.",
+			"Those tools collect data, usually through typed forms supers don't fill out reliably. We unify voice notes, photos, AI outbound calls, and integration data into one intelligence layer that flags money moments same-day and auto-assembles pay-app backup. The output is payment protection, not just a daily log.",
 	},
 	{
 		question: "Do you replace Procore or work alongside it?",
@@ -140,12 +140,12 @@ const faqs = [
 	{
 		question: "Is my data secure?",
 		answer:
-			"Yes. Project documentation contains commercially sensitive information and construction.live is built to handle it accordingly — enterprise-grade encryption at rest and in transit, role-based access, and audit logging. Contact us for the details your IT team needs.",
+			"Yes. Project documentation contains commercially sensitive information and construction.live is built to handle it accordingly, enterprise-grade encryption at rest and in transit, role-based access, and audit logging. Contact us for the details your IT team needs.",
 	},
 	{
 		question: "How do I get started?",
 		answer:
-			"Book a 15-minute demo. We'll ask about your current projects — disputed pay apps, lost change orders, T&M pushback — and show you exactly how we'd protect those margins. No deck, no sales pitch.",
+			"Book a 15-minute demo. We'll ask about your current projects, disputed pay apps, lost change orders, T&M pushback, and show you exactly how we'd protect those margins. No deck, no sales pitch.",
 	},
 ];
 
@@ -458,7 +458,7 @@ function AboutCTA() {
 					</h2>
 					<p className="text-lg text-do-text-secondary mb-8">
 						Book a 15-minute demo. We&apos;ll show you exactly how we&apos;d
-						protect those margins on your projects — no deck, no sales pitch.
+						protect those margins on your projects, no deck, no sales pitch.
 					</p>
 
 					<a
@@ -566,8 +566,8 @@ export default function AboutPage() {
 						<p className="text-base text-do-text-secondary leading-relaxed">
 							Enterprise GCs solve this with dedicated documentation staff and
 							software priced for committee approval. The $5M–$100M commercial
-							contractor — where the PM is sometimes the owner and one super
-							covers multiple jobs — doesn&apos;t have a tool built for them.
+							contractor, where the PM is sometimes the owner and one super
+							covers multiple jobs: doesn&apos;t have a tool built for them.
 						</p>
 						<p className="text-base text-do-text leading-relaxed">
 							We built construction.live to be that tool. Voice notes. Photos. AI
