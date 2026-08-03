@@ -10,7 +10,6 @@ const navLinks = [
 	{ label: "Use Cases", href: "/use-cases" },
 	{ label: "How It Works", href: "/how-it-works" },
 	{ label: "About", href: "/about" },
-	{ label: "Book Demo", href: "/book" },
 	{ label: "Blog", href: "/blog" },
 ];
 
@@ -86,10 +85,10 @@ export default function Navbar() {
 					<div className="hidden md:flex items-center gap-3">
 						<ThemeToggle />
 						<a
-							href="https://app.construction.live"
+							href="/book"
 							className="group px-5 py-2.5 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-lg transition-all shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] flex items-center gap-1.5"
 						>
-							Try It Free
+							Book Demo
 							<ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
 						</a>
 					</div>
@@ -126,8 +125,12 @@ export default function Navbar() {
 								</a>
 							))}
 							<div className="flex flex-col gap-3 mt-6">
-								<a href="https://app.construction.live" className="px-4 py-3 text-center text-white bg-do-orange rounded-lg font-medium">
-									Try It Free
+								<a
+									href="/book"
+									className="px-4 py-3 text-center text-white bg-do-orange rounded-lg font-medium"
+									onClick={() => setMobileOpen(false)}
+								>
+									Book Demo
 								</a>
 							</div>
 						</div>

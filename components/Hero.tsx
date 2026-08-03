@@ -124,7 +124,7 @@ export default function Hero() {
 					</motion.p>
 
 					<motion.div
-						className="flex flex-col sm:flex-row items-center justify-center gap-4"
+						className="flex flex-col items-center justify-center gap-5"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.7 }}
@@ -137,9 +137,9 @@ export default function Hero() {
 						</a>
 						<a
 							href="#workflows"
-							className="px-8 py-3.5 text-base font-medium text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all hover:bg-do-bg-light/50"
+							className="text-sm text-do-text-secondary hover:text-do-text underline underline-offset-4 decoration-do-border hover:decoration-do-text-secondary transition-colors"
 						>
-							See How It Protects Margins
+							See how it protects margins
 						</a>
 					</motion.div>
 
