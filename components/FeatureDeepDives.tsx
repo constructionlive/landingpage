@@ -297,7 +297,7 @@ function PayAppMockup() {
 				</span>
 				<div className="ml-auto flex items-center gap-1.5">
 					<CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-					<span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">Approved 7d</span>
+					<span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">Ready to submit</span>
 				</div>
 			</div>
 
@@ -336,8 +336,8 @@ function PayAppMockup() {
 						</p>
 					</div>
 					<p className="text-sm text-do-text leading-relaxed">
-						47 voice logs, 184 photos, 12 scope changes, auto-assembled and
-						linked to the pay app line by line.
+						Everything the owner would ask for, assembled before they ask.
+						Nothing to dig out of a month of emails.
 					</p>
 				</motion.div>
 			</div>
@@ -347,9 +347,38 @@ function PayAppMockup() {
 
 /* ── Main export ──────────────────────────────────────────────────── */
 
+function SectionIntro() {
+	const ref = useRef(null);
+	const inView = useInView(ref, { once: true, margin: "-80px" });
+
+	return (
+		<section id="how-it-works" className="relative pt-28 pb-4 overflow-hidden bg-do-bg">
+			<div className="absolute inset-0 do-blueprint-grid pointer-events-none opacity-60" />
+			<motion.div
+				ref={ref}
+				className="relative z-10 max-w-3xl mx-auto px-6 text-center"
+				initial={{ opacity: 0, y: 30 }}
+				animate={inView ? { opacity: 1, y: 0 } : {}}
+				transition={{ duration: 0.6 }}
+			>
+				<span className="do-section-label text-do-orange">How it works</span>
+				<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">
+					The field-to-payment platform you can talk to
+				</h2>
+				<p className="text-lg text-do-text-secondary text-balance">
+					Three steps from a 30-second voice note to an approved pay app. No
+					forms. No training. Built for how supers and PMs actually work.
+				</p>
+			</motion.div>
+		</section>
+	);
+}
+
 export default function FeatureDeepDives() {
 	return (
 		<>
+			<SectionIntro />
+
 			<DeepDive
 				number="01"
 				tagline="Field input"
