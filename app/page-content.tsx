@@ -23,7 +23,7 @@ export default function HomeContent() {
 			<Hero />
 			<IntegrationsBar />
 			<Workflows />
-			<PilotResults />
+			{/* Hidden until we have real pilot data to attribute. <PilotResults /> */}
 			<Metrics />
 			<FeatureDeepDives />
 			<Industries />
