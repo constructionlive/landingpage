@@ -7,9 +7,9 @@ import { ArrowRight, Calendar, CheckCircle2 } from "lucide-react";
 const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
 const agenda = [
-	"Where you're losing margin today — disputed pay apps, denied change orders, T&M pushback",
+	"Where you're losing margin today, disputed pay apps, denied change orders, T&M pushback",
 	"What 30 days of voice-first field reporting would change for your specific projects",
-	"A walkthrough of how we'd run a 90-day pilot at your business — no commitment, just the math",
+	"A walkthrough of how we'd run a 90-day pilot at your business, no commitment, just the math",
 ];
 
 export default function CTA() {
@@ -29,7 +29,7 @@ export default function CTA() {
 					transition={{ duration: 0.7 }}
 				>
 					<div className="grid lg:grid-cols-5 gap-10 lg:gap-12 items-start">
-						{/* Left — pitch + agenda (3 cols) */}
+						{/* Left, pitch + agenda (3 cols) */}
 						<div className="lg:col-span-3">
 							<motion.div
 								className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-do-orange/10 border border-do-orange/20 mb-6"
@@ -98,7 +98,7 @@ export default function CTA() {
 							</motion.div>
 						</div>
 
-						{/* Right — founder card (2 cols) */}
+						{/* Right, founder card (2 cols) */}
 						<motion.div
 							className="lg:col-span-2"
 							initial={{ opacity: 0, y: 20 }}

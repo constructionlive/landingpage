@@ -3,9 +3,9 @@ import ConvexClientProvider from "./convex-client-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-	title: "construction.live — Get Paid for Every Extra. Defend Every Change Order.",
+	title: "construction.live: Get Paid for Every Extra. Defend Every Change Order.",
 	description:
-		"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations — unified into bulletproof pay-app and change-order documentation.",
+		"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations, unified into bulletproof pay-app and change-order documentation.",
 	keywords: [
 		"unified field intelligence",
 		"change order documentation",
@@ -19,18 +19,18 @@ export const metadata: Metadata = {
 		canonical: "https://www.construction.live",
 	},
 	openGraph: {
-		title: "construction.live — Get Paid for Every Extra. Defend Every Change Order.",
+		title: "construction.live: Get Paid for Every Extra. Defend Every Change Order.",
 		description:
-			"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations — unified into bulletproof pay-app and change-order documentation.",
+			"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations - unified into bulletproof pay-app and change-order documentation.",
 		type: "website",
 		url: "https://construction.live",
 		siteName: "construction.live",
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "construction.live — Get Paid for Every Extra. Defend Every Change Order.",
+		title: "construction.live: Get Paid for Every Extra. Defend Every Change Order.",
 		description:
-			"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations — unified into bulletproof pay-app and change-order documentation.",
+			"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations - unified into bulletproof pay-app and change-order documentation.",
 		site: "@constructionlive",
 	},
 	robots: {

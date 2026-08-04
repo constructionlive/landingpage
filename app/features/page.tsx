@@ -25,11 +25,11 @@ const features = [
 		subtitle: "Inputs",
 		tagline: "30 seconds. No forms. No typing on dirty phones.",
 		description:
-			"Field voice notes let superintendents document construction activity by talking to their phone — no forms to fill, no typing required. Voice is one of several inputs that feed the unified intelligence layer.",
+			"Field voice notes let superintendents document construction activity by talking to their phone: no forms to fill, no typing required. Voice is one of several inputs that feed the unified intelligence layer.",
 		detail:
 			"Walk the site. Talk for 30 seconds. The voice note becomes a timestamped daily log entry with a transcript, automatic categorization, and links to any photos taken in the same window. Supers don't change how they work. They just stop typing.",
 		impact:
-			"Most daily-log apps require 15 minutes of typing. Most supers do it days late, if at all. With voice, the log gets created the same shift — which is the only way it ever protects you in a dispute.",
+			"Most daily-log apps require 15 minutes of typing. Most supers do it days late, if at all. With voice, the log gets created the same shift- which is the only way it ever protects you in a dispute.",
 		capabilities: [
 			"30-second voice updates",
 			"Auto-transcription",
@@ -39,11 +39,11 @@ const features = [
 			"Works offline",
 		],
 		example:
-			"Pouring Level 3 concrete today. Found unexpected rebar in the south footing — not on the drawings. Taking photos. Crew stopped for 45 minutes while we figured it out.",
+			"Pouring Level 3 concrete today. Found unexpected rebar in the south footing- not on the drawings. Taking photos. Crew stopped for 45 minutes while we figured it out.",
 		notes: [
 			"Voice notes queue when offline and sync when service returns",
 			"Construction-trained AI understands trades jargon",
-			"No app to fight with — works on any phone",
+			"No app to fight with: works on any phone",
 		],
 	},
 	{
@@ -51,13 +51,13 @@ const features = [
 		icon: PhoneCall,
 		title: "AI Outbound Calls",
 		subtitle: "Reporting",
-		tagline: "Our AI calls your supers — not the other way around.",
+		tagline: "Our AI calls your supers, not the other way around.",
 		description:
 			"AI outbound calls turn proactive reporting upside down. Instead of waiting for a super to remember to log a day, our AI calls them at shift change and prompts a quick update. Reporting stops depending on whether anyone remembered the app.",
 		detail:
 			"Set the schedule, set the questions. Our AI calls every super at end of shift, asks for a summary, captures pour progress, extras, delays, and crew issues. The call gets transcribed, categorized, and routed to the right project and scope.",
 		impact:
-			"Adoption is the killer of every field-reporting tool ever shipped. AI outbound calls solve adoption — because the platform calls the field, not the other way around.",
+			"Adoption is the killer of every field-reporting tool ever shipped. AI outbound calls solve adoption- because the platform calls the field, not the other way around.",
 		capabilities: [
 			"Scheduled outbound calls",
 			"End-of-shift prompts",
@@ -78,9 +78,9 @@ const features = [
 		icon: AlertTriangle,
 		title: "Same-Day Money Alerts",
 		subtitle: "Intelligence",
-		tagline: "PMs see the money moments the day they happen — not 30 days later.",
+		tagline: "PMs see the money moments the day they happen- not 30 days later.",
 		description:
-			"Same-day money alerts are the intelligence layer. Construction-trained AI listens for extras, unforeseen conditions, weather delays, owner-supplied issues, and subcontractor no-shows — and flags them to PMs the same day, with draft notifications ready to send.",
+			"Same-day money alerts are the intelligence layer. Construction-trained AI listens for extras, unforeseen conditions, weather delays, owner-supplied issues, and subcontractor no-shows and flags them to PMs the same day, with draft notifications ready to send.",
 		detail:
 			"Every voice note, photo, integration data point, and AI call summary runs through a model trained on construction context. It knows what 'unexpected rebar' means. It knows when 'electrical sub showed up at 10:30' is a back-charge candidate. It catches the words contractors say but rarely document.",
 		impact:
@@ -107,21 +107,21 @@ const features = [
 		subtitle: "Payment protection",
 		tagline: "Every pay app ships with a complete backup package. First-try approval.",
 		description:
-			"Pay applications submitted with construction.live ship with auto-assembled backup packages — voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. Owners stop disputing. Cycles drop from 45 days to 7.",
+			"Pay applications submitted with construction.live ship with auto-assembled backup packages: voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. Owners stop disputing. Cycles drop from weeks to days.",
 		detail:
-			"At pay-app time, the platform assembles every relevant voice log, photo, transcript, and integration data point — organized by scope item, line by line. What used to take a PM two days of digging through emails and notebooks is ready in 90 seconds.",
+			"At pay-app time, the platform assembles every relevant voice log, photo, transcript, and integration data point: organized by scope item, line by line. What used to take a PM two days of digging through emails and notebooks is ready in 90 seconds.",
 		impact:
-			"Cash flow is the silent killer in construction. Speeding up pay apps by 30 days per cycle pays for the platform for a lifetime. Every contractor we work with sees this on their first pay-app cycle.",
+			"Cash flow is the silent killer in construction. Every week a disputed pay app sits unapproved is a week you are financing the owner's project.",
 		capabilities: [
 			"Auto-assembled backup",
 			"Per-line-item evidence",
 			"Geotagged photos linked to scope",
 			"Quantified progress",
 			"Owner-ready package",
-			"7-day approval cycles",
+			"Ready at submission time",
 		],
 		example:
-			"Pay App #6 — backup package ready. 47 voice logs, 184 photos, 12 quantified scope changes, day-by-day progress tied to schedule.",
+			"Pay App #6: backup package ready. 47 voice logs, 184 photos, 12 quantified scope changes, day-by-day progress tied to schedule.",
 		notes: [
 			"Pushes to Procore, Autodesk, and other systems your owner already uses",
 		],
@@ -133,11 +133,11 @@ const features = [
 		subtitle: "Margin protection",
 		tagline: "Day-one documentation. Owners stop pushing back.",
 		description:
-			"Change orders submitted with day-one documentation get approved. The platform builds the record from the moment a super first mentions the condition — voice transcript, photo, timestamp, schedule impact. By the time you submit, the case is unanswerable.",
+			"Change orders submitted with day-one documentation get approved. The platform builds the record from the moment a super first mentions the condition: voice transcript, photo, timestamp, schedule impact. By the time you submit, the case is unanswerable.",
 		detail:
-			"60 to 80 percent of construction change orders come from documentation problems, not scope problems. The work was done. The contract supported it. But the proof showed up weeks late — or not at all. construction.live builds the proof live.",
+			"60 to 80 percent of construction change orders come from documentation problems, not scope problems. The work was done. The contract supported it. But the proof showed up weeks late, or not at all. construction.live builds the proof live.",
 		impact:
-			"One $150K change order won pays for the platform for a decade. Most of our customers see that within the first 90 days.",
+			"At $1000 per active project per month, a single defended change order covers the platform for years. The math only works if the documentation exists before the dispute starts.",
 		capabilities: [
 			"Day-one documentation",
 			"Voice + photo evidence",
@@ -147,7 +147,7 @@ const features = [
 			"Claim-ready packet",
 		],
 		example:
-			"Change order #12 — $150K — submitted with 47-day documentation trail starting day rebar was found. Approved same week.",
+			"Change order #12: submitted with a 47-day documentation trail starting the day the rebar was found, voice transcript, geotagged photos, and quantified schedule impact attached.",
 		notes: [
 			"Voice transcripts become written record with audio backup",
 			"Works for both prime contracts and subcontract change orders",
@@ -159,17 +159,17 @@ const faqs = [
 	{
 		question: "What does \"unified field intelligence\" actually mean?",
 		answer:
-			"It means every signal from your jobsite — voice notes from supers, photos, AI call summaries, Procore data, Autodesk drawings, integration data from your existing tools — flows into one timestamped, defensible record. Other tools collect data in silos. We unify it into the package owners can't dispute.",
+			"It means every signal from your jobsite: voice notes from supers, photos, AI call summaries, Procore data, Autodesk drawings, integration data from your existing tools, flows into one timestamped, defensible record. Other tools collect data in silos. We unify it into the package owners can't dispute.",
 	},
 	{
 		question: "How is this different from a daily-log app like Raken or Fieldwire?",
 		answer:
-			"Daily-log apps make supers type. We make the platform call the super, capture a 30-second voice note, geotag a photo, pull data from your existing tools, and build the daily log automatically. The adoption rate is the difference — most daily-log apps die because nobody uses them.",
+			"Daily-log apps make supers type. We make the platform call the super, capture a 30-second voice note, geotag a photo, pull data from your existing tools, and build the daily log automatically. The adoption rate is the difference: most daily-log apps die because nobody uses them.",
 	},
 	{
 		question: "What do the AI calls sound like to my supers?",
 		answer:
-			"A short, conversational check-in — usually 30 to 60 seconds. The AI asks for a quick summary, follows up on anything specific the PM flagged, and captures the response. Supers describe it as easier than texting their office because they don't have to remember to do it.",
+			"A short, conversational check-in: usually 30 to 60 seconds. The AI asks for a quick summary, follows up on anything specific the PM flagged, and captures the response. Supers describe it as easier than texting their office because they don't have to remember to do it.",
 	},
 	{
 		question: "How does the platform decide what to flag as a money moment?",
@@ -179,10 +179,10 @@ const faqs = [
 	{
 		question: "Does it work with Procore, Autodesk, Fieldwire, and Microsoft 365?",
 		answer:
-			"Yes. The platform integrates with the systems your owners already require — pushing daily logs, change orders, and pay-app backup directly into Procore (or whatever your project runs on), so nobody has to copy-paste documentation between tools.",
+			"Yes. The platform integrates with the systems your owners already require: pushing daily logs, change orders, and pay-app backup directly into Procore (or whatever your project runs on), so nobody has to copy-paste documentation between tools.",
 	},
 	{
-		question: "What about offline use — jobsites have bad reception?",
+		question: "What about offline use: jobsites have bad reception?",
 		answer:
 			"Voice notes and photos queue locally and sync when service returns. Built for the reality of where construction actually happens.",
 	},
@@ -454,7 +454,7 @@ export default function FeaturesPage() {
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
 							Voice notes, photos, AI outbound calls, integrations with the systems
-							your owners already use — unified into bulletproof pay-app and
+							your owners already use, unified into bulletproof pay-app and
 							change-order documentation.
 						</p>
 					</motion.div>

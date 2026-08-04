@@ -108,7 +108,7 @@ const useCases = [
 		icon: Mic,
 		title: "Unified Daily Reports",
 		color: "blue",
-		description: "Voice notes, photos, integration data, and AI call summaries — unified into one daily log. Superintendents talk for 30 seconds, drop a photo, or get a call from our AI. Everything routes to the same timestamped record.",
+		description: "Voice notes, photos, integration data, and AI call summaries, unified into one daily log. Superintendents talk for 30 seconds, drop a photo, or get a call from our AI. Everything routes to the same timestamped record.",
 		example: "Pouring Level 3 concrete today. Found unexpected rebar in the south footing. Taking photos.",
 		tags: ["Multi-input", "30 sec updates", "Same-day logs"],
 	},
@@ -116,7 +116,7 @@ const useCases = [
 		icon: AlertTriangle,
 		title: "Change Order Capture",
 		color: "amber",
-		description: "AI flags every 'extra work' moment the second it's spoken — unforeseen conditions, scope creep, owner-directed changes. PMs get a draft notification ready to send before the day is over.",
+		description: "AI flags every 'extra work' moment the second it's spoken, unforeseen conditions, scope creep, owner-directed changes. PMs get a draft notification ready to send before the day is over.",
 		example: "We won a $150K change order last month because we documented the unexpected rebar from day one.",
 		tags: ["Day-one proof", "Auto-drafted", "Owner-ready"],
 	},
@@ -124,7 +124,7 @@ const useCases = [
 		icon: Receipt,
 		title: "Bulletproof Pay Applications",
 		color: "emerald",
-		description: "Every pay app ships with a complete backup package — timestamped voice logs, geotagged photos, quantified scope, daily progress. Owners stop disputing. Pay cycles drop from 45 days to 7.",
+		description: "Every pay app ships with a complete backup package, timestamped voice logs, geotagged photos, quantified scope, daily progress. Owners stop disputing. Pay cycles drop from 45 days to 7.",
 		example: "Our pay apps used to take 45 days. Now they're approved in a week. Cash flow is completely different.",
 		tags: ["7-day cycles", "Full backup", "First-try approval"],
 	},
@@ -132,7 +132,7 @@ const useCases = [
 		icon: Clock,
 		title: "T&M That Doesn't Get Disputed",
 		color: "violet",
-		description: "Every outlet, every condition, every labor hour tracked as it happens — not reconstructed from memory three weeks later. When owners push back on T&M tickets, you have the proof, hour by hour.",
+		description: "Every outlet, every condition, every labor hour tracked as it happens, not reconstructed from memory three weeks later. When owners push back on T&M tickets, you have the proof, hour by hour.",
 		example: "Full $41K invoice paid. Zero pushback. Every hour was timestamped with photos.",
 		tags: ["Hour-by-hour", "Timestamped", "Zero pushback"],
 	},
@@ -140,7 +140,7 @@ const useCases = [
 		icon: AlertTriangle,
 		title: "Unforeseen Conditions Log",
 		color: "red",
-		description: "Soil conditions, hidden utilities, structural surprises, owner-supplied material issues. AI catches the words contractors say but rarely document — and builds the day-by-day record you need to win the claim.",
+		description: "Soil conditions, hidden utilities, structural surprises, owner-supplied material issues. AI catches the words contractors say but rarely document, and builds the day-by-day record you need to win the claim.",
 		example: "Our super documented unexpected soil conditions daily. When the owner pushed back, we had 3 days of logs with photos. Approved same week.",
 		tags: ["Differing site conditions", "Day-by-day", "Claim-ready"],
 	},
@@ -148,8 +148,8 @@ const useCases = [
 		icon: CloudRain,
 		title: "Weather & Delay Documentation",
 		color: "cyan",
-		description: "Weather delays, schedule impacts, access issues, and standby crews — captured live from the field with timestamps. Schedule extension requests now come with proof, not memory.",
-		example: "Site shut down for 4 hours — wind gusts over 40 mph, crane down. Two crews on standby.",
+		description: "Weather delays, schedule impacts, access issues, and standby crews, captured live from the field with timestamps. Schedule extension requests now come with proof, not memory.",
+		example: "Site shut down for 4 hours, wind gusts over 40 mph, crane down. Two crews on standby.",
 		tags: ["Schedule impacts", "Standby tracking", "Extension proof"],
 	},
 	{
@@ -164,7 +164,7 @@ const useCases = [
 		icon: PhoneCall,
 		title: "AI Calls the Field for You",
 		color: "orange",
-		description: "End of shift? AI calls your supers and asks for their report. Missed a log day? AI follows up. Reporting stops depending on whether someone remembered to open the app — because the app calls them.",
+		description: "End of shift? AI calls your supers and asks for their report. Missed a log day? AI follows up. Reporting stops depending on whether someone remembered to open the app, because the app calls them.",
 		example: "End-of-day check-in for the Tower B project. Quick summary of pours, any issues, any extras?",
 		tags: ["Outbound calls", "Reminder follow-ups", "Zero missed days"],
 	},
@@ -194,7 +194,7 @@ export default function UseCases() {
 				<div className="absolute top-[8%] left-[5%] font-mono text-[10px] text-do-text-muted tracking-widest uppercase rotate-[-2deg]">
 					<div className="border-l-2 border-dashed border-do-text-muted/60 pl-2.5 py-1">
 						<p>Section A-1</p>
-						<p className="text-[8px] mt-0.5">Floor plan — Level 01</p>
+						<p className="text-[8px] mt-0.5">Floor plan, Level 01</p>
 					</div>
 				</div>
 				<div className="absolute top-[6%] right-[8%] font-mono text-[9px] text-do-text-muted tracking-wider">
@@ -229,7 +229,7 @@ export default function UseCases() {
 						8 Money Moments We Catch Automatically
 					</h2>
 					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">
-						Voice notes, photos, AI calls, and integrations — unified into one
+						Voice notes, photos, AI calls, and integrations, unified into one
 						defensible record. Here&apos;s what happens between &ldquo;something
 						changed on site&rdquo; and &ldquo;the change order got approved.&rdquo;
 					</p>

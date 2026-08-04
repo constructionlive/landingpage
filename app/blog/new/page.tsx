@@ -276,7 +276,7 @@ export default function NewBlogPage() {
                 <input className="rounded-md border border-do-border bg-transparent px-3 py-2 text-sm text-do-text" placeholder="Canonical URL" value={canonicalUrl} onChange={(e) => setCanonicalUrl(e.target.value)} />
                 <label className="flex items-center gap-2 text-sm text-do-text">
                   <input type="checkbox" checked={noIndex} onChange={(e) => setNoIndex(e.target.checked)} />
-                  noindex — hide from search engines
+                  noindex: hide from search engines
                 </label>
               </fieldset>
               <fieldset className="flex flex-col gap-3">

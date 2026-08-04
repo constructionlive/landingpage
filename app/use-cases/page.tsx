@@ -28,11 +28,11 @@ const useCases = [
 		roles: ["Superintendents", "Project managers", "Foremen"],
 		tagline: "30 seconds in the field. A complete daily log on your desk.",
 		description:
-			"A unified daily report combines voice notes, geotagged photos, integration data, and AI call summaries into a single timestamped record. Supers don't fill in forms — they talk for 30 seconds, drop a photo, or take a call from our AI. The platform builds the log automatically.",
+			"A unified daily report combines voice notes, geotagged photos, integration data, and AI call summaries into a single timestamped record. Supers don't fill in forms, they talk for 30 seconds, drop a photo, or take a call from our AI. The platform builds the log automatically.",
 		detail:
-			"Daily logs only protect the contractor if they actually get created — every shift, every project, every day. Typed daily-log apps fail this test almost universally. Voice notes, AI outbound calls, and photo capture solve the adoption problem because they work the way supers already work.",
+			"Daily logs only protect the contractor if they actually get created, every shift, every project, every day. Typed daily-log apps fail this test almost universally. Voice notes, AI outbound calls, and photo capture solve the adoption problem because they work the way supers already work.",
 		context:
-			"Voice transcription, geotagging, scope categorization, and routing happen automatically in the background. PMs see a complete picture of every project at end of shift — without anyone typing a report.",
+			"Voice transcription, geotagging, scope categorization, and routing happen automatically in the background. PMs see a complete picture of every project at end of shift, without anyone typing a report.",
 		before: "Daily logs filed days late, or not at all. Half the day's events forgotten by the time someone sits down to type. Pay-app review reconstructs from memory weeks later.",
 		after: "Daily logs created the same shift, automatically. Voice notes, photos, and AI call summaries unified into one timestamped record per project, per day.",
 		capabilities: [
@@ -70,7 +70,7 @@ const useCases = [
 			"Claim-ready packets",
 		],
 		example:
-			"We won a $150K change order last month because we documented the unexpected rebar from day one.",
+			"Found unexpected rebar in the south footing, not on the drawings. Crew stopped 45 minutes while we figured it out. Taking photos now.",
 	},
 	{
 		number: "03",
@@ -78,25 +78,25 @@ const useCases = [
 		badge: "Biggest ROI",
 		title: "Bulletproof Pay Applications",
 		roles: ["Project managers", "Project accountants", "GCs"],
-		tagline: "Pay apps approved in 7 days instead of 45.",
+		tagline: "Every pay app ships with its backup package already attached.",
 		description:
-			"Bulletproof pay applications ship with auto-assembled backup packages — voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. Owners stop disputing. Cash flow returns.",
+			"Bulletproof pay applications ship with auto-assembled backup packages, voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. The owner gets the documentation before they think to ask for it.",
 		detail:
-			"At pay-app time, the platform assembles every relevant voice log, photo, transcript, and integration data point — organized by scope item. What used to take a PM two days of digging through emails and notebooks is ready in 90 seconds.",
+			"At pay-app time, the platform assembles every relevant voice log, photo, transcript, and integration data point, organized by scope item. What used to take a PM two days of digging through emails and notebooks is ready in 90 seconds.",
 		context:
-			"Pay applications push directly into Procore, Autodesk, and other systems your owner requires — no copy-paste, no manual assembly. First-try approval becomes the norm.",
+			"Pay applications push directly into Procore, Autodesk, and other systems your owner requires, no copy-paste, no manual assembly. First-try approval becomes the norm.",
 		before: "Pay app filed. Owner: 'Disputed. Please provide documentation.' PM digs through 30 days of emails and notebooks. 45-day cycles. Cash flow problems.",
-		after: "Pay app filed with full backup auto-assembled. Approved in 7 days. Cash flow completely different.",
+		after: "Pay app filed with full backup auto-assembled. Line-by-line proof attached, nothing left to dig for.",
 		capabilities: [
 			"Auto-assembled backup",
 			"Per-line-item evidence",
 			"Geotagged photos linked to scope",
 			"Quantified progress",
 			"Procore + Autodesk push",
-			"7-day approval cycles",
+			"Ready at submission time",
 		],
 		example:
-			"Our pay apps used to take 45 days. Now they're approved in a week. Cash flow is completely different.",
+			"Level 3 slab pour finished today, roughly 40 percent of the concrete scope complete. Photos are up for the pay app.",
 	},
 	{
 		number: "04",
@@ -104,15 +104,15 @@ const useCases = [
 		badge: "",
 		title: "T&M That Doesn't Get Disputed",
 		roles: ["Electrical subs", "Mechanical subs", "Specialty contractors"],
-		tagline: "Every hour timestamped. Zero pushback on T&M tickets.",
+		tagline: "Every hour timestamped, so T&M tickets arrive with their own proof.",
 		description:
-			"T&M tracking captures every labor hour, every outlet, every condition as it happens — not reconstructed from memory three weeks later. Supers voice-log T&M directly from the field; integration data backs it up. When owners push back, you have the proof, hour by hour.",
+			"T&M tracking captures every labor hour, every outlet, every condition as it happens, not reconstructed from memory three weeks later. Supers voice-log T&M directly from the field; integration data backs it up. When owners push back, you have the proof, hour by hour.",
 		detail:
 			"T&M disputes are won or lost on the quality of contemporaneous documentation. When a $41K invoice gets challenged, the contractor with timestamped voice logs and photos for every hour gets paid. The contractor with a typed summary doesn't.",
 		context:
-			"Voice logs route to the right T&M ticket, the right scope, the right pay-app line — automatically. Owners see hour-by-hour proof when they ask for it.",
+			"Voice logs route to the right T&M ticket, the right scope, the right pay-app line, automatically. Owners see hour-by-hour proof when they ask for it.",
 		before: "T&M tickets reconstructed from memory at end of project. Owner disputes 350 of 800 hours. Negotiate, eat the loss, or fight it.",
-		after: "Every hour voice-logged in real time. T&M tickets ship with hour-by-hour proof. Full invoice paid. Zero pushback.",
+		after: "Every hour voice-logged in real time. T&M tickets ship with hour-by-hour proof the owner can check against photos.",
 		capabilities: [
 			"Real-time hour logging",
 			"Per-task voice notes",
@@ -122,7 +122,7 @@ const useCases = [
 			"Owner-ready timeline",
 		],
 		example:
-			"Full $41K invoice paid. Zero pushback. Every hour was timestamped with photos.",
+			"Ran 14 T&M hours on the added outlets in Suite 210 today. Photos of every rough-in before we closed the wall.",
 	},
 	{
 		number: "05",
@@ -130,7 +130,7 @@ const useCases = [
 		badge: "",
 		title: "Unforeseen Conditions Log",
 		roles: ["GCs", "Project managers", "Superintendents"],
-		tagline: "Soil, utilities, structure — day-by-day proof from the moment you find them.",
+		tagline: "Soil, utilities, structure, day-by-day proof from the moment you find them.",
 		description:
 			"Unforeseen conditions logging captures differing site conditions, hidden utilities, structural surprises, and owner-supplied material issues with voice notes, geotagged photos, and timestamps from the day they're discovered. Day-by-day proof is the difference between a winning claim and a denied one.",
 		detail:
@@ -148,7 +148,7 @@ const useCases = [
 			"Claim-ready packet",
 		],
 		example:
-			"Our super documented unexpected soil conditions daily. When the owner pushed back, we had 3 days of logs with photos. Approved same week.",
+			"Hit wet clay at the south footing again, third day running. Logging depth measurements and photos before we backfill.",
 	},
 	{
 		number: "06",
@@ -156,11 +156,11 @@ const useCases = [
 		badge: "",
 		title: "Weather & Delay Documentation",
 		roles: ["Project managers", "Superintendents", "Schedulers"],
-		tagline: "Weather, access, standby — quantified schedule extension proof.",
+		tagline: "Weather, access, standby, quantified schedule extension proof.",
 		description:
 			"Weather and delay documentation captures weather impact, access issues, standby crews, and schedule disruption with voice notes, timestamps, and integration data from weather services. Schedule extension requests ship with proof, not memory.",
 		detail:
-			"Weather days, owner-caused access issues, and standby crews are billable — if you can prove them. Most contractors can't, because the documentation never gets created. Voice logs from the field, plus integrated weather data, build the proof automatically.",
+			"Weather days, owner-caused access issues, and standby crews are billable, if you can prove them. Most contractors can't, because the documentation never gets created. Voice logs from the field, plus integrated weather data, build the proof automatically.",
 		context:
 			"Supers voice-log delays in real time. Integration data backs them up with weather service records. Standby crew hours route to the right T&M ticket.",
 		before: "Schedule extension filed at end of project. Owner: 'No proof. Denied.' Crews already absorbed as overhead.",
@@ -174,7 +174,7 @@ const useCases = [
 			"Owner-ready timeline",
 		],
 		example:
-			"Site shut down for 4 hours — wind gusts over 40 mph, crane down. Two crews on standby.",
+			"Site shut down for 4 hours, wind gusts over 40 mph, crane down. Two crews on standby.",
 	},
 	{
 		number: "07",
@@ -182,7 +182,7 @@ const useCases = [
 		badge: "",
 		title: "Subcontractor No-Shows",
 		roles: ["GCs", "Project managers", "Superintendents"],
-		tagline: "Missing trades, undermanned crews, late starts — back-charge ready.",
+		tagline: "Missing trades, undermanned crews, late starts, back-charge ready.",
 		description:
 			"Subcontractor no-show documentation captures missed crews, undermanned trades, late starts, and trade-stacking conflicts with voice notes, timestamps, and manpower counts. Back-charges, delay claims, and coordination disputes get the documentation they need.",
 		detail:
@@ -208,7 +208,7 @@ const useCases = [
 		badge: "",
 		title: "AI Calls the Field",
 		roles: ["Project managers", "Operations leaders", "Owner-operators"],
-		tagline: "Our AI calls your supers — reporting stops depending on memory.",
+		tagline: "Our AI calls your supers, reporting stops depending on memory.",
 		description:
 			"AI outbound calls turn proactive reporting upside down. Instead of waiting for a super to remember to log a day, our AI calls them at shift change and prompts a quick update. Missed a log day? AI follows up. Reporting becomes automatic.",
 		detail:
@@ -216,7 +216,7 @@ const useCases = [
 		context:
 			"Set the schedule, set the questions. Calls go out at shift change, capture a 30-second summary, transcribe, categorize, and route to the right project and scope.",
 		before: "Daily logs filed 40 percent of days. PMs chase supers for updates. Reporting depends on whether anyone remembered.",
-		after: "AI calls every super at shift change. Reporting rate goes to 95 percent+ within the first week. PMs stop chasing.",
+		after: "AI calls every super at shift change. Reporting stops depending on whether anyone remembered the app. PMs stop chasing.",
 		capabilities: [
 			"Scheduled outbound calls",
 			"End-of-shift prompts",
@@ -545,17 +545,18 @@ export default function UseCasesPage() {
 					>
 						<span className="do-section-label text-do-orange">Use Cases</span>
 						<h1 className="text-4xl md:text-6xl font-bold text-do-text mt-4 mb-6">
-							8 ways small & mid-size commercial contractors protect $1M a year.
+							8 ways small &amp; mid-size commercial contractors stop losing margin
+							to thin documentation.
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
 							From voice daily reports to AI outbound calls to bulletproof pay-app
-							backup — every use case below is the difference between getting paid
-							and absorbing the loss. Built for the $5M–$100M commercial GC and
-							the subs they hire.
+							backup, every use case below is the difference between getting paid
+							and absorbing the loss. Built for the $2-50M commercial GC and
+							sub-contractors.
 						</p>
 					</motion.div>
 
-					{/* Stats */}
+					{/* Stats, hidden until we have real customer numbers to attribute.
 					<motion.div
 						className="flex flex-wrap justify-center gap-8 mt-12"
 						initial={{ opacity: 0, y: 20 }}
@@ -579,6 +580,7 @@ export default function UseCasesPage() {
 							<p className="text-sm text-do-text-muted">protected annually</p>
 						</div>
 					</motion.div>
+					*/}
 				</div>
 			</section>
 
@@ -606,7 +608,7 @@ export default function UseCasesPage() {
 								Commercial GCs
 							</span>
 							<span className="px-3 py-1.5 text-xs text-do-text-secondary bg-do-bg border border-do-border rounded-full">
-								Electrical / Mechanical subs
+								Electrical / Mechanical / Concrete subs
 							</span>
 						</div>
 					</div>

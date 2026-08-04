@@ -20,7 +20,7 @@ const agenda = [
 		icon: AlertTriangle,
 		title: "Where you're losing margin today",
 		description:
-			"Disputed pay apps, denied change orders, T&M pushback — we'll ask which one is bleeding the most right now.",
+			"Disputed pay apps, denied change orders, T&M pushback, we'll ask which one is bleeding the most right now.",
 	},
 	{
 		icon: Receipt,
@@ -61,12 +61,12 @@ export default function BookPage() {
 							</span>
 						</h1>
 						<p className="text-lg text-do-text-secondary max-w-2xl mx-auto leading-relaxed mb-2">
-							We&apos;ll ask about your current pain points — disputed pay apps,
-							lost change orders, T&amp;M pushback — and show you exactly how
+							We&apos;ll ask about your current pain points, disputed pay apps,
+							lost change orders, T&amp;M pushback and show you exactly how
 							we&apos;d solve them.
 						</p>
 						<p className="text-sm text-do-text-muted">
-							Built for small &amp; mid-size commercial GCs and the subs they hire.
+							Built for small &amp; mid-size commercial GCs and sub-contractors.
 						</p>
 					</motion.div>
 				</div>
@@ -90,7 +90,7 @@ export default function BookPage() {
 									Book on Google Calendar
 								</h2>
 								<p className="text-base text-do-text-secondary leading-relaxed">
-									Pick a time that works. 15 minutes. No deck, no sales pitch —
+									Pick a time that works. 15 minutes. No deck, no sales pitch,
 									just a short conversation about how your projects actually
 									document day-to-day.
 								</p>

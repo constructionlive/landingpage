@@ -108,7 +108,7 @@ function VoiceMockup() {
 					<Mic className="h-4 w-4 text-do-orange" />
 				</div>
 				<span className="text-xs font-mono text-do-text-secondary uppercase tracking-wider">
-					Live transcript — Tower B
+					Live transcript, Tower B
 				</span>
 				<div className="ml-auto flex items-center gap-1.5">
 					<motion.div
@@ -128,7 +128,7 @@ function VoiceMockup() {
 					</div>
 					<div className="flex-1 min-w-0">
 						<p className="text-[11px] font-mono text-do-text-muted mb-1">
-							Mike, Super — 0:28
+							Mike, Super, 0:28
 						</p>
 						<div className="flex items-end gap-0.5 h-5">
 							{Array.from({ length: 32 }).map((_, i) => (
@@ -150,7 +150,7 @@ function VoiceMockup() {
 					</p>
 					<p className="text-sm text-do-text/90 italic leading-relaxed">
 						&ldquo;Pouring Level 3 concrete today. Found unexpected rebar in
-						the south footing — not on the drawings. Taking photos. Crew
+						the south footing, not on the drawings. Taking photos. Crew
 						stopped for 45 minutes.&rdquo;
 					</p>
 				</div>
@@ -160,12 +160,12 @@ function VoiceMockup() {
 					<div className="flex items-center gap-2 mb-2">
 						<PhoneCall className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
 						<p className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-							Or — AI called Mike at shift change
+							Or, AI called Mike at shift change
 						</p>
 					</div>
 					<p className="text-xs text-do-text-secondary leading-relaxed">
 						&ldquo;End-of-day check-in for Tower B. Quick summary of pours,
-						any issues, any extras?&rdquo; — captured the same content,
+						any issues, any extras?&rdquo;, captured the same content,
 						handsfree.
 					</p>
 				</div>
@@ -181,28 +181,28 @@ function AlertsMockup() {
 		{
 			icon: AlertTriangle,
 			title: "Unforeseen condition flagged",
-			detail: "Rebar in south footing — not in contract drawings",
+			detail: "Rebar in south footing, not in contract drawings",
 			time: "8:48 AM",
 			color: "amber",
 		},
 		{
 			icon: DollarSign,
 			title: "Change order candidate",
-			detail: "$15K–$30K estimate — owner notification drafted",
+			detail: "$15K–$30K estimate, owner notification drafted",
 			time: "8:48 AM",
 			color: "emerald",
 		},
 		{
 			icon: CloudRain,
 			title: "Schedule impact",
-			detail: "45 min crew standby — schedule extension drafted",
+			detail: "45 min crew standby, schedule extension drafted",
 			time: "8:49 AM",
 			color: "cyan",
 		},
 		{
 			icon: UserX,
 			title: "Coordination conflict",
-			detail: "Electrical sub late — back-charge tracker updated",
+			detail: "Electrical sub late, back-charge tracker updated",
 			time: "10:32 AM",
 			color: "violet",
 		},
@@ -222,7 +222,7 @@ function AlertsMockup() {
 					<AlertTriangle className="h-4 w-4 text-do-orange" />
 				</div>
 				<span className="text-xs font-mono text-do-text-secondary uppercase tracking-wider">
-					PM dashboard — same-day alerts
+					PM dashboard, same-day alerts
 				</span>
 				<div className="ml-auto text-[10px] font-mono text-do-text-muted">
 					Tower B • Aug 4
@@ -279,10 +279,10 @@ function AlertsMockup() {
 
 function PayAppMockup() {
 	const items = [
-		{ icon: Mic, label: "VoiceLog-Aug04-0847.mp3", detail: "Mike, Super — 28 sec + transcript" },
-		{ icon: Camera, label: "Photo-Aug04-0851.jpg", detail: "South footing — geotagged" },
-		{ icon: Clock, label: "Delay quantified", detail: "45 min crew standby — line 7" },
-		{ icon: FileText, label: "Change order #12 packet", detail: "$150K — day-one documentation trail" },
+		{ icon: Mic, label: "VoiceLog-Aug04-0847.mp3", detail: "Mike, Super, 28 sec + transcript" },
+		{ icon: Camera, label: "Photo-Aug04-0851.jpg", detail: "South footing, geotagged" },
+		{ icon: Clock, label: "Delay quantified", detail: "45 min crew standby, line 7" },
+		{ icon: FileText, label: "Change order #12 packet", detail: "$150K, day-one documentation trail" },
 		{ icon: Plug, label: "Synced to Procore", detail: "Owner sees the same record" },
 	];
 
@@ -293,7 +293,7 @@ function PayAppMockup() {
 					<Receipt className="h-4 w-4 text-do-orange" />
 				</div>
 				<span className="text-xs font-mono text-do-text-secondary uppercase tracking-wider">
-					Pay App #6 — backup package
+					Pay App #6, backup package
 				</span>
 				<div className="ml-auto flex items-center gap-1.5">
 					<CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
@@ -332,12 +332,12 @@ function PayAppMockup() {
 					<div className="flex items-center gap-2 mb-1">
 						<CheckCircle2 className="h-4 w-4 text-emerald-500" />
 						<p className="text-xs font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-							Owner first-try approval
+							Backup package ready
 						</p>
 					</div>
 					<p className="text-sm text-do-text leading-relaxed">
-						47 voice logs, 184 photos, 12 scope changes — auto-assembled.
-						Approved in 7 days. Cycle was 45.
+						47 voice logs, 184 photos, 12 scope changes, auto-assembled and
+						linked to the pay app line by line.
 					</p>
 				</motion.div>
 			</div>
@@ -354,10 +354,10 @@ export default function FeatureDeepDives() {
 				number="01"
 				tagline="Field input"
 				title="Two ways to capture the field. Both take 30 seconds."
-				description="Supers leave a voice note when something happens — or our AI calls them at shift change. Either way, the platform transcribes, categorizes, and routes to the right project and scope. No forms, no typing, no app to fight with."
+				description="Supers leave a voice note when something happens, or our AI calls them at shift change. Either way, the platform transcribes, categorizes, and routes to the right project and scope. No forms, no typing, no app to fight with."
 				metrics={[
 					{ value: "30 sec", label: "Per update" },
-					{ value: "97%", label: "Adoption rate" },
+					{ value: "2 ways in", label: "Voice note or AI call" },
 				]}
 				bg="default"
 				mockup={<VoiceMockup />}
@@ -381,10 +381,10 @@ export default function FeatureDeepDives() {
 				number="03"
 				tagline="Payment protection"
 				title="Pay apps approved first-try. Change orders won."
-				description="At pay-app time, the platform auto-assembles the backup package — voice logs, geotagged photos, quantified scope changes, timestamps for every line item. Push to Procore, Autodesk, or whatever your owner already uses. First-try approval becomes the norm."
+				description="At pay-app time, the platform auto-assembles the backup package, voice logs, geotagged photos, quantified scope changes, timestamps for every line item. Push to Procore, Autodesk, or whatever your owner already uses. First-try approval becomes the norm."
 				metrics={[
-					{ value: "7 days", label: "Pay app approval" },
-					{ value: "92%", label: "Change orders won" },
+					{ value: "90 sec", label: "Backup package assembled" },
+					{ value: "Day one", label: "Change-order proof" },
 				]}
 				bg="default"
 				mockup={<PayAppMockup />}

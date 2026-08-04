@@ -19,11 +19,11 @@ interface Feature {
 }
 
 const features: Feature[] = [
-	{ icon: Mic, label: "Field Voice Notes", color: "blue", detail: "One of many inputs — supers talk for 30 seconds and the voice note joins photos, integration data, and AI call summaries in one unified record" },
+	{ icon: Mic, label: "Field Voice Notes", color: "blue", detail: "One of many inputs, supers talk for 30 seconds and the voice note joins photos, integration data, and AI call summaries in one unified record" },
 	{ icon: PhoneCall, label: "AI That Calls You", color: "emerald", detail: "End of shift? Our AI calls your supers and prompts a quick update. Reporting stops depending on whether anyone remembered the app" },
 	{ icon: AlertTriangle, label: "Same-Day Money Alerts", color: "amber", detail: "Extras, unforeseen conditions, weather delays, no-shows \u2014 flagged the moment they\u2019re spoken, not 30 days later in pay-app review" },
-	{ icon: Plug, label: "Integrates With Your Stack", color: "violet", detail: "Procore, Autodesk, Fieldwire, Microsoft 365 — push daily logs and change orders into the systems your owner already uses" },
-	{ icon: Receipt, label: "Bulletproof Pay App Packages", color: "pink", detail: "Every pay app auto-assembles a backup package — voice logs, geotagged photos, quantified scope, daily progress. Approved in 7 days" },
+	{ icon: Plug, label: "Integrates With Your Stack", color: "violet", detail: "Procore, Autodesk, Fieldwire, Microsoft 365, push daily logs and change orders into the systems your owner already uses" },
+	{ icon: Receipt, label: "Bulletproof Pay App Packages", color: "pink", detail: "Every pay app auto-assembles a backup package, voice logs, geotagged photos, quantified scope, daily progress. The proof ships with the invoice, not weeks later" },
 	{ icon: WifiOff, label: "Works Offline on Jobsites", color: "orange", detail: "Bad reception? Voice notes queue and sync when service returns. Built for the reality of where construction actually happens" },
 ];
 
@@ -42,7 +42,7 @@ const colorMap: Record<string, { iconBg: string; iconText: string; border: strin
 
 /* Simulates a mini workspace: sidebar with icons orbiting/flowing into a
    central "workspace" panel. Each feature icon flies in, lands, and shows
-   its label — communicating visually that everything converges here. */
+   its label, communicating visually that everything converges here. */
 
 function WorkspaceAnimation({ inView }: { inView: boolean }) {
 	const [activeIdx, setActiveIdx] = useState(0);
@@ -82,7 +82,7 @@ function WorkspaceAnimation({ inView }: { inView: boolean }) {
 				</div>
 
 				<div className="flex min-h-[340px]">
-					{/* Sidebar — feature icons */}
+					{/* Sidebar, feature icons */}
 					<div className="w-14 md:w-16 border-r border-do-border flex flex-col items-center py-3 gap-1 shrink-0">
 						{features.map((f, i) => {
 							const c = colorMap[f.color];
@@ -111,7 +111,7 @@ function WorkspaceAnimation({ inView }: { inView: boolean }) {
 						})}
 					</div>
 
-					{/* Main content — animated feature showcase */}
+					{/* Main content, animated feature showcase */}
 					<div className="flex-1 p-6 md:p-8 flex flex-col relative overflow-hidden">
 						<AnimatePresence mode="wait">
 							<motion.div
@@ -198,7 +198,7 @@ function FeatureMock({ feature, color }: { feature: Feature; color: typeof color
 						</motion.div>
 						<div className="flex-1">
 							<p className="text-[11px] font-mono text-do-text-muted">Mike, Super</p>
-							<p className="text-xs text-do-text">0:28 — Level 3 pour</p>
+							<p className="text-xs text-do-text">0:28, Level 3 pour</p>
 						</div>
 					</div>
 					<div className="flex items-end gap-0.5 h-8 mb-3">
@@ -212,7 +212,7 @@ function FeatureMock({ feature, color }: { feature: Feature; color: typeof color
 						))}
 					</div>
 					<p className="text-[11px] text-do-text-secondary italic leading-relaxed">
-						&ldquo;Found unexpected rebar in south footing — not on the drawings...&rdquo;
+						&ldquo;Found unexpected rebar in south footing, not on the drawings...&rdquo;
 					</p>
 				</motion.div>
 			</div>
@@ -226,7 +226,7 @@ function FeatureMock({ feature, color }: { feature: Feature; color: typeof color
 						transition={{ duration: 1.4, repeat: Infinity }}
 					/>
 					<span className="text-xs font-mono text-emerald-500">CALLING</span>
-					<span className="text-xs text-do-text-muted ml-1">Mike — End of shift check-in</span>
+					<span className="text-xs text-do-text-muted ml-1">Mike, End of shift check-in</span>
 				</div>
 				{[
 					"AI: \"Quick end-of-day summary for Tower B?\"",
@@ -357,12 +357,12 @@ function FeatureMock({ feature, color }: { feature: Feature; color: typeof color
 			<div className="flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3">
 					<Receipt className="h-3.5 w-3.5 text-do-text-muted" />
-					<span className="text-xs text-do-text-muted">Pay App #6 — auto-assembled backup</span>
+					<span className="text-xs text-do-text-muted">Pay App #6, auto-assembled backup</span>
 				</div>
 				{[
-					{ doc: "VoiceLog-Aug04-0847.mp3", section: "Mike, Super — 28 sec", match: "Unforeseen rebar, south footing, 45 min delay" },
-					{ doc: "Photo-Aug04-0851.jpg", section: "Geotagged + timestamped", match: "South footing rebar — 3 angles, lat/long" },
-					{ doc: "DailyLog-Aug04.pdf", section: "Quantified scope change", match: "Change order #12 packet — $150K backup ready" },
+					{ doc: "VoiceLog-Aug04-0847.mp3", section: "Mike, Super, 28 sec", match: "Unforeseen rebar, south footing, 45 min delay" },
+					{ doc: "Photo-Aug04-0851.jpg", section: "Geotagged + timestamped", match: "South footing rebar, 3 angles, lat/long" },
+					{ doc: "DailyLog-Aug04.pdf", section: "Quantified scope change", match: "Change order #12 packet, $150K backup ready" },
 				].map((result, i) => (
 					<motion.div
 						key={i}
@@ -373,7 +373,7 @@ function FeatureMock({ feature, color }: { feature: Feature; color: typeof color
 					>
 						<FileText className="h-3.5 w-3.5 text-do-orange mt-0.5 shrink-0" />
 						<div>
-							<p className="text-[11px] font-mono text-do-text-muted">{result.doc} — {result.section}</p>
+							<p className="text-[11px] font-mono text-do-text-muted">{result.doc}, {result.section}</p>
 							<p className="text-xs text-do-text">{result.match}</p>
 						</div>
 					</motion.div>
@@ -384,14 +384,14 @@ function FeatureMock({ feature, color }: { feature: Feature; color: typeof color
 			<div className="flex-1 flex flex-col gap-1">
 				<div className="flex items-center gap-2 mb-2 px-1">
 					<WifiOff className="h-3.5 w-3.5 text-amber-500" />
-					<span className="text-[11px] font-mono text-do-text-muted">No service — voice notes queued</span>
+					<span className="text-[11px] font-mono text-do-text-muted">No service, voice notes queued</span>
 				</div>
 				{[
-					{ name: "Voice log — 08:47 AM", type: "queued", items: "Synced ✓" },
-					{ name: "Photo — south footing", type: "queued", items: "Synced ✓" },
-					{ name: "Voice log — 10:22 AM", type: "queued", items: "Queued" },
-					{ name: "Photo — Level 3 pour", type: "queued", items: "Queued" },
-					{ name: "Voice log — 12:05 PM", type: "queued", items: "Queued" },
+					{ name: "Voice log, 08:47 AM", type: "queued", items: "Synced ✓" },
+					{ name: "Photo, south footing", type: "queued", items: "Synced ✓" },
+					{ name: "Voice log, 10:22 AM", type: "queued", items: "Queued" },
+					{ name: "Photo, Level 3 pour", type: "queued", items: "Queued" },
+					{ name: "Voice log, 12:05 PM", type: "queued", items: "Queued" },
 				].map((item, i) => (
 					<motion.div
 						key={item.name}
@@ -431,7 +431,7 @@ export default function Metrics() {
 				>
 					<span className="do-section-label text-do-orange">Capabilities</span>
 					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">
-						Everything your team needs — in one place
+						Everything your team needs, in one place
 					</h2>
 					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">
 						Six capabilities that turn every signal from your jobsite into the
