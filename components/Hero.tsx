@@ -107,9 +107,8 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.55 }}
 					>
-						The unified field intelligence platform that catches change orders the
-						day they happen, and turns every signal from your jobsite into
-						bulletproof payment protection.
+						Catch change orders the day they happen. Turn every signal from your
+						jobsite into bulletproof payment protection.
 					</motion.p>
 
 					<motion.p
@@ -119,8 +118,8 @@ export default function Hero() {
 						transition={{ delay: 0.65 }}
 					>
 						Voice notes, photos, AI calls, and your existing tools, unified into
-						one defensible record. Built for the $2-50M commercial GC and
-						subs-contractors.
+						one defensible record. Built for $2M-50M commercial GCs and
+						subcontractors.
 					</motion.p>
 
 					<motion.div
@@ -136,7 +135,7 @@ export default function Hero() {
 							Book a Demo
 						</a>
 						<a
-							href="#workflows"
+							href="#how-it-works"
 							className="text-sm text-do-text-secondary hover:text-do-text underline underline-offset-4 decoration-do-border hover:decoration-do-text-secondary transition-colors"
 						>
 							See how it protects margins
