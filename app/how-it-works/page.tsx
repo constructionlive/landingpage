@@ -38,7 +38,7 @@ const steps = [
 		icon: Brain,
 		title: "AI catches the money moments",
 		description:
-			"Construction-trained AI listens for the words that cost contractors money , extras, unforeseen conditions, weather delays, no-shows, owner changes. PMs see the alert the same day, not 30 days later.",
+			"Construction-trained AI listens for the words that cost contractors money, extras, unforeseen conditions, weather delays, no-shows, owner changes. PMs see the alert the same day, not 30 days later.",
 		detail: [
 			"Eight categories of money moments tracked",
 			"Same-day alerts to PMs",
@@ -66,14 +66,14 @@ const steps = [
 		icon: ShieldCheck,
 		title: "Pay apps & change orders get approved",
 		description:
-			"Pay apps ship with auto-assembled backup packages, approved in 7 days instead of 45. Change orders submit with day-one documentation owners can't dispute. T&M tickets come with hour-by-hour proof.",
+			"Pay apps ship with auto-assembled backup packages instead of a PM digging through a month of emails. Change orders submit with day-one documentation owners can't dispute. T&M tickets come with hour-by-hour proof.",
 		detail: [
 			"Pay app backup auto-assembled",
 			"Change orders with day-one proof",
 			"T&M tickets with hour-by-hour evidence",
 			"Pushes to Procore, Autodesk, Fieldwire",
 		],
-		example: "Pay App #6 approved in 7 days. Change order #12 ($150K) approved same week with day-one rebar documentation.",
+		example: "Pay App #6 submitted with full backup attached. Change order #12 packet assembled from day-one rebar documentation.",
 	},
 ];
 
@@ -83,7 +83,7 @@ const faqs = [
 	{
 		question: "Who is construction.live built for?",
 		answer:
-			"Small and mid-size commercial general contractors and the subs they hire. Specifically, $5M–$100M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects, plus the electrical, mechanical, and specialty subs working on those jobs. Not built for enterprise GCs, heavy civil, or institutional construction.",
+			"Small and mid-size commercial general contractors and sub-contractors. Specifically, $2-50M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects, plus the electrical, mechanical, and specialty sub-contractors. Not built for enterprise GCs, heavy civil, or institutional construction.",
 	},
 	{
 		question: "Do supers need to learn an app?",
@@ -108,7 +108,7 @@ const faqs = [
 	{
 		question: "What does this cost?",
 		answer:
-			"$100/month per active project. Win one $50K change order or speed up one pay app by 30 days and the platform pays for itself for a lifetime. Built and priced for small and mid-size commercial contractors.",
+			"$1000/month per active project. Win one $50K change order or speed up one pay app by 30 days and the platform pays for itself for a lifetime. Built and priced for small and mid-size commercial contractors.",
 	},
 ];
 
@@ -339,8 +339,8 @@ function InteractiveDemo() {
 									<ShieldCheck className="h-4 w-4 text-emerald-500" />
 								</div>
 								<div className="flex-1">
-									<p className="text-sm font-medium text-do-text">Pay App #6, approved in 7 days</p>
-									<p className="text-xs text-do-text-secondary">Backup auto-assembled, owner first-try approval</p>
+									<p className="text-sm font-medium text-do-text">Pay App #6, backup package attached</p>
+									<p className="text-xs text-do-text-secondary">Auto-assembled, line by line, ready to submit</p>
 								</div>
 							</div>
 							<div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
@@ -348,8 +348,8 @@ function InteractiveDemo() {
 									<ShieldCheck className="h-4 w-4 text-emerald-500" />
 								</div>
 								<div className="flex-1">
-									<p className="text-sm font-medium text-do-text">Change Order #12, $150K approved</p>
-									<p className="text-xs text-do-text-secondary">Day-one rebar documentation, no pushback</p>
+									<p className="text-sm font-medium text-do-text">Change Order #12 packet ready</p>
+									<p className="text-xs text-do-text-secondary">Day-one rebar documentation, owner-ready</p>
 								</div>
 							</div>
 							<div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
@@ -492,12 +492,12 @@ export default function HowItWorksPage() {
 							30 seconds in the field.
 							<br />
 							<span className="text-do-text-secondary font-normal">
-								Pay app approved 38 days faster.
+								A pay app that defends itself.
 							</span>
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
 							Four steps from voice note to approved payment. Built for small and
-							mid-size commercial GCs and the subs they hire.
+							mid-size commercial GCs and sub-contractors.
 						</p>
 					</motion.div>
 				</div>

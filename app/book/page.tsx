@@ -66,7 +66,7 @@ export default function BookPage() {
 							we&apos;d solve them.
 						</p>
 						<p className="text-sm text-do-text-muted">
-							Built for small &amp; mid-size commercial GCs and the subs they hire.
+							Built for small &amp; mid-size commercial GCs and sub-contractors.
 						</p>
 					</motion.div>
 				</div>

@@ -51,7 +51,7 @@ const features = [
 		icon: PhoneCall,
 		title: "AI Outbound Calls",
 		subtitle: "Reporting",
-		tagline: "Our AI calls your supers- not the other way around.",
+		tagline: "Our AI calls your supers, not the other way around.",
 		description:
 			"AI outbound calls turn proactive reporting upside down. Instead of waiting for a super to remember to log a day, our AI calls them at shift change and prompts a quick update. Reporting stops depending on whether anyone remembered the app.",
 		detail:
@@ -107,18 +107,18 @@ const features = [
 		subtitle: "Payment protection",
 		tagline: "Every pay app ships with a complete backup package. First-try approval.",
 		description:
-			"Pay applications submitted with construction.live ship with auto-assembled backup packages: voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. Owners stop disputing. Cycles drop from 45 days to 7.",
+			"Pay applications submitted with construction.live ship with auto-assembled backup packages: voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. Owners stop disputing. Cycles drop from weeks to days.",
 		detail:
 			"At pay-app time, the platform assembles every relevant voice log, photo, transcript, and integration data point: organized by scope item, line by line. What used to take a PM two days of digging through emails and notebooks is ready in 90 seconds.",
 		impact:
-			"Cash flow is the silent killer in construction. Speeding up pay apps by 30 days per cycle pays for the platform for a lifetime. Every contractor we work with sees this on their first pay-app cycle.",
+			"Cash flow is the silent killer in construction. Every week a disputed pay app sits unapproved is a week you are financing the owner's project.",
 		capabilities: [
 			"Auto-assembled backup",
 			"Per-line-item evidence",
 			"Geotagged photos linked to scope",
 			"Quantified progress",
 			"Owner-ready package",
-			"7-day approval cycles",
+			"Ready at submission time",
 		],
 		example:
 			"Pay App #6: backup package ready. 47 voice logs, 184 photos, 12 quantified scope changes, day-by-day progress tied to schedule.",
@@ -137,7 +137,7 @@ const features = [
 		detail:
 			"60 to 80 percent of construction change orders come from documentation problems, not scope problems. The work was done. The contract supported it. But the proof showed up weeks late, or not at all. construction.live builds the proof live.",
 		impact:
-			"One $150K change order won pays for the platform for a decade. Most of our customers see that within the first 90 days.",
+			"At $1000 per active project per month, a single defended change order covers the platform for years. The math only works if the documentation exists before the dispute starts.",
 		capabilities: [
 			"Day-one documentation",
 			"Voice + photo evidence",
@@ -147,7 +147,7 @@ const features = [
 			"Claim-ready packet",
 		],
 		example:
-			"Change order #12: $150K submitted with 47-day documentation trail starting day rebar was found. Approved same week.",
+			"Change order #12: submitted with a 47-day documentation trail starting the day the rebar was found, voice transcript, geotagged photos, and quantified schedule impact attached.",
 		notes: [
 			"Voice transcripts become written record with audio backup",
 			"Works for both prime contracts and subcontract change orders",

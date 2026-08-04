@@ -23,7 +23,7 @@ const features: Feature[] = [
 	{ icon: PhoneCall, label: "AI That Calls You", color: "emerald", detail: "End of shift? Our AI calls your supers and prompts a quick update. Reporting stops depending on whether anyone remembered the app" },
 	{ icon: AlertTriangle, label: "Same-Day Money Alerts", color: "amber", detail: "Extras, unforeseen conditions, weather delays, no-shows \u2014 flagged the moment they\u2019re spoken, not 30 days later in pay-app review" },
 	{ icon: Plug, label: "Integrates With Your Stack", color: "violet", detail: "Procore, Autodesk, Fieldwire, Microsoft 365, push daily logs and change orders into the systems your owner already uses" },
-	{ icon: Receipt, label: "Bulletproof Pay App Packages", color: "pink", detail: "Every pay app auto-assembles a backup package, voice logs, geotagged photos, quantified scope, daily progress. Approved in 7 days" },
+	{ icon: Receipt, label: "Bulletproof Pay App Packages", color: "pink", detail: "Every pay app auto-assembles a backup package, voice logs, geotagged photos, quantified scope, daily progress. The proof ships with the invoice, not weeks later" },
 	{ icon: WifiOff, label: "Works Offline on Jobsites", color: "orange", detail: "Bad reception? Voice notes queue and sync when service returns. Built for the reality of where construction actually happens" },
 ];
 

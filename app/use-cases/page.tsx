@@ -70,7 +70,7 @@ const useCases = [
 			"Claim-ready packets",
 		],
 		example:
-			"We won a $150K change order last month because we documented the unexpected rebar from day one.",
+			"Found unexpected rebar in the south footing, not on the drawings. Crew stopped 45 minutes while we figured it out. Taking photos now.",
 	},
 	{
 		number: "03",
@@ -78,25 +78,25 @@ const useCases = [
 		badge: "Biggest ROI",
 		title: "Bulletproof Pay Applications",
 		roles: ["Project managers", "Project accountants", "GCs"],
-		tagline: "Pay apps approved in 7 days instead of 45.",
+		tagline: "Every pay app ships with its backup package already attached.",
 		description:
-			"Bulletproof pay applications ship with auto-assembled backup packages, voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. Owners stop disputing. Cash flow returns.",
+			"Bulletproof pay applications ship with auto-assembled backup packages, voice logs, geotagged photos, quantified scope changes, daily progress, and timestamps for every line item. The owner gets the documentation before they think to ask for it.",
 		detail:
 			"At pay-app time, the platform assembles every relevant voice log, photo, transcript, and integration data point, organized by scope item. What used to take a PM two days of digging through emails and notebooks is ready in 90 seconds.",
 		context:
 			"Pay applications push directly into Procore, Autodesk, and other systems your owner requires, no copy-paste, no manual assembly. First-try approval becomes the norm.",
 		before: "Pay app filed. Owner: 'Disputed. Please provide documentation.' PM digs through 30 days of emails and notebooks. 45-day cycles. Cash flow problems.",
-		after: "Pay app filed with full backup auto-assembled. Approved in 7 days. Cash flow completely different.",
+		after: "Pay app filed with full backup auto-assembled. Line-by-line proof attached, nothing left to dig for.",
 		capabilities: [
 			"Auto-assembled backup",
 			"Per-line-item evidence",
 			"Geotagged photos linked to scope",
 			"Quantified progress",
 			"Procore + Autodesk push",
-			"7-day approval cycles",
+			"Ready at submission time",
 		],
 		example:
-			"Our pay apps used to take 45 days. Now they're approved in a week. Cash flow is completely different.",
+			"Level 3 slab pour finished today, roughly 40 percent of the concrete scope complete. Photos are up for the pay app.",
 	},
 	{
 		number: "04",
@@ -104,7 +104,7 @@ const useCases = [
 		badge: "",
 		title: "T&M That Doesn't Get Disputed",
 		roles: ["Electrical subs", "Mechanical subs", "Specialty contractors"],
-		tagline: "Every hour timestamped. Zero pushback on T&M tickets.",
+		tagline: "Every hour timestamped, so T&M tickets arrive with their own proof.",
 		description:
 			"T&M tracking captures every labor hour, every outlet, every condition as it happens, not reconstructed from memory three weeks later. Supers voice-log T&M directly from the field; integration data backs it up. When owners push back, you have the proof, hour by hour.",
 		detail:
@@ -112,7 +112,7 @@ const useCases = [
 		context:
 			"Voice logs route to the right T&M ticket, the right scope, the right pay-app line, automatically. Owners see hour-by-hour proof when they ask for it.",
 		before: "T&M tickets reconstructed from memory at end of project. Owner disputes 350 of 800 hours. Negotiate, eat the loss, or fight it.",
-		after: "Every hour voice-logged in real time. T&M tickets ship with hour-by-hour proof. Full invoice paid. Zero pushback.",
+		after: "Every hour voice-logged in real time. T&M tickets ship with hour-by-hour proof the owner can check against photos.",
 		capabilities: [
 			"Real-time hour logging",
 			"Per-task voice notes",
@@ -122,7 +122,7 @@ const useCases = [
 			"Owner-ready timeline",
 		],
 		example:
-			"Full $41K invoice paid. Zero pushback. Every hour was timestamped with photos.",
+			"Ran 14 T&M hours on the added outlets in Suite 210 today. Photos of every rough-in before we closed the wall.",
 	},
 	{
 		number: "05",
@@ -148,7 +148,7 @@ const useCases = [
 			"Claim-ready packet",
 		],
 		example:
-			"Our super documented unexpected soil conditions daily. When the owner pushed back, we had 3 days of logs with photos. Approved same week.",
+			"Hit wet clay at the south footing again, third day running. Logging depth measurements and photos before we backfill.",
 	},
 	{
 		number: "06",
@@ -216,7 +216,7 @@ const useCases = [
 		context:
 			"Set the schedule, set the questions. Calls go out at shift change, capture a 30-second summary, transcribe, categorize, and route to the right project and scope.",
 		before: "Daily logs filed 40 percent of days. PMs chase supers for updates. Reporting depends on whether anyone remembered.",
-		after: "AI calls every super at shift change. Reporting rate goes to 95 percent+ within the first week. PMs stop chasing.",
+		after: "AI calls every super at shift change. Reporting stops depending on whether anyone remembered the app. PMs stop chasing.",
 		capabilities: [
 			"Scheduled outbound calls",
 			"End-of-shift prompts",
@@ -545,17 +545,18 @@ export default function UseCasesPage() {
 					>
 						<span className="do-section-label text-do-orange">Use Cases</span>
 						<h1 className="text-4xl md:text-6xl font-bold text-do-text mt-4 mb-6">
-							8 ways small & mid-size commercial contractors protect $1M a year.
+							8 ways small &amp; mid-size commercial contractors stop losing margin
+							to thin documentation.
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
 							From voice daily reports to AI outbound calls to bulletproof pay-app
 							backup, every use case below is the difference between getting paid
-							and absorbing the loss. Built for the $5M–$100M commercial GC and
-							the subs they hire.
+							and absorbing the loss. Built for the $2-50M commercial GC and
+							sub-contractors.
 						</p>
 					</motion.div>
 
-					{/* Stats */}
+					{/* Stats, hidden until we have real customer numbers to attribute.
 					<motion.div
 						className="flex flex-wrap justify-center gap-8 mt-12"
 						initial={{ opacity: 0, y: 20 }}
@@ -579,6 +580,7 @@ export default function UseCasesPage() {
 							<p className="text-sm text-do-text-muted">protected annually</p>
 						</div>
 					</motion.div>
+					*/}
 				</div>
 			</section>
 
@@ -606,7 +608,7 @@ export default function UseCasesPage() {
 								Commercial GCs
 							</span>
 							<span className="px-3 py-1.5 text-xs text-do-text-secondary bg-do-bg border border-do-border rounded-full">
-								Electrical / Mechanical subs
+								Electrical / Mechanical / Concrete subs
 							</span>
 						</div>
 					</div>

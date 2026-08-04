@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { Building2, Zap, Wrench, Hammer, ShoppingBag, UtensilsCrossed } from "lucide-react";
 
 const industries = [
-	{ icon: Building2, name: "Small & Mid-Size Commercial GCs", border: "border-blue-500/20", iconColor: "text-blue-600 dark:text-blue-400", iconBg: "bg-blue-500/10", description: "Tenant fit-outs, mixed-use, light commercial new build. Built for GCs running $5M–$100M projects where one super covers multiple jobs." },
+	{ icon: Building2, name: "Small & Mid-Size Commercial GCs and Subs", border: "border-blue-500/20", iconColor: "text-blue-600 dark:text-blue-400", iconBg: "bg-blue-500/10", description: "Tenant fit-outs, mixed-use, light commercial new build. Built for GCs running $2-50M projects where one super covers multiple jobs." },
 	{ icon: Zap, name: "Electrical Subs", border: "border-amber-500/20", iconColor: "text-amber-600 dark:text-amber-400", iconBg: "bg-amber-500/10", description: "Every outlet, every condition, every hour tracked as it happens. T&M billing on commercial fit-outs that doesn't get disputed." },
 	{ icon: Wrench, name: "Mechanical & Plumbing Subs", border: "border-violet-500/20", iconColor: "text-violet-600 dark:text-violet-400", iconBg: "bg-violet-500/10", description: "HVAC, plumbing, controls. Owner-supplied equipment delays, coordination issues, and rough-in changes captured the day they happen." },
 	{ icon: Hammer, name: "Specialty Subs (Drywall, Finishes, Framing)", border: "border-emerald-500/20", iconColor: "text-emerald-600 dark:text-emerald-400", iconBg: "bg-emerald-500/10", description: "Trade-stacking, schedule compression, late-changing finish selections. Voice notes route to the right T&M ticket automatically." },
@@ -26,7 +26,7 @@ export default function Industries() {
 				<motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
 					<span className="do-section-label text-do-orange">Built for who, not just what</span>
 					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">For Small & Mid-Size Commercial Contractors</h2>
-					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">If you&apos;re a $5M–$100M commercial GC or one of the subs they hire, this is built for you. One super covering three jobs. PM doing their own pay apps. Margins thin enough that one disputed change order matters.</p>
+					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">If you&apos;re a $2M–$50M commercial GC or  sub-contractors, this is built for you. One super covering three jobs. PM doing their own pay apps. Margins thin enough that one disputed change order matters.</p>
 				</motion.div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

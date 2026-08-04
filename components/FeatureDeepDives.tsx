@@ -332,12 +332,12 @@ function PayAppMockup() {
 					<div className="flex items-center gap-2 mb-1">
 						<CheckCircle2 className="h-4 w-4 text-emerald-500" />
 						<p className="text-xs font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-							Owner first-try approval
+							Backup package ready
 						</p>
 					</div>
 					<p className="text-sm text-do-text leading-relaxed">
-						47 voice logs, 184 photos, 12 scope changes, auto-assembled.
-						Approved in 7 days. Cycle was 45.
+						47 voice logs, 184 photos, 12 scope changes, auto-assembled and
+						linked to the pay app line by line.
 					</p>
 				</motion.div>
 			</div>
@@ -357,7 +357,7 @@ export default function FeatureDeepDives() {
 				description="Supers leave a voice note when something happens, or our AI calls them at shift change. Either way, the platform transcribes, categorizes, and routes to the right project and scope. No forms, no typing, no app to fight with."
 				metrics={[
 					{ value: "30 sec", label: "Per update" },
-					{ value: "97%", label: "Adoption rate" },
+					{ value: "2 ways in", label: "Voice note or AI call" },
 				]}
 				bg="default"
 				mockup={<VoiceMockup />}
@@ -383,8 +383,8 @@ export default function FeatureDeepDives() {
 				title="Pay apps approved first-try. Change orders won."
 				description="At pay-app time, the platform auto-assembles the backup package, voice logs, geotagged photos, quantified scope changes, timestamps for every line item. Push to Procore, Autodesk, or whatever your owner already uses. First-try approval becomes the norm."
 				metrics={[
-					{ value: "7 days", label: "Pay app approval" },
-					{ value: "92%", label: "Change orders won" },
+					{ value: "90 sec", label: "Backup package assembled" },
+					{ value: "Day one", label: "Change-order proof" },
 				]}
 				bg="default"
 				mockup={<PayAppMockup />}

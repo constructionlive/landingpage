@@ -20,8 +20,8 @@ import {
 const industries = [
 	{
 		icon: Building2,
-		title: "Small & Mid-Size Commercial GCs",
-		description: "$5M–$100M tenant fit-out, mixed-use, light commercial new build",
+		title: "Small & Mid-Size Commercial GCs and subs",
+		description: "$2M-50M tenant fit-out, mixed-use, light commercial new build",
 	},
 	{
 		icon: Zap,
@@ -75,7 +75,7 @@ const beliefs = [
 		number: "4",
 		title: "Built for the contractor doing the work, not the consultant studying it.",
 		description:
-			"Enterprise construction software is designed for committee approval at large GCs. We're built for the $5M–$100M commercial contractor where the PM is sometimes the owner and the super is covering three jobs. Different problem, different product.",
+			"Enterprise construction software is designed for committee approval at large GCs. We're built for the $2M-50M commercial contractor where the PM is sometimes the owner and the super is covering three jobs. Different problem, different product.",
 	},
 	{
 		number: "5",
@@ -110,7 +110,7 @@ const problems = [
 		number: "04",
 		title: "Small and mid-size commercial contractors are underserved.",
 		description:
-			"Enterprise construction software is built and priced for large GCs with dedicated documentation staff. The $5M–$100M commercial contractor, where margins are thin and one disputed change order matters, gets no purpose-built tool.",
+			"Enterprise construction software is built and priced for large GCs with dedicated documentation staff. The $2M-50M commercial contractor, where margins are thin and one disputed change order matters, gets no purpose-built tool.",
 	},
 ];
 
@@ -120,12 +120,12 @@ const faqs = [
 	{
 		question: "Who exactly is construction.live built for?",
 		answer:
-			"Small and mid-size commercial general contractors, typically $5M–$100M annual revenue, and the electrical, mechanical, and specialty subs they hire. We're focused on tenant fit-out, mixed-use, light commercial new build, retail, and hospitality. Not built for enterprise GCs, heavy civil, or institutional/healthcare.",
+			"Small and mid-size commercial general contractors, typically $2M-50M annual revenue, and the electrical, mechanical, and specialty subs contractors. We're focused on tenant fit-out, mixed-use, light commercial new build, retail, and hospitality. Not built for enterprise GCs, heavy civil, or institutional/healthcare.",
 	},
 	{
 		question: "Why focus on small and mid-size, not enterprise?",
 		answer:
-			"Enterprise GCs already have dedicated documentation staff, PMO teams, and software budgets sized for committee evaluation. Their problem isn't ours. The $5M–$100M commercial contractor, where the PM is often the owner and the super is covering three jobs, has the documentation problem we solve, and they don't have a tool built for them. That's our market.",
+			"Enterprise GCs already have dedicated documentation staff, PMO teams, and software budgets sized for committee evaluation. Their problem isn't ours. The $2M-50M commercial contractor, where the PM is often the owner and the super is covering three jobs, has the documentation problem we solve, and they don't have a tool built for them. That's our market.",
 	},
 	{
 		question: "What makes construction.live different from Raken, Fieldwire, or Procore field logs?",
@@ -289,8 +289,8 @@ function IndustriesSection() {
 						Built for commercial. Not for everyone.
 					</h2>
 					<p className="text-base text-do-text-secondary max-w-2xl mx-auto">
-						Small and mid-size commercial GCs and the subs they hire. If you run
-						$5M–$100M projects and your margins live or die by how well the field
+						Small and mid-size commercial GCs and sub-contractors. If you run
+						$2M-50M projects and your margins live or die by how well the field
 						gets documented, this is built for you.
 					</p>
 				</motion.div>
@@ -501,9 +501,8 @@ export default function AboutPage() {
 							</span>
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
-							construction.live is unified field intelligence for the $5M–$100M
-							commercial GC and the electrical, mechanical, and specialty subs
-							they hire. We turn every signal from your jobsite into bulletproof
+							construction.live is unified field intelligence for the $2M-50M
+							commercial GC and the electrical, mechanical, and specialty sub-contractors							contractors. We turn every signal from your jobsite into bulletproof
 							payment protection.
 						</p>
 					</motion.div>
@@ -515,16 +514,16 @@ export default function AboutPage() {
 						transition={{ delay: 0.3, duration: 0.5 }}
 					>
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">$5M–$100M</p>
-							<p className="text-sm text-do-text-muted">target GC size</p>
+							<p className="text-3xl font-bold text-do-orange">$1M–$50M</p>
+							<p className="text-sm text-do-text-muted">GC or sub-contractor size</p>
 						</div>
+						{/* <div className="text-center">
+							<p className="text-3xl font-bold text-do-orange">8 categories</p>
+							<p className="text-sm text-do-text-muted">money moments tracked</p>
+						</div> */}
 						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">$1M+</p>
-							<p className="text-sm text-do-text-muted">protected per contractor</p>
-						</div>
-						<div className="text-center">
-							<p className="text-3xl font-bold text-do-orange">7 days</p>
-							<p className="text-sm text-do-text-muted">pay-app approval</p>
+							<p className="text-3xl font-bold text-do-orange">$1000/mo</p>
+							<p className="text-sm text-do-text-muted">per active project</p>
 						</div>
 						<div className="text-center">
 							<p className="text-3xl font-bold text-do-orange">30 sec</p>
@@ -565,7 +564,7 @@ export default function AboutPage() {
 						</p>
 						<p className="text-base text-do-text-secondary leading-relaxed">
 							Enterprise GCs solve this with dedicated documentation staff and
-							software priced for committee approval. The $5M–$100M commercial
+							software priced for committee approval. The $2M-50M commercial
 							contractor, where the PM is sometimes the owner and one super
 							covers multiple jobs: doesn&apos;t have a tool built for them.
 						</p>

@@ -119,8 +119,8 @@ export default function Hero() {
 						transition={{ delay: 0.65 }}
 					>
 						Voice notes, photos, AI calls, and your existing tools, unified into
-						one defensible record. Built for the $5M–$100M commercial GC and the
-						subs they hire.
+						one defensible record. Built for the $2-50M commercial GC and
+						subs-contractors.
 					</motion.p>
 
 					<motion.div
@@ -143,14 +143,7 @@ export default function Hero() {
 						</a>
 					</motion.div>
 
-					<motion.p
-						className="mt-6 text-xs font-mono text-do-text-muted uppercase tracking-wider"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.9 }}
-					>
-						Helping contractors protect $50M+ in annual billings
-					</motion.p>
+					{/* Removed until attributable: "Helping contractors protect $50M+ in annual billings" */}
 				</div>
 
 				{/* Unified field intelligence showcase */}
@@ -259,7 +252,8 @@ export default function Hero() {
 					</div>
 				</motion.div>
 
-				{/* Stats strip */}
+				{/* Stats strip, hidden until we have real customer numbers to attribute.
+				    Restore with attribution (e.g. "across N pilot contractors, 2026").
 				<motion.div
 					className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto"
 					initial={{ opacity: 0, y: 30 }}
@@ -279,6 +273,7 @@ export default function Hero() {
 						</div>
 					))}
 				</motion.div>
+				*/}
 			</div>
 
 			<div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-do-bg to-transparent" />
