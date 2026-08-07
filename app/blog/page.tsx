@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getPublishedPosts } from "@/lib/convexServer";
 import EditPostLink from "@components/blog/EditPostLink";
+import WritePostLink from "@components/blog/WritePostLink";
 
 const siteUrl = "https://construction.live";
 export const dynamic = "force-dynamic";
@@ -61,12 +62,7 @@ export default async function BlogPage() {
               >
                 Back to home
               </Link>
-              <Link
-                className="rounded-md border border-do-orange/35 bg-do-orange/10 px-4 py-2 text-sm text-do-orange transition hover:border-do-orange/60 hover:bg-do-orange/15"
-                href="/blog/new"
-              >
-                Write post
-              </Link>
+              <WritePostLink className="rounded-md border border-do-orange/35 bg-do-orange/10 px-4 py-2 text-sm text-do-orange transition hover:border-do-orange/60 hover:bg-do-orange/15" />
             </div>
           </div>
 

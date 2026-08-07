@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useConvex, useConvexAuth, useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import BlogEditor from "@components/blog/BlogEditor";
@@ -10,7 +11,7 @@ import BlogEditor from "@components/blog/BlogEditor";
 export default function NewBlogPage() {
   const router = useRouter();
   const convex = useConvex();
-  const { isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
   const me = useQuery(api.users.me, isAuthenticated ? {} : "skip");
   const createPost = useMutation(api.posts.create);
   const generateImageUploadUrl = useMutation(api.posts.generateImageUploadUrl);
@@ -189,6 +190,35 @@ export default function NewBlogPage() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  const role = me?.profile?.role;
+  const canWrite = role === "writer" || role === "admin";
+  const checkingAccess = authLoading || (isAuthenticated && me === undefined);
+
+  if (checkingAccess) {
+    return (
+      <main className="mx-auto min-h-screen w-full max-w-3xl px-6 py-12 bg-do-bg">
+        <p className="text-sm text-do-text-secondary">Checking access...</p>
+      </main>
+    );
+  }
+
+  if (!canWrite) {
+    return (
+      <main className="mx-auto min-h-screen w-full max-w-3xl px-6 py-12 bg-do-bg">
+        <h1 className="text-4xl font-bold text-do-text">Writer access required</h1>
+        <p className="mt-2 text-sm text-do-text-secondary">
+          Your account does not have permission to publish blog posts.
+        </p>
+        <Link
+          className="mt-6 inline-flex rounded-md border border-do-border px-4 py-2 text-sm text-do-text transition hover:border-do-orange/50 hover:text-do-orange"
+          href="/blog"
+        >
+          Back to blog
+        </Link>
+      </main>
+    );
   }
 
   return (

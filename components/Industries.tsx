@@ -50,7 +50,7 @@ export default function Industries() {
 						</div>
 						<div>
 							<p className="text-sm font-semibold text-do-orange font-mono uppercase tracking-wider mb-1">Construction-trained AI</p>
-							<p className="text-do-text">Our AI speaks contractor. It knows the difference between a change order and a back-charge, between an unforeseen condition and a coordination issue. When your super says &ldquo;the rebar wasn&apos;t on the prints,&rdquo; the AI hears &ldquo;potential change order, document immediately.&rdquo;</p>
+							<p className="text-do-text">Our AI speaks contractor. It knows the difference between a change order and a back-charge, between an unforeseen condition and a coordination issue. When your super says &ldquo;the owner&apos;s guy told us to move the panel,&rdquo; the AI hears &ldquo;owner-directed change, document immediately.&rdquo;</p>
 						</div>
 					</div>
 				</motion.div>
