@@ -1,6 +1,7 @@
 "use client";
 
 import { Mic, Clock, WifiOff, Plug, MapPin, Brain } from "lucide-react";
+import BrandMark from "./BrandMark";
 
 const trustBuilders = [
 	{ icon: Mic, label: "Voice, photos, AI calls, unified into one record" },
@@ -36,34 +37,7 @@ export default function Footer() {
 				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
 					<div className="flex items-center gap-2.5">
 						<a href="/" className="flex items-center gap-2.5" aria-label="construction.live home">
-							<svg
-								width={28}
-								height={28}
-								viewBox="0 0 32 32"
-								className="rounded-md shrink-0"
-								role="img"
-								aria-hidden="true"
-							>
-								<defs>
-									<linearGradient id="footer-logo-bg" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
-										<stop offset="0" stopColor="#132238" />
-										<stop offset="1" stopColor="#0A1628" />
-									</linearGradient>
-									<linearGradient id="footer-logo-orange" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-										<stop offset="0" stopColor="#FF8458" />
-										<stop offset="1" stopColor="#FF6B35" />
-									</linearGradient>
-								</defs>
-								<rect width="32" height="32" rx="6" fill="url(#footer-logo-bg)" />
-								<path
-									d="M 11 10 L 21 16 L 11 22 Z"
-									fill="url(#footer-logo-orange)"
-									stroke="#FF6B35"
-									strokeWidth="1.5"
-									strokeLinejoin="round"
-									strokeLinecap="round"
-								/>
-							</svg>
+							<BrandMark className="h-7 w-7 text-do-orange" />
 							<span className="text-do-text font-semibold tracking-tight">
 								construction<span className="text-do-orange">.live</span>
 							</span>
