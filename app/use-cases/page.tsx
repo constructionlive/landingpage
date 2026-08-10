@@ -551,7 +551,7 @@ export default function UseCasesPage() {
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
 							From voice daily reports to AI outbound calls to bulletproof pay-app
 							backup, every use case below is the difference between getting paid
-							and absorbing the loss. Built for the $2-50M commercial GC and
+							and absorbing the loss. Built for the $2M-50M commercial GC and
 							sub-contractors.
 						</p>
 					</motion.div>

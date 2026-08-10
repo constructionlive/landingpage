@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { Building2, Zap, Wrench, Hammer, ShoppingBag, UtensilsCrossed } from "lucide-react";
 
 const industries = [
-	{ icon: Building2, name: "Small & Mid-Size Commercial GCs and Subs", border: "border-blue-500/20", iconColor: "text-blue-600 dark:text-blue-400", iconBg: "bg-blue-500/10", description: "Tenant fit-outs, mixed-use, light commercial new build. Built for GCs running $2-50M projects where one super covers multiple jobs." },
+	{ icon: Building2, name: "Small & Mid-Size Commercial GCs and Subs", border: "border-blue-500/20", iconColor: "text-blue-600 dark:text-blue-400", iconBg: "bg-blue-500/10", description: "Tenant fit-outs, mixed-use, light commercial new build. Built for GCs running $2M-50M projects where one super covers multiple jobs." },
 	{ icon: Zap, name: "Electrical Subs", border: "border-amber-500/20", iconColor: "text-amber-600 dark:text-amber-400", iconBg: "bg-amber-500/10", description: "Every outlet, every condition, every hour tracked as it happens. T&M billing on commercial fit-outs that doesn't get disputed." },
 	{ icon: Wrench, name: "Mechanical & Plumbing Subs", border: "border-violet-500/20", iconColor: "text-violet-600 dark:text-violet-400", iconBg: "bg-violet-500/10", description: "HVAC, plumbing, controls. Owner-supplied equipment delays, coordination issues, and rough-in changes captured the day they happen." },
 	{ icon: Hammer, name: "Specialty Subs (Drywall, Finishes, Framing)", border: "border-emerald-500/20", iconColor: "text-emerald-600 dark:text-emerald-400", iconBg: "bg-emerald-500/10", description: "Trade-stacking, schedule compression, late-changing finish selections. Voice notes route to the right T&M ticket automatically." },

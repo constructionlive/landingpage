@@ -83,7 +83,7 @@ const faqs = [
 	{
 		question: "Who is construction.live built for?",
 		answer:
-			"Small and mid-size commercial general contractors and sub-contractors. Specifically, $2-50M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects, plus the electrical, mechanical, and specialty sub-contractors. Not built for enterprise GCs, heavy civil, or institutional construction.",
+			"Small and mid-size commercial general contractors and sub-contractors. Specifically, $2M-50M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects, plus the electrical, mechanical, and specialty sub-contractors. Not built for enterprise GCs, heavy civil, or institutional construction.",
 	},
 	{
 		question: "Do supers need to learn an app?",
