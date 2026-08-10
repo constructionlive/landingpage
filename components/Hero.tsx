@@ -89,15 +89,15 @@ export default function Hero() {
 					</motion.div>
 
 					<motion.h1
-						className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] mb-6"
+						className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] mb-6"
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.35, duration: 0.7 }}
 					>
-						<span className="text-do-text">Get Paid for Every Extra.</span>
+						<span className="text-do-text">Get paid for what you did.</span>
 						<br />
 						<span className="bg-gradient-to-r from-do-orange via-orange-400 to-amber-400 bg-clip-text text-transparent">
-							Defend Every Change Order.
+							Get covered for what you couldn't.
 						</span>
 					</motion.h1>
 
@@ -107,8 +107,7 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.55 }}
 					>
-						Catch change orders the day they happen. Turn every signal from your
-						jobsite into bulletproof payment protection.
+						Construction.live AI reads every email, voice note, document revision and photo that comes off your project, files it against the right job, links it to the drawing revision and schedule behind it, and flags the mismatches.
 					</motion.p>
 
 					<motion.p
@@ -117,9 +116,7 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.65 }}
 					>
-						Voice notes, photos, AI calls, and your existing tools, unified into
-						one defensible record. Built for $2M-50M commercial GCs and
-						subcontractors.
+						Building your paper trail in real time with AI while you build.
 					</motion.p>
 
 					<motion.div
