@@ -89,15 +89,16 @@ export default function Hero() {
 					</motion.div>
 
 					<motion.h1
-						className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] mb-6"
+						className="font-bold tracking-tight mb-6"
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.35, duration: 0.7 }}
 					>
-						<span className="text-do-text">Get paid for what you did.</span>
-						<br />
-						<span className="bg-gradient-to-r from-do-orange via-orange-400 to-amber-400 bg-clip-text text-transparent">
-							Get covered for what you couldn't.
+						<span className="block pb-1 bg-gradient-to-r from-do-orange via-orange-400 to-amber-400 bg-clip-text text-transparent text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.02] text-balance">
+							Failing to get on top of a project's paper work?
+						</span>
+						<span className="block mt-2 sm:mt-3 text-do-text text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-[1.15] text-balance">
+							Save yourself with our AI project management!
 						</span>
 					</motion.h1>
 
@@ -116,7 +117,7 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.65 }}
 					>
-						Building your paper trail in real time with AI while you build.
+						Creating your paper trail in real time with AI while you build.
 					</motion.p>
 
 					<motion.div
