@@ -83,7 +83,7 @@ const faqs = [
 	{
 		question: "Who is construction.live built for?",
 		answer:
-			"Small and mid-size commercial general contractors and sub-contractors. Specifically, $2M-50M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects, plus the electrical, mechanical, and specialty sub-contractors. Not built for enterprise GCs, heavy civil, or institutional construction.",
+			"Small and mid-size commercial general contractors and subcontractors. Specifically, $2M-50M commercial GCs running tenant fit-out, light commercial new build, retail, and hospitality projects, plus the electrical, mechanical, and specialty subcontractors. Not built for enterprise GCs, heavy civil, or institutional construction.",
 	},
 	{
 		question: "Do supers need to learn an app?",
@@ -497,7 +497,7 @@ export default function HowItWorksPage() {
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
 							Four steps from voice note to approved payment. Built for small and
-							mid-size commercial GCs and sub-contractors.
+							mid-size commercial GCs and subcontractors.
 						</p>
 					</motion.div>
 				</div>

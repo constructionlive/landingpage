@@ -19,7 +19,6 @@ interface FeatureCard {
 	icon: LucideIcon;
 	title: string;
 	description: string;
-	featured?: boolean;
 }
 
 /* Ordered the way the story runs: the connected platform first, then revision
@@ -31,7 +30,6 @@ const features: FeatureCard[] = [
 		title: "One Connected Platform",
 		description:
 			"Field app, email and your team all feed one place. Every record, submittals, permits, equipment, finance, in context and connected.",
-		featured: true,
 	},
 	{
 		icon: GitBranch,
@@ -107,25 +105,13 @@ export default function FeatureGrid() {
 					{features.map((feature, i) => (
 						<motion.div
 							key={feature.title}
-							className={`group rounded-2xl border p-6 backdrop-blur-sm transition-all hover:-translate-y-1 ${
-								feature.featured
-									? "border-do-orange/25 bg-do-orange/[0.04] hover:border-do-orange/40"
-									: "border-do-border bg-do-bg-card/60 hover:border-do-border-accent"
-							}`}
+							className="group rounded-2xl border border-do-border bg-do-bg-card/60 p-6 backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-do-orange/40 hover:bg-do-orange/[0.04]"
 							initial={{ opacity: 0, y: 25 }}
 							animate={inView ? { opacity: 1, y: 0 } : {}}
 							transition={{ delay: i * 0.07, duration: 0.5 }}
 						>
-							<div
-								className={`h-11 w-11 rounded-xl border flex items-center justify-center mb-4 ${
-									feature.featured
-										? "bg-do-orange/15 border-do-orange/25"
-										: "bg-do-bg-light border-do-border"
-								}`}
-							>
-								<feature.icon
-									className={`h-5 w-5 ${feature.featured ? "text-do-orange" : "text-do-text-secondary group-hover:text-do-orange transition-colors"}`}
-								/>
+							<div className="h-11 w-11 rounded-xl border border-do-border bg-do-bg-light flex items-center justify-center mb-4 transition-colors group-hover:border-do-orange/25 group-hover:bg-do-orange/15">
+								<feature.icon className="h-5 w-5 text-do-text-secondary transition-colors group-hover:text-do-orange" />
 							</div>
 							<h3 className="text-base font-semibold text-do-text mb-2">{feature.title}</h3>
 							<p className="text-sm text-do-text-secondary leading-relaxed">

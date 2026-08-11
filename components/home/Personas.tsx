@@ -105,7 +105,7 @@ export default function Personas() {
 						Commercial GCs & Subcontractors
 					</h2>
 					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">
-						construction.live provides unified field intelligence for the $2M-50M commercial GC and the electrical, mechanical, and specialty sub-contractors contractors.
+						construction.live provides unified field intelligence for the $2M-50M commercial GC and the electrical, mechanical, and specialty subcontractors.
 						
 					</p>
 				</motion.div>

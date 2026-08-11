@@ -289,7 +289,7 @@ function IndustriesSection() {
 						Built for commercial. Not for everyone.
 					</h2>
 					<p className="text-base text-do-text-secondary max-w-2xl mx-auto">
-						Small and mid-size commercial GCs and sub-contractors. If you run
+						Small and mid-size commercial GCs and subcontractors. If you run
 						$2M-50M projects and your margins live or die by how well the field
 						gets documented, this is built for you.
 					</p>
@@ -502,7 +502,7 @@ export default function AboutPage() {
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
 							construction.live is unified field intelligence for the $2M-50M
-							commercial GC and the electrical, mechanical, and specialty sub-contractors							contractors. We turn every signal from your jobsite into bulletproof
+							commercial GC and the electrical, mechanical, and specialty subcontractors							contractors. We turn every signal from your jobsite into bulletproof
 							payment protection.
 						</p>
 					</motion.div>
@@ -515,7 +515,7 @@ export default function AboutPage() {
 					>
 						<div className="text-center">
 							<p className="text-3xl font-bold text-do-orange">$1M–$50M</p>
-							<p className="text-sm text-do-text-muted">GC or sub-contractor size</p>
+							<p className="text-sm text-do-text-muted">GC or subcontractor size</p>
 						</div>
 						{/* <div className="text-center">
 							<p className="text-3xl font-bold text-do-orange">8 categories</p>

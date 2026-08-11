@@ -107,7 +107,7 @@ export default function PilotResults() {
 					animate={inView ? { opacity: 1 } : {}}
 					transition={{ delay: 0.5 }}
 				>
-					Across $2M–$50M commercial GCs and sub-contractors
+					Across $2M–$50M commercial GCs and subcontractors
 				</motion.p>
 			</div>
 		</section>

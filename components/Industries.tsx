@@ -26,7 +26,7 @@ export default function Industries() {
 				<motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
 					<span className="do-section-label text-do-orange">Built for who, not just what</span>
 					<h2 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-5">For Small & Mid-Size Commercial Contractors</h2>
-					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">If you&apos;re a $2M–$50M commercial GC or  sub-contractors, this is built for you. One super covering three jobs. PM doing their own pay apps. Margins thin enough that one disputed change order matters.</p>
+					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">If you&apos;re a $2M–$50M commercial GC or  subcontractors, this is built for you. One super covering three jobs. PM doing their own pay apps. Margins thin enough that one disputed change order matters.</p>
 				</motion.div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

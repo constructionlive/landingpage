@@ -552,7 +552,7 @@ export default function UseCasesPage() {
 							From voice daily reports to AI outbound calls to bulletproof pay-app
 							backup, every use case below is the difference between getting paid
 							and absorbing the loss. Built for the $2M-50M commercial GC and
-							sub-contractors.
+							subcontractors.
 						</p>
 					</motion.div>
 
