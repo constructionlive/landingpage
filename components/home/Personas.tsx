@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HardHat, Building2, ClipboardList, Users, CheckCircle2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -54,7 +54,7 @@ const personas: Persona[] = [
 		],
 	},
 	{
-		key: "Site Worker",
+		key: "Site Super",
 		icon: Users,
 		headline: "Do the hard work all day, then still have forms to fill out.",
 		problem:
@@ -74,6 +74,20 @@ export default function Personas() {
 	const [activeKey, setActiveKey] = useState(personas[0].key);
 	const active = personas.find((p) => p.key === activeKey) ?? personas[0];
 
+	/* Cycle through the roles on its own until someone picks one, then leave it alone. */
+	const [picked, setPicked] = useState(false);
+
+	useEffect(() => {
+		if (picked || !inView) return;
+		const id = setInterval(() => {
+			setActiveKey((current) => {
+				const next = personas.findIndex((p) => p.key === current) + 1;
+				return personas[next % personas.length].key;
+			});
+		}, 4000);
+		return () => clearInterval(id);
+	}, [picked, inView]);
+
 	return (
 		<section id="who-its-for" className="relative py-24 md:py-32 overflow-hidden bg-do-bg-card">
 			<div className="absolute inset-0 do-blueprint-grid-dense pointer-events-none" />
@@ -86,13 +100,13 @@ export default function Personas() {
 					animate={inView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6 }}
 				>
-					<span className="do-section-label text-do-orange">What it does for you</span>
+					<span className="do-section-label text-do-orange">Who is it for</span>
 					<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-do-text mt-4 mb-5 tracking-tight">
-						Pick your side of the job
+						Commercial GCs & Subcontractors
 					</h2>
 					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">
-						The same connected record, seen from wherever you sit. Choose a role to
-						see what changes day to day.
+						construction.live provides unified field intelligence for the $2M-50M commercial GC and the electrical, mechanical, and specialty sub-contractors contractors.
+						
 					</p>
 				</motion.div>
 
@@ -109,7 +123,10 @@ export default function Personas() {
 							<button
 								key={persona.key}
 								type="button"
-								onClick={() => setActiveKey(persona.key)}
+								onClick={() => {
+									setPicked(true);
+									setActiveKey(persona.key);
+								}}
 								className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium transition-colors ${
 									isActive
 										? "border-do-orange/40 text-do-orange bg-do-orange/[0.07]"
