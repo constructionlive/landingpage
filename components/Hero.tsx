@@ -143,7 +143,7 @@ export default function Hero() {
 				</div>
 
 				{/* Unified field intelligence showcase */}
-				<motion.div
+				{/* <motion.div
 					className="mt-16 max-w-3xl mx-auto"
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -167,7 +167,7 @@ export default function Hero() {
 							</div>
 						</div>
 
-						{/* Voice note */}
+				
 						<div className="px-5 py-4 border-b border-do-border bg-do-bg/40">
 							<div className="flex items-start gap-3">
 								<div className="h-9 w-9 rounded-full bg-do-bg border border-do-border flex items-center justify-center shrink-0">
@@ -186,7 +186,7 @@ export default function Hero() {
 							</div>
 						</div>
 
-						{/* AI catches */}
+				
 						<div className="p-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
 							{[
 								{ icon: AlertTriangle, label: "Unforeseen conditions flagged", time: "Unexpected rebar, not in contract", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
@@ -211,7 +211,7 @@ export default function Hero() {
 								</motion.div>
 							))}
 
-							{/* Featured payment-protection summary, spans full width */}
+					
 							<motion.div
 								className="sm:col-span-2 flex items-start gap-3 px-3 py-3 rounded-xl bg-do-orange/[0.04] border border-do-orange/15"
 								initial={{ opacity: 0, y: 10 }}
@@ -246,7 +246,7 @@ export default function Hero() {
 							</motion.div>
 						</div>
 					</div>
-				</motion.div>
+				</motion.div> */}
 
 				{/* Stats strip, hidden until we have real customer numbers to attribute.
 				    Restore with attribution (e.g. "across N pilot contractors, 2026").

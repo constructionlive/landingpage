@@ -19,7 +19,6 @@ import BlogTeaser from "@components/home/BlogTeaser";
 import FAQ from "@components/home/FAQ";
 import DemoCTA from "@components/home/DemoCTA";
 import SiteFooter from "@components/home/SiteFooter";
-
 import BlogCarouselSection from "@components/BlogCarouselSection";
 
 export default function HomeContent() {
@@ -28,12 +27,12 @@ export default function HomeContent() {
 		<main className="min-h-screen bg-do-bg">
 			<SiteNav />
 			<Hero />
-			<IntegrationsBar />
+			{/* <IntegrationsBar /> */}
 			<PlatformOverview />
 			<Personas />
 			<FeatureGrid />
 			<SuccessStories />
-			<BlogTeaser />
+			{/* <BlogTeaser /> */}
 			{posts.length > 0 && <BlogCarouselSection posts={posts} />}
 			<FAQ />
 			<DemoCTA />
