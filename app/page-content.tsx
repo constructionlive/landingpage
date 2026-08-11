@@ -2,34 +2,42 @@
 
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
-import Navbar from "@components/Navbar";
+
+/* Homepage, section order follows the homepage wireframe:
+   nav, hero, logo strip, meet the platform, personas, features,
+   success stories, blog teaser, FAQs, book a demo, footer.
+   The previous homepage is preserved at /home. */
+
+import SiteNav from "@components/home/SiteNav";
 import Hero from "@components/Hero";
 import IntegrationsBar from "@components/IntegrationsBar";
-import Workflows from "@components/Workflows";
-import PilotResults from "@components/PilotResults";
-import Metrics from "@components/Metrics";
-import FeatureDeepDives from "@components/FeatureDeepDives";
-import Industries from "@components/Industries";
+import PlatformOverview from "@components/home/PlatformOverview";
+import Personas from "@components/home/Personas";
+import FeatureGrid from "@components/home/FeatureGrid";
+import SuccessStories from "@components/home/SuccessStories";
+import BlogTeaser from "@components/home/BlogTeaser";
+import FAQ from "@components/home/FAQ";
+import DemoCTA from "@components/home/DemoCTA";
+import SiteFooter from "@components/home/SiteFooter";
+
 import BlogCarouselSection from "@components/BlogCarouselSection";
-import CTA from "@components/CTA";
-import Footer from "@components/Footer";
 
 export default function HomeContent() {
 	const posts = useQuery(api.posts.listPublished) ?? [];
-
 	return (
 		<main className="min-h-screen bg-do-bg">
-			<Navbar />
+			<SiteNav />
 			<Hero />
 			<IntegrationsBar />
-			<Workflows />
-			{/* Hidden until we have real pilot data to attribute here. <PilotResults /> */}
-			<Metrics />
-			<FeatureDeepDives />
-			<Industries />
+			<PlatformOverview />
+			<Personas />
+			<FeatureGrid />
+			<SuccessStories />
+			<BlogTeaser />
 			{posts.length > 0 && <BlogCarouselSection posts={posts} />}
-			<CTA />
-			<Footer />
+			<FAQ />
+			<DemoCTA />
+			<SiteFooter />
 		</main>
 	);
 }

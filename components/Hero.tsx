@@ -131,12 +131,12 @@ export default function Hero() {
 						>
 							Book a Demo
 						</a>
-						<a
+						{/* <a
 							href="#how-it-works"
 							className="text-sm text-do-text-secondary hover:text-do-text underline underline-offset-4 decoration-do-border hover:decoration-do-text-secondary transition-colors"
 						>
 							See how it protects margins
-						</a>
+						</a> */}
 					</motion.div>
 
 					{/* Removed until attributable: "Helping contractors protect $50M+ in annual billings" */}
