@@ -14,6 +14,7 @@ import type * as emails from "../emails.js";
 import type * as functions from "../functions.js";
 import type * as http from "../http.js";
 import type * as posts from "../posts.js";
+import type * as quotes from "../quotes.js";
 import type * as users from "../users.js";
 
 import type {
@@ -29,6 +30,7 @@ declare const fullApi: ApiFromModules<{
   functions: typeof functions;
   http: typeof http;
   posts: typeof posts;
+  quotes: typeof quotes;
   users: typeof users;
 }>;
 

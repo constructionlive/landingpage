@@ -42,4 +42,21 @@ export default defineSchema({
     normalizedEmail: v.string(),
     createdAt: v.number(),
   }).index("by_normalizedEmail", ["normalizedEmail"]),
+  quoteRequests: defineTable({
+    // Step 1: who they are and what we're quoting
+    role: v.string(),
+    trade: v.string(),
+    teamSize: v.string(),
+    website: v.string(),
+    // Step 2: who to reply to
+    name: v.string(),
+    email: v.string(),
+    normalizedEmail: v.string(),
+    company: v.string(),
+    phone: v.optional(v.string()),
+    heardAbout: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_normalizedEmail", ["normalizedEmail"])
+    .index("by_createdAt", ["createdAt"]),
 });

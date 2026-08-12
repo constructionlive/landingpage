@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
 import { ShieldCheck, Lock, Ban, KeyRound } from "lucide-react";
+import SiteNav from "@/components/home/SiteNav";
+import SiteFooter from "@/components/home/SiteFooter";
 
 export const metadata: Metadata = {
 	title: "Privacy Policy | construction.live",
@@ -102,7 +104,7 @@ const sections = [
 	{
 		heading: "Contact us",
 		paragraphs: [
-			"If you have questions about this policy or how we handle your data, contact Neuratwin Inc. at privacy@construction.live.",
+			"If you have questions about this policy or how we handle your data, contact Neuratwin Inc. at rahul@construction.live.",
 			"Neuratwin Inc., Toronto, Canada.",
 		],
 	},
@@ -113,7 +115,7 @@ const sections = [
 export default function PrivacyPage() {
 	return (
 		<main className="min-h-screen bg-do-bg">
-			<Navbar />
+			<SiteNav />
 
 			{/* Hero */}
 			<section className="relative pt-40 pb-16 overflow-hidden">
@@ -180,7 +182,7 @@ export default function PrivacyPage() {
 				</div>
 			</section>
 
-			<Footer />
+			<SiteFooter />
 		</main>
 	);
 }

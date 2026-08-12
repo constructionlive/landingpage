@@ -97,7 +97,7 @@ export const solutionGroups: NavGroup[] = [
 
 export const resourceLinks = [
 	{ label: "Blog", href: "/blog" },
-	{ label: "FAQs", href: "/#faqs" },
+	{ label: "FAQs", href: "/faqs" },
 ];
 
 export const companyLinks = [
@@ -106,6 +106,6 @@ export const companyLinks = [
 ];
 
 /* No pricing page yet, pricing conversations happen on the demo call. */
-export const pricingHref = "/book";
+export const pricingHref = "/pricing";
 export const contactHref = "mailto:rahul@construction.live";
 export const demoHref = "/book";

@@ -74,7 +74,7 @@ export default function SiteNav() {
 				   compiles to nothing on them. color-mix gets real translucency;
 				   an open menu goes fully solid so nav and panel read as one surface. */
 				className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-					openMenu
+					openMenu === "solutions"
 						? "bg-do-bg border-b border-do-border"
 						: scrolled
 							? "bg-[color-mix(in_srgb,var(--do-bg)_88%,transparent)] backdrop-blur-xl border-b border-do-border"
@@ -102,8 +102,35 @@ export default function SiteNav() {
 						>
 							Pricing
 						</a>
-						{trigger("resources", "Resources")}
-						{trigger("company", "Company")}
+						{/* Only Solutions needs the full-width mega menu; these two have a
+						    handful of links each, so they hang off their own trigger and
+						    take exactly the width their labels need. */}
+						<div className="relative">
+							{trigger("resources", "Resources")}
+							<AnimatePresence>
+								{openMenu === "resources" && (
+									<CompactMenu
+										links={resourceLinks}
+										onNavigate={() => setOpenMenu(null)}
+										onHoverIn={() => open("resources")}
+										onHoverOut={scheduleClose}
+									/>
+								)}
+							</AnimatePresence>
+						</div>
+						<div className="relative">
+							{trigger("company", "Company")}
+							<AnimatePresence>
+								{openMenu === "company" && (
+									<CompactMenu
+										links={companyLinks}
+										onNavigate={() => setOpenMenu(null)}
+										onHoverIn={() => open("company")}
+										onHoverOut={scheduleClose}
+									/>
+								)}
+							</AnimatePresence>
+						</div>
 					</div>
 
 					<div className="hidden lg:flex items-center gap-3">
@@ -135,21 +162,20 @@ export default function SiteNav() {
 					</div>
 				</div>
 
-				{/* Desktop dropdown panels */}
+				{/* Desktop mega menu */}
 				<AnimatePresence>
-					{openMenu && (
+					{openMenu === "solutions" && (
 						<motion.div
 							className="hidden lg:block absolute left-0 right-0 top-16 border-t border-do-border bg-do-bg shadow-2xl"
 							initial={{ opacity: 0, y: -8 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -8 }}
 							transition={{ duration: 0.18 }}
-							onMouseEnter={() => open(openMenu)}
+							onMouseEnter={() => open("solutions")}
 							onMouseLeave={scheduleClose}
 						>
 							<div className="max-w-7xl mx-auto px-6 py-8">
-								{openMenu === "solutions" && (
-									<div className="grid grid-cols-5 gap-6">
+								<div className="grid grid-cols-5 gap-6">
 										{solutionGroups.map((group) => (
 											<div key={group.label}>
 												<p className="do-section-label text-do-text-muted mb-4">
@@ -184,16 +210,7 @@ export default function SiteNav() {
 												</div>
 											</div>
 										))}
-									</div>
-								)}
-
-								{openMenu === "resources" && (
-									<DropdownColumn title="Resources" links={resourceLinks} onNavigate={() => setOpenMenu(null)} />
-								)}
-
-								{openMenu === "company" && (
-									<DropdownColumn title="Company" links={companyLinks} onNavigate={() => setOpenMenu(null)} />
-								)}
+								</div>
 							</div>
 						</motion.div>
 					)}
@@ -314,31 +331,42 @@ export default function SiteNav() {
 	);
 }
 
-function DropdownColumn({
-	title,
+/* Anchored to its trigger and sized to its longest label — `w-max` keeps the
+   panel off the full-bleed grid the Solutions mega menu uses. */
+function CompactMenu({
 	links,
 	onNavigate,
+	onHoverIn,
+	onHoverOut,
 }: {
-	title: string;
 	links: { label: string; href: string }[];
 	onNavigate: () => void;
+	onHoverIn: () => void;
+	onHoverOut: () => void;
 }) {
 	return (
-		<div className="max-w-xs">
-			<p className="do-section-label text-do-text-muted mb-4">{title}</p>
-			<div className="flex flex-col gap-1">
+		<motion.div
+			className="absolute left-0 top-full mt-2 w-max min-w-[10rem] max-w-xs rounded-xl border border-do-border bg-do-bg p-1.5 shadow-2xl"
+			initial={{ opacity: 0, y: -6 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, y: -6 }}
+			transition={{ duration: 0.16 }}
+			onMouseEnter={onHoverIn}
+			onMouseLeave={onHoverOut}
+		>
+			<div className="flex flex-col">
 				{links.map((link) => (
 					<a
 						key={link.label}
 						href={link.href}
-						className="px-2 py-2 -mx-2 rounded-lg text-sm text-do-text-secondary hover:text-do-text hover:bg-do-bg-light transition-colors"
+						className="whitespace-nowrap rounded-lg px-3 py-2 text-sm text-do-text-secondary hover:text-do-text hover:bg-do-bg-light transition-colors"
 						onClick={onNavigate}
 					>
 						{link.label}
 					</a>
 				))}
 			</div>
-		</div>
+		</motion.div>
 	);
 }
 

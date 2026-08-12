@@ -93,19 +93,19 @@ export default function FAQ({faqPage = false}: {faqPage?: boolean}) {
 				)}
 				{faqPage && (
 					<motion.div
-					className="flex flex-wrap items-end justify-between gap-4 mb-10"
-					initial={{ opacity: 0, y: 25 }}
-					animate={inView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.6 }}
-				>
-					<div>
-						<span className="do-section-label text-do-orange">FAQs</span>
-						<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 tracking-tight">
-							Frequently asked questions
-						</h2>
-					</div>
+						className="flex flex-wrap items-end justify-between gap-4 mb-10"
+						initial={{ opacity: 0, y: 25 }}
+						animate={inView ? { opacity: 1, y: 0 } : {}}
+						transition={{ duration: 0.6 }}
+					>
+						<div>
+							<span className="do-section-label text-do-orange">FAQs</span>
+							<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 tracking-tight">
+								Frequently asked questions
+							</h2>
+						</div>
 
-				</motion.div>
+					</motion.div>
 
 				)}
 
