@@ -12,7 +12,7 @@ const featuredWins = [
 	"No more scanning and rekeying",
 	"Auto-priced from a live database",
 	"Report, submit, approve in-app",
-	"Tracked by Email Management",
+	// "Tracked by Email Management",
 ];
 
 const stories = [
@@ -43,7 +43,7 @@ function TMMockup() {
 	const rows = [
 		{ icon: Camera, label: "T&M-Aug04-crew3.jpg", detail: "Sheet photographed on site" },
 		{ icon: Receipt, label: "Priced against live rates", detail: "18 hrs labour + 4 line items" },
-		{ icon: Mail, label: "Sent for approval", detail: "Tracked until signed off" },
+		// { icon: Mail, label: "Sent for approval", detail: "Tracked until signed off" },
 	];
 
 	return (
@@ -141,10 +141,12 @@ export default function SuccessStories() {
 
 						<div className="lg:col-span-2 p-7 md:p-10 border-t lg:border-t-0 lg:border-l border-do-border bg-do-bg-card/70 flex flex-col justify-center">
 							<p className="do-section-label text-do-text-muted mb-3">The result</p>
-							<p className="text-4xl font-bold text-do-orange leading-none mb-1">
-								~40 hrs
+							<p className="mb-6 flex flex-wrap gap-x-2 gap-y-1 items-baseline">
+								<span className="text-4xl font-bold text-do-orange leading-none">
+									~40 hrs
+								</span>
+								<span className="text-sm text-do-text-muted">a month saved for admin</span>
 							</p>
-							<p className="text-sm text-do-text-muted mb-6">of admin a month, gone</p>
 
 							<div className="space-y-3 mb-6">
 								{featuredWins.map((win, i) => (
