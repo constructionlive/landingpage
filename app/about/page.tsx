@@ -14,6 +14,9 @@ import {
 	ArrowRight,
 	HelpCircle,
 } from "lucide-react";
+import SiteNav from "@/components/home/SiteNav";
+import SiteFooter from "@/components/home/SiteFooter";
+import FAQ from "@/components/home/FAQ";
 
 /* ── Who we serve ──────────────────────────────────────────────────── */
 
@@ -338,14 +341,14 @@ function TeamSection() {
 					animate={inView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6 }}
 				>
-					<span className="do-section-label text-do-orange">The team</span>
+					<span className="do-section-label text-do-orange">Founder</span>
 					<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 mb-4">
-						Built by people who&apos;ve been on the losing side of a change-order dispute.
+						Built by someone who&apos;s been on the losing side of a change-order dispute.
 					</h2>
-					<p className="text-base text-do-text-secondary max-w-xl mx-auto">
+					{/* <p className="text-base text-do-text-secondary max-w-xl mx-auto">
 						Construction operators and AI engineers. We know what gets disputed
 						and we know how to document it before the dispute starts.
-					</p>
+					</p> */}
 				</motion.div>
 
 				<motion.div
@@ -479,7 +482,7 @@ function AboutCTA() {
 export default function AboutPage() {
 	return (
 		<main className="min-h-screen bg-do-bg">
-			<Navbar />
+			<SiteNav />
 
 			{/* Hero */}
 			<section className="relative pt-40 pb-20 overflow-hidden">
@@ -501,12 +504,12 @@ export default function AboutPage() {
 							</span>
 						</h1>
 						<p className="text-lg md:text-xl text-do-text-secondary max-w-2xl mx-auto leading-relaxed">
-							construction.live is unified field intelligence for the $2M-50M
-							commercial GC and the electrical, mechanical, and specialty subcontractors							contractors. We turn every signal from your jobsite into bulletproof
-							payment protection.
+							Small and mid-size commercial GCs and subcontractors. If you run
+							$2M-50M projects and your margins live or die by how well the field
+							gets documented, this is built for you.
 						</p>
 					</motion.div>
-
+{/* 
 					<motion.div
 						className="flex flex-wrap justify-center gap-8 mt-12"
 						initial={{ opacity: 0, y: 20 }}
@@ -517,23 +520,23 @@ export default function AboutPage() {
 							<p className="text-3xl font-bold text-do-orange">$1M–$50M</p>
 							<p className="text-sm text-do-text-muted">GC or subcontractor size</p>
 						</div>
-						{/* <div className="text-center">
+					 <div className="text-center">
 							<p className="text-3xl font-bold text-do-orange">8 categories</p>
 							<p className="text-sm text-do-text-muted">money moments tracked</p>
-						</div> */}
-						<div className="text-center">
+						</div> 
+					 <div className="text-center">
 							<p className="text-3xl font-bold text-do-orange">$1000/mo</p>
 							<p className="text-sm text-do-text-muted">per active project</p>
 						</div>
 						<div className="text-center">
 							<p className="text-3xl font-bold text-do-orange">30 sec</p>
 							<p className="text-sm text-do-text-muted">per field update</p>
-						</div>
-					</motion.div>
+						</div> 
+					</motion.div> */}
 				</div>
 			</section>
 
-			{/* Our Story */}
+			{/* Our Vision */}
 			<section className="relative py-24 overflow-hidden">
 				<div className="absolute inset-0 do-blueprint-grid-dense pointer-events-none" />
 
@@ -543,9 +546,10 @@ export default function AboutPage() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6 }}
 					>
-						<span className="do-section-label text-do-orange">Our story</span>
+						<span className="do-section-label text-do-orange">Our vision</span>
 						<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 mb-8">
-							Most contractors lose $1M a year because the daily log never got created.
+							The work is hard enough. The paperwork shouldn&apos;t decide who gets
+							paid.
 						</h2>
 					</motion.div>
 
@@ -556,35 +560,52 @@ export default function AboutPage() {
 						transition={{ delay: 0.2, duration: 0.5 }}
 					>
 						<p className="text-base text-do-text-secondary leading-relaxed">
-							It&apos;s not because the work didn&apos;t happen. It&apos;s because the
-							super was busy running three jobs, the PM was buried in pay apps, and
-							the daily log app on the phone never got opened. Eight months later,
-							the owner disputes a change order. The work is real. The contract
-							supports it. But the documentation isn&apos;t there.
+							We have watched people leave the house at 3am to beat LA traffic, park
+							up at 4:30, sleep an hour in the truck, and start work at 5:30. After a
+							day like that, whether they get paid comes down to a form somebody
+							still has to fill in at the end of it. That is where it starts, right
+							at the base.
 						</p>
 						<p className="text-base text-do-text-secondary leading-relaxed">
-							Enterprise GCs solve this with dedicated documentation staff and
-							software priced for committee approval. The $2M-50M commercial
-							contractor, where the PM is sometimes the owner and one super
-							covers multiple jobs: doesn&apos;t have a tool built for them.
+							It only gets more serious the further up you go. The site wasn&apos;t
+							ready, so the work couldn&apos;t happen, but nobody wants to be the one
+							to say it. Supers, owners and GCs can be hard to push back on, and no
+							one wants to leave bitterness on a job they have to show up to again
+							tomorrow. So it goes unsaid, and unwritten. Months later that silence
+							is a delay the company swallows, or a claim nobody can prove.
+						</p>
+						<p className="text-base text-do-text-secondary leading-relaxed">
+							They lose on every front. Report it and they catch it on site.
+							Don&apos;t report it and the project manager comes down on them, or the
+							money simply never arrives. The real work happens between people, and
+							the record of it is the first thing to go.
+						</p>
+						<p className="text-base text-do-text-secondary leading-relaxed">
+							Nearly all of it is avoidable if the paperwork is handed to something
+							impartial, something that isn&apos;t in the room and doesn&apos;t take
+							sides. What happened, when it happened, what led to it, all of it
+							linked. Kept without anyone having to pick a fight to get it written
+							down.
 						</p>
 						<p className="text-base text-do-text leading-relaxed">
-							We built construction.live to be that tool. Voice notes. Photos. AI
-							outbound calls. Integration with the systems your owner already
-							uses. Unified into one defensible record. Pay apps get approved.
-							Change orders get won. Margins get protected.
+							That is what we are building. In an industry this thin on margin, time
+							and money are the same thing, and we want to hand both back.
+						</p>
+						<p className="border-l-2 border-do-orange/40 pl-5 text-lg text-do-text leading-relaxed">
+							Give people their time back. Give them their money back. Give them back
+							their sanity and their peace.
 						</p>
 					</motion.div>
 				</div>
 			</section>
 
-			<ProblemsSection />
-			<BeliefsSection />
-			<IndustriesSection />
+			{/* <ProblemsSection /> */}
+			{/* <BeliefsSection /> */}
+			{/* <IndustriesSection /> */}
 			<TeamSection />
-			<FAQSection />
-			<AboutCTA />
-			<Footer />
+			{/* <FAQ /> */}
+			{/* <AboutCTA /> */}
+			<SiteFooter />
 		</main>
 	);
 }
