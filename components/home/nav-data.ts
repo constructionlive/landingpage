@@ -1,29 +1,36 @@
 import {
-	Smartphone,
-	ClipboardList,
+	Mic,
 	Video,
-	Search,
+	ClipboardList,
+	CalendarClock,
 	Mail,
+	RefreshCw,
+	Plug,
+	HardDrive,
 	Ruler,
-	FileText,
-	Scale,
-	Users,
-	Timer,
-	Layers,
 	GitBranch,
 	FileCheck,
-	HelpCircle,
+	FileStack,
 	BarChart3,
-	Calendar,
-	AlertTriangle,
-	RefreshCw,
-	ShieldAlert,
-	Wallet,
-	Plug,
+	Search,
+	ArrowLeftRight,
+	Waypoints,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 /* Shared nav model for the mega menu, the footer and the /solutions page.
+
+   The four groups are the product argument, in order: we capture what happens
+   in the field (01), we read everything that arrives from the owner, the GC
+   and the systems you already run (02), we generate and track what you send
+   back out (03) — and because all three run on one record, everything links
+   to whatever caused it (04). The fourth group only exists because the first
+   three do, so it always reads last.
+
+   The list is deliberately short. Capabilities that don't earn their own line
+   are explained inside the section that carries them on /solutions, rather
+   than becoming a nav item nobody clicks.
+
    Every solution is a section on /solutions, so `slug` is the single source
    of truth: it's the anchor id on that page and the hash in every link here.
    When a solution earns its own page, swap that item's `href` and leave the
@@ -39,6 +46,8 @@ export interface NavItem {
 export interface NavGroup {
 	label: string;
 	slug: string;
+	/* Shown on /solutions as the pillar number, 01 through 04. */
+	number: string;
 	items: NavItem[];
 	footerLink?: NavItem;
 }
@@ -49,34 +58,56 @@ const at = (slug: string) => `${solutionsHref}#${slug}`;
 
 export const solutionGroups: NavGroup[] = [
 	{
-		label: "Capture & Field",
-		slug: "capture-field",
+		label: "Capture in the field",
+		slug: "capture",
+		number: "01",
 		items: [
-			{ label: "Field App", slug: "field-app", href: at("field-app"), icon: Smartphone },
+			{ label: "Voice Notes", slug: "voice-notes", href: at("voice-notes"), icon: Mic },
+			{
+				label: "Meeting Recording",
+				slug: "meeting-recording",
+				href: at("meeting-recording"),
+				icon: Video,
+			},
 			{
 				label: "Daily Reporting",
 				slug: "daily-reporting",
 				href: at("daily-reporting"),
 				icon: ClipboardList,
 			},
-			{ label: "Meetings", slug: "meetings", href: at("meetings"), icon: Video },
 			{
-				label: "Document Search",
-				slug: "document-search",
-				href: at("document-search"),
-				icon: Search,
-			},
-			{
-				label: "Email Management",
-				slug: "email-management",
-				href: at("email-management"),
-				icon: Mail,
+				label: "Live Schedule in Hand",
+				slug: "live-schedule",
+				href: at("live-schedule"),
+				icon: CalendarClock,
 			},
 		],
 	},
 	{
-		label: "Preconstruction & Bidding",
-		slug: "preconstruction-bidding",
+		label: "Everything that arrives",
+		slug: "inbound",
+		number: "02",
+		items: [
+			{ label: "Email Tracking", slug: "email-tracking", href: at("email-tracking"), icon: Mail },
+			{
+				label: "Auto-Updates",
+				slug: "auto-updates",
+				href: at("auto-updates"),
+				icon: RefreshCw,
+			},
+			{ label: "Procore", slug: "procore", href: at("procore"), icon: Plug },
+			{
+				label: "Drive & SharePoint",
+				slug: "cloud-storage",
+				href: at("cloud-storage"),
+				icon: HardDrive,
+			},
+		],
+	},
+	{
+		label: "What goes back out",
+		slug: "outbound",
+		number: "03",
 		items: [
 			{
 				label: "Takeoff & Estimates",
@@ -85,49 +116,17 @@ export const solutionGroups: NavGroup[] = [
 				icon: Ruler,
 			},
 			{
-				label: "Bid Proposal",
-				slug: "bid-proposal",
-				href: at("bid-proposal"),
-				icon: FileText,
-			},
-			{ label: "Bid Leveling", slug: "bid-leveling", href: at("bid-leveling"), icon: Scale },
-			{
-				label: "Subcontractor Management",
-				slug: "subcontractor-management",
-				href: at("subcontractor-management"),
-				icon: Users,
-			},
-			{
-				label: "Time & Material",
-				slug: "time-and-material",
-				href: at("time-and-material"),
-				icon: Timer,
-			},
-		],
-	},
-	{
-		label: "Documents & Revisions",
-		slug: "documents-revisions",
-		items: [
-			{
-				label: "Drawing Manager",
-				slug: "drawing-manager",
-				href: at("drawing-manager"),
-				icon: Layers,
-			},
-			{
-				label: "Revision Tracking",
-				slug: "revision-tracking",
-				href: at("revision-tracking"),
-				icon: GitBranch,
-			},
-			{
 				label: "Submittal Tracking",
 				slug: "submittal-tracking",
 				href: at("submittal-tracking"),
 				icon: FileCheck,
 			},
-			{ label: "RFI Tracking", slug: "rfi-tracking", href: at("rfi-tracking"), icon: HelpCircle },
+			{
+				label: "Change Orders",
+				slug: "change-order",
+				href: at("change-order"),
+				icon: FileStack,
+			},
 			{
 				label: "Report Generator",
 				slug: "report-generator",
@@ -137,56 +136,34 @@ export const solutionGroups: NavGroup[] = [
 		],
 	},
 	{
-		label: "Controls & Finance",
-		slug: "controls-finance",
+		label: "One linked record",
+		slug: "linked-record",
+		number: "04",
 		items: [
 			{
-				label: "Auto Scheduling",
-				slug: "auto-scheduling",
-				href: at("auto-scheduling"),
-				icon: Calendar,
+				label: "Revision Chain",
+				slug: "revision-chain",
+				href: at("revision-chain"),
+				icon: GitBranch,
 			},
 			{
-				label: "Issue Tracker",
-				slug: "issue-tracker",
-				href: at("issue-tracker"),
-				icon: AlertTriangle,
+				label: "Daily Log to Change Order",
+				slug: "log-to-change-order",
+				href: at("log-to-change-order"),
+				icon: ArrowLeftRight,
 			},
-			{ label: "Change Order", slug: "change-order", href: at("change-order"), icon: RefreshCw },
 			{
-				label: "Delay & Claims",
-				slug: "delay-claims",
-				href: at("delay-claims"),
-				icon: ShieldAlert,
+				label: "Search Across Everything",
+				slug: "search-everything",
+				href: at("search-everything"),
+				icon: Search,
 			},
-			{ label: "Finance Diary", slug: "finance-diary", href: at("finance-diary"), icon: Wallet },
-		],
-	},
-	{
-		label: "Integrations",
-		slug: "integrations",
-		items: [
-			{ label: "Procore", slug: "procore", href: at("procore"), icon: Plug },
-			{
-				label: "Autodesk Construction Cloud",
-				slug: "autodesk-construction-cloud",
-				href: at("autodesk-construction-cloud"),
-				icon: Plug,
-			},
-			{ label: "Outlook & Gmail", slug: "outlook-gmail", href: at("outlook-gmail"), icon: Plug },
-			{
-				label: "QuickBooks & Sage",
-				slug: "quickbooks-sage",
-				href: at("quickbooks-sage"),
-				icon: Plug,
-			},
-			{ label: "Bluebeam", slug: "bluebeam", href: at("bluebeam"), icon: Plug },
 		],
 		footerLink: {
-			label: "All integrations",
-			slug: "integrations",
-			href: at("integrations"),
-			icon: Plug,
+			label: "How it all connects",
+			slug: "linked-record",
+			href: at("linked-record"),
+			icon: Waypoints,
 		},
 	},
 ];

@@ -527,12 +527,12 @@ export default function PricingPage() {
 						)}
 					</motion.div>
 
-					<p className="mt-5 text-center text-xs text-do-text-muted">
+					{/* <p className="mt-5 text-center text-xs text-do-text-muted">
 						No card, no obligation. We don&apos;t share your details with anyone.{" "}
 						<a href="/privacy" className="underline hover:text-do-text-secondary">
 							Privacy
 						</a>
-					</p>
+					</p> */}
 				</div>
 			</section>
 

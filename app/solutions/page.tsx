@@ -69,12 +69,13 @@ export default function SolutionsPage() {
 					>
 						<span className="do-section-label text-do-orange">Solutions</span>
 						<h1 className="text-4xl md:text-5xl font-bold text-do-text mt-4 tracking-tight">
-							Everything the job produces, in one record
+							Three things we do, and the one thing that only works because of them
 						</h1>
 						<p className="mt-5 text-lg text-do-text-secondary leading-relaxed">
-							From the first takeoff to the last pay application, construction.live
-							captures what happens on the job and turns it into documentation you can
-							stand behind. Pick a section on the left, or read straight through.
+							We capture what happens in the field, read everything that arrives from
+							the owner, the GC and the systems you already run, and generate the
+							estimates, submittals and change orders that go back out. Because all
+							three sit on one record, every entry stays linked to whatever caused it.
 						</p>
 						<div className="flex flex-wrap gap-3 mt-8">
 							<a
@@ -92,6 +93,49 @@ export default function SolutionsPage() {
 								Get a quote
 							</a>
 						</div>
+					</motion.div>
+
+					{/* The argument at a glance. 04 is drawn as the result of the first
+					    three rather than a fourth item beside them. */}
+					<motion.div
+						className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-14"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.6, delay: 0.15 }}
+					>
+						{solutionGroups.map((group) => {
+							const isResult = group.slug === "linked-record";
+							return (
+								<a
+									key={group.slug}
+									href={`#${group.slug}`}
+									className={`group rounded-2xl border p-5 transition-colors ${
+										isResult
+											? "border-do-orange/30 bg-do-orange/[0.04] hover:border-do-orange/50"
+											: "border-do-border bg-do-bg-card/60 hover:border-do-border-accent"
+									}`}
+								>
+									<div className="flex items-center gap-2">
+										<span className="do-section-label text-do-orange">
+											{group.number}
+										</span>
+										{isResult && (
+											<span className="text-[10px] uppercase tracking-wider text-do-text-muted">
+												because of 01–03
+											</span>
+										)}
+									</div>
+									<h2 className="text-base font-semibold text-do-text mt-2.5 group-hover:text-do-orange transition-colors">
+										{group.label}
+									</h2>
+									{GROUP_INTROS[group.slug] && (
+										<p className="mt-2 text-sm text-do-text-secondary leading-relaxed">
+											{GROUP_INTROS[group.slug].kicker}
+										</p>
+									)}
+								</a>
+							);
+						})}
 					</motion.div>
 				</div>
 			</section>
@@ -121,6 +165,7 @@ export default function SolutionsPage() {
 						{solutionGroups.map((group) => (
 							<div key={group.slug} className="mt-4">
 								<p className="do-section-label text-do-text-muted mb-1.5">
+									<span className="text-do-orange">{group.number}</span>{" "}
 									{group.label}
 								</p>
 								{group.items.map((item) => (
@@ -156,8 +201,9 @@ export default function SolutionsPage() {
 								<div key={group.slug} className="mb-6">
 									<a
 										href={`#${group.slug}`}
-										className="do-section-label text-do-text-muted hover:text-do-text-secondary block mb-2"
+										className="do-section-label text-do-text-muted hover:text-do-text-secondary flex items-baseline gap-1.5 mb-2"
 									>
+										<span className="text-do-orange">{group.number}</span>
 										{group.label}
 									</a>
 									<div className="flex flex-col border-l border-do-border">
@@ -189,16 +235,24 @@ export default function SolutionsPage() {
 							<section
 								key={group.slug}
 								id={group.slug}
-								className={`pt-10 first:pt-2 ${SCROLL_MT}`}
+								className={`pt-14 first:pt-2 ${SCROLL_MT}`}
 							>
-								<div className="pb-2 border-b border-do-border">
-									<h2 className="text-2xl md:text-3xl font-bold text-do-text tracking-tight">
+								<div className="pb-3 border-b border-do-border">
+									<span className="do-section-label text-do-orange">
+										{group.number}
+									</span>
+									<h2 className="text-2xl md:text-3xl font-bold text-do-text tracking-tight mt-3">
 										{group.label}
 									</h2>
 									{GROUP_INTROS[group.slug] && (
-										<p className="mt-2 mb-4 text-do-text-secondary leading-relaxed max-w-2xl">
-											{GROUP_INTROS[group.slug]}
-										</p>
+										<>
+											<p className="mt-3 text-do-text font-medium leading-relaxed max-w-2xl">
+												{GROUP_INTROS[group.slug].kicker}
+											</p>
+											<p className="mt-2 mb-4 text-do-text-secondary leading-relaxed max-w-2xl">
+												{GROUP_INTROS[group.slug].body}
+											</p>
+										</>
 									)}
 								</div>
 
@@ -233,6 +287,14 @@ export default function SolutionsPage() {
 											{detail && (
 												<p className="mt-4 text-do-text-secondary leading-relaxed max-w-2xl">
 													{detail.body}
+												</p>
+											)}
+
+											{/* Carries the capabilities that don't get their
+											    own nav line, set back from the main claim. */}
+											{detail?.extra && (
+												<p className="mt-3.5 pl-4 border-l-2 border-do-border text-sm text-do-text-secondary leading-relaxed max-w-2xl">
+													{detail.extra}
 												</p>
 											)}
 

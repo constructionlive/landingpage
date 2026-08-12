@@ -39,11 +39,11 @@ export default function SiteFooter() {
 					</div>
 
 					{/* Solutions, expanded the same way the nav groups them */}
-					<div className="lg:col-span-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+					<div className="lg:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-8">
 						{solutionGroups.map((group) => (
 							<div key={group.label}>
 								<p className="do-section-label text-do-text-muted mb-3.5">
-									{group.label}
+									<span className="text-do-orange">{group.number}</span> {group.label}
 								</p>
 								<ul className="space-y-2">
 									{group.items.map((item) => (

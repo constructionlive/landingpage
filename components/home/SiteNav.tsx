@@ -7,6 +7,7 @@ import ThemeToggle from "@components/ThemeToggle";
 import BrandMark from "@components/BrandMark";
 import {
 	solutionGroups,
+	solutionsHref,
 	resourceLinks,
 	companyLinks,
 	pricingHref,
@@ -175,12 +176,17 @@ export default function SiteNav() {
 							onMouseLeave={scheduleClose}
 						>
 							<div className="max-w-7xl mx-auto px-6 py-8">
-								<div className="grid grid-cols-5 gap-6">
+								<div className="grid grid-cols-4 gap-8">
 										{solutionGroups.map((group) => (
 											<div key={group.label}>
-												<p className="do-section-label text-do-text-muted mb-4">
+												<a
+													href={`${solutionsHref}#${group.slug}`}
+													className="do-section-label text-do-text-muted hover:text-do-text-secondary flex items-baseline gap-1.5 mb-4"
+													onClick={() => setOpenMenu(null)}
+												>
+													<span className="text-do-orange">{group.number}</span>
 													{group.label}
-												</p>
+												</a>
 												<div className="flex flex-col gap-1">
 													{group.items.map((item) => (
 														<a
@@ -234,7 +240,9 @@ export default function SiteNav() {
 							<div className="flex flex-col gap-5 pb-2">
 								{solutionGroups.map((group) => (
 									<div key={group.label}>
-										<p className="do-section-label text-do-text-muted mb-2">{group.label}</p>
+										<p className="do-section-label text-do-text-muted mb-2">
+											<span className="text-do-orange">{group.number}</span> {group.label}
+										</p>
 										<div className="flex flex-col">
 											{group.items.map((item) => (
 												<a
