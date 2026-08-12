@@ -14,6 +14,7 @@ import {
 	ArrowRight,
 	HelpCircle,
 } from "lucide-react";
+import SiteNav from "@/components/home/SiteNav";
 
 /* ── Features data ─────────────────────────────────────────────────── */
 
@@ -429,7 +430,7 @@ function FeatureCTA() {
 export default function FeaturesPage() {
 	return (
 		<main className="min-h-screen bg-do-bg">
-			<Navbar />
+			<SiteNav />
 
 			{/* Hero */}
 			<section className="relative pt-40 pb-20 overflow-hidden">
