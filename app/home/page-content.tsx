@@ -12,11 +12,12 @@ import FeatureDeepDives from "@components/FeatureDeepDives";
 import Industries from "@components/Industries";
 import CTA from "@components/CTA";
 import Footer from "@components/Footer";
+import SiteNav from "@/components/home/SiteNav";
 
 export default function LegacyHomeContent() {
 	return (
 		<main className="min-h-screen bg-do-bg">
-			<Navbar />
+			<SiteNav />
 			<Hero />
 			<IntegrationsBar />
 			<Workflows />
