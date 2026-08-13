@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import HomeContent from "./page-content";
 
 export const metadata: Metadata = {
-	title: "construction.live: Get Paid for Every Extra. Defend Every Change Order.",
+	title: "construction.live: Get Paid for What You Did. Get Covered for What You Couldn't.",
 	description:
-		"Unified field intelligence for contractors. Catch change orders the day they happen. Voice notes, photos, AI calls, and integrations, unified into bulletproof pay-app and change-order documentation.",
+		"Agentic AI for construction. It reads every email, voice note, document revision and photo off your project, files it against the right job, links it to the drawing revision and schedule behind it, and flags the mismatches.",
 	alternates: {
 		canonical: "https://www.construction.live",
 	},

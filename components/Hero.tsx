@@ -89,15 +89,16 @@ export default function Hero() {
 					</motion.div>
 
 					<motion.h1
-						className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] mb-6"
+						className="font-bold tracking-tight mb-6"
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.35, duration: 0.7 }}
 					>
-						<span className="text-do-text">Get Paid for Every Extra.</span>
-						<br />
-						<span className="bg-gradient-to-r from-do-orange via-orange-400 to-amber-400 bg-clip-text text-transparent">
-							Defend Every Change Order.
+						<span className="block pb-1 bg-gradient-to-r from-do-orange via-orange-400 to-amber-400 bg-clip-text text-transparent text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.02] text-balance">
+							Failing to get on top of a project's paper work?
+						</span>
+						<span className="block mt-2 sm:mt-3 text-do-text text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-[1.15] text-balance">
+							Save yourself with our AI project management!
 						</span>
 					</motion.h1>
 
@@ -107,8 +108,7 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.55 }}
 					>
-						Catch change orders the day they happen. Turn every signal from your
-						jobsite into bulletproof payment protection.
+						Construction.live AI reads every email, voice note, document revision and photo that comes off your project, files it against the right job, links it to the drawing revision and schedule behind it, and flags the mismatches.
 					</motion.p>
 
 					<motion.p
@@ -117,9 +117,7 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.65 }}
 					>
-						Voice notes, photos, AI calls, and your existing tools, unified into
-						one defensible record. Built for $2M-50M commercial GCs and
-						subcontractors.
+						Creating your paper trail in real time with AI while you build.
 					</motion.p>
 
 					<motion.div
@@ -134,19 +132,19 @@ export default function Hero() {
 						>
 							Book a Demo
 						</a>
-						<a
+						{/* <a
 							href="#how-it-works"
 							className="text-sm text-do-text-secondary hover:text-do-text underline underline-offset-4 decoration-do-border hover:decoration-do-text-secondary transition-colors"
 						>
 							See how it protects margins
-						</a>
+						</a> */}
 					</motion.div>
 
 					{/* Removed until attributable: "Helping contractors protect $50M+ in annual billings" */}
 				</div>
 
 				{/* Unified field intelligence showcase */}
-				<motion.div
+				{/* <motion.div
 					className="mt-16 max-w-3xl mx-auto"
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -170,7 +168,7 @@ export default function Hero() {
 							</div>
 						</div>
 
-						{/* Voice note */}
+				
 						<div className="px-5 py-4 border-b border-do-border bg-do-bg/40">
 							<div className="flex items-start gap-3">
 								<div className="h-9 w-9 rounded-full bg-do-bg border border-do-border flex items-center justify-center shrink-0">
@@ -189,7 +187,7 @@ export default function Hero() {
 							</div>
 						</div>
 
-						{/* AI catches */}
+				
 						<div className="p-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
 							{[
 								{ icon: AlertTriangle, label: "Unforeseen conditions flagged", time: "Unexpected rebar, not in contract", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-500/10" },
@@ -214,7 +212,7 @@ export default function Hero() {
 								</motion.div>
 							))}
 
-							{/* Featured payment-protection summary, spans full width */}
+					
 							<motion.div
 								className="sm:col-span-2 flex items-start gap-3 px-3 py-3 rounded-xl bg-do-orange/[0.04] border border-do-orange/15"
 								initial={{ opacity: 0, y: 10 }}
@@ -249,7 +247,7 @@ export default function Hero() {
 							</motion.div>
 						</div>
 					</div>
-				</motion.div>
+				</motion.div> */}
 
 				{/* Stats strip, hidden until we have real customer numbers to attribute.
 				    Restore with attribution (e.g. "across N pilot contractors, 2026").

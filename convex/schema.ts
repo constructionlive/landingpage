@@ -42,4 +42,39 @@ export default defineSchema({
     normalizedEmail: v.string(),
     createdAt: v.number(),
   }).index("by_normalizedEmail", ["normalizedEmail"]),
+  quoteRequests: defineTable({
+    // Step 1: who they are and what we're quoting
+    role: v.string(),
+    trade: v.string(),
+    teamSize: v.string(),
+    website: v.string(),
+    painPoint: v.optional(v.string()),
+    // Step 2: who to reply to
+    name: v.string(),
+    email: v.string(),
+    normalizedEmail: v.string(),
+    company: v.string(),
+    phone: v.optional(v.string()),
+    heardAbout: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_normalizedEmail", ["normalizedEmail"])
+    .index("by_createdAt", ["createdAt"]),
+  /* The contact form on /contact. Unlike a quote request this is open-ended:
+     one message, everything else optional, plus an optional photo the sender
+     attached (stored in Convex storage and mailed to us as an attachment). */
+  contactMessages: defineTable({
+    name: v.string(),
+    email: v.string(),
+    normalizedEmail: v.string(),
+    company: v.optional(v.string()),
+    topic: v.optional(v.string()),
+    message: v.string(),
+    attachmentStorageId: v.optional(v.id("_storage")),
+    attachmentName: v.optional(v.string()),
+    attachmentType: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_normalizedEmail", ["normalizedEmail"])
+    .index("by_createdAt", ["createdAt"]),
 });

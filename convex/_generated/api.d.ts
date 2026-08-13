@@ -9,11 +9,13 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as contact from "../contact.js";
 import type * as earlyAccess from "../earlyAccess.js";
 import type * as emails from "../emails.js";
 import type * as functions from "../functions.js";
 import type * as http from "../http.js";
 import type * as posts from "../posts.js";
+import type * as quotes from "../quotes.js";
 import type * as users from "../users.js";
 
 import type {
@@ -24,11 +26,13 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  contact: typeof contact;
   earlyAccess: typeof earlyAccess;
   emails: typeof emails;
   functions: typeof functions;
   http: typeof http;
   posts: typeof posts;
+  quotes: typeof quotes;
   users: typeof users;
 }>;
 

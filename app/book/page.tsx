@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Navbar from "@components/Navbar";
-import Footer from "@components/Footer";
 import {
 	Calendar,
 	ArrowRight,
@@ -12,6 +10,8 @@ import {
 	Receipt,
 	AlertTriangle,
 } from "lucide-react";
+import SiteNav from "@/components/home/SiteNav";
+import SiteFooter from "@/components/home/SiteFooter";
 
 const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
@@ -39,7 +39,7 @@ const agenda = [
 export default function BookPage() {
 	return (
 		<main className="min-h-screen bg-do-bg">
-			<Navbar />
+			<SiteNav />
 
 			{/* Hero */}
 			<section className="relative pt-40 pb-12 overflow-hidden">
@@ -66,7 +66,7 @@ export default function BookPage() {
 							we&apos;d solve them.
 						</p>
 						<p className="text-sm text-do-text-muted">
-							Built for small &amp; mid-size commercial GCs and sub-contractors.
+							Built for small &amp; mid-size commercial GCs and subcontractors.
 						</p>
 					</motion.div>
 				</div>
@@ -170,7 +170,7 @@ export default function BookPage() {
 				</div>
 			</section>
 
-			<Footer />
+			<SiteFooter />
 		</main>
 	);
 }
