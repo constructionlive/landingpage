@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, Calendar, ChevronDown, Image as ImageIcon, Play } from "lucide-react";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
-import { solutionGroups, demoHref, pricingHref } from "@/components/home/nav-data";
+import { solutionGroups, contactHref, demoHref, pricingHref } from "@/components/home/nav-data";
 import { GROUP_INTROS, SOLUTION_DETAILS, type SolutionMedia } from "./content";
 
 /* Anchor targets have to clear the fixed nav, and on mobile the jump bar sits
@@ -326,10 +326,10 @@ export default function SolutionsPage() {
 									<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
 								</a>
 								<a
-									href="mailto:rahul@construction.live"
+									href={contactHref}
 									className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-do-text-secondary hover:text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all"
 								>
-									Email us instead
+									Send us a message instead
 								</a>
 							</div>
 						</div>

@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Calendar, ArrowRight, CheckCircle2, Clock } from "lucide-react";
+import { contactHref } from "@/components/home/nav-data";
 
 const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
@@ -102,12 +103,9 @@ export default function DemoCTA() {
 						</a>
 
 						<p className="mt-4 text-center text-xs text-do-text-muted">
-							Or email{" "}
-							<a
-								href="mailto:rahul@construction.live"
-								className="text-do-orange hover:underline"
-							>
-								rahul@construction.live
+							Not ready for a call?{" "}
+							<a href={contactHref} className="text-do-orange hover:underline">
+								Send us a message
 							</a>
 						</p>
 					</motion.div>

@@ -175,10 +175,12 @@ export const resourceLinks = [
 
 export const companyLinks = [
 	{ label: "About Us", href: "/about" },
-	{ label: "Contact Us", href: "mailto:rahul@construction.live" },
+	{ label: "Contact Us", href: "/contact" },
 ];
 
 /* No pricing page yet, pricing conversations happen on the demo call. */
 export const pricingHref = "/pricing";
-export const contactHref = "mailto:rahul@construction.live";
+/* A form, not a mailto: a message we can answer, file and reply to from one
+   place, rather than one that dies in whichever client the browser opens. */
+export const contactHref = "/contact";
 export const demoHref = "/book";
