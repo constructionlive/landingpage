@@ -1,15 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState, FormEvent } from "react";
-import {
-	ArrowRight,
-	Calendar,
-	Check,
-	CheckCircle2,
-	ImagePlus,
-	X,
-} from "lucide-react";
+import { useState, FormEvent } from "react";
+import { ArrowRight, Calendar, Check, CheckCircle2 } from "lucide-react";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
 
@@ -24,11 +17,6 @@ const TOPICS = [
 	"Help with my account",
 	"Something else",
 ];
-
-/* Kept in step with app/api/contact/route.ts, which is the one that actually
-   enforces it. Checking here only saves the sender a wasted upload, and catches
-   the case the route can't: a body too big for the platform to even deliver. */
-const MAX_ATTACHMENT_BYTES = 4 * 1024 * 1024;
 
 /* Changing a field here means changing four other places: the validator in
    app/api/contact/route.ts, the action args in convex/contact.ts, the
@@ -132,115 +120,16 @@ function TextField({
 	);
 }
 
-/* One photo, because the thing people want to send is a screenshot of whatever
-   went wrong or a picture of the paperwork they are arguing about. It rides
-   along on the email to us, so we see it without opening a dashboard. */
-function PhotoField({
-	file,
-	onSelect,
-	error,
-}: {
-	file: File | null;
-	onSelect: (next: File | null) => void;
-	error: string;
-}) {
-	const inputRef = useRef<HTMLInputElement>(null);
-	const [preview, setPreview] = useState<string | null>(null);
-
-	useEffect(() => {
-		if (!file) {
-			setPreview(null);
-			return;
-		}
-		const url = URL.createObjectURL(file);
-		setPreview(url);
-		return () => URL.revokeObjectURL(url);
-	}, [file]);
-
-	const clear = () => {
-		onSelect(null);
-		/* Without this, picking the same file again fires no change event. */
-		if (inputRef.current) inputRef.current.value = "";
-	};
-
-	return (
-		<div>
-			<p className="text-sm font-medium text-do-text mb-2">
-				Attach a photo
-				<span className="text-do-text-muted font-normal"> (optional)</span>
-			</p>
-
-			<input
-				ref={inputRef}
-				id="contact-attachment"
-				type="file"
-				accept="image/png,image/jpeg,image/webp,image/gif,image/heic,image/heif"
-				className="sr-only"
-				onChange={(e) => onSelect(e.target.files?.[0] ?? null)}
-			/>
-
-			{file && preview ? (
-				<div className="flex items-center gap-3 p-3 rounded-xl border border-do-border bg-do-bg/60">
-					{/* A blob URL, so there is nothing for next/image to optimise. */}
-					{/* eslint-disable-next-line @next/next/no-img-element */}
-					<img
-						src={preview}
-						alt=""
-						className="h-14 w-14 rounded-lg object-cover border border-do-border shrink-0"
-					/>
-					<div className="min-w-0 flex-1">
-						<p className="text-sm text-do-text truncate">{file.name}</p>
-						<p className="text-xs text-do-text-muted mt-0.5">
-							{(file.size / (1024 * 1024)).toFixed(1)} MB
-						</p>
-					</div>
-					<button
-						type="button"
-						onClick={clear}
-						aria-label="Remove photo"
-						className="p-2 rounded-lg text-do-text-muted hover:text-do-text hover:bg-do-bg-card transition-colors shrink-0"
-					>
-						<X className="h-4 w-4" />
-					</button>
-				</div>
-			) : (
-				<label
-					htmlFor="contact-attachment"
-					className="flex items-center gap-2.5 px-4 py-3 rounded-xl border border-dashed border-do-border text-sm text-do-text-secondary hover:text-do-orange hover:border-do-orange/40 transition-colors cursor-pointer"
-				>
-					<ImagePlus className="h-4 w-4" />
-					Choose a photo or screenshot
-					<span className="ml-auto text-xs text-do-text-muted">Up to 4 MB</span>
-				</label>
-			)}
-
-			{error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-		</div>
-	);
-}
-
 /* ── Page ──────────────────────────────────────────────────────────── */
 
 export default function ContactPage() {
 	const [answers, setAnswers] = useState<Answers>(EMPTY);
-	const [file, setFile] = useState<File | null>(null);
-	const [fileError, setFileError] = useState("");
 	/* Hidden from people, visible to bots. See the honeypot note in the route. */
 	const [honeypot, setHoneypot] = useState("");
 	const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
 
 	const set = <K extends keyof Answers>(key: K, value: Answers[K]) =>
 		setAnswers((prev) => ({ ...prev, [key]: value }));
-
-	const selectFile = (next: File | null) => {
-		if (next && next.size > MAX_ATTACHMENT_BYTES) {
-			setFileError("That photo is over 4 MB. Try a smaller one.");
-			setFile(null);
-			return;
-		}
-		setFileError("");
-		setFile(next);
-	};
 
 	const ready =
 		answers.name.trim() !== "" &&
@@ -252,18 +141,11 @@ export default function ContactPage() {
 		if (status === "submitting" || !ready) return;
 		setStatus("submitting");
 		try {
-			/* FormData rather than JSON, so the photo goes up as a file instead of
-			   a base64 string we would have to build in the browser. */
-			const body = new FormData();
-			body.set("topic", answers.topic);
-			body.set("name", answers.name);
-			body.set("email", answers.email);
-			body.set("company", answers.company);
-			body.set("message", answers.message);
-			body.set("company_website", honeypot);
-			if (file) body.set("attachment", file);
-
-			const response = await fetch("/api/contact", { method: "POST", body });
+			const response = await fetch("/api/contact", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ ...answers, company_website: honeypot }),
+			});
 			if (!response.ok) throw new Error("submit_failed");
 			setStatus("done");
 		} catch {
@@ -371,9 +253,7 @@ export default function ContactPage() {
 									optional
 								/>
 
-								<PhotoField file={file} onSelect={selectFile} error={fileError} />
-
-								<div className="grid sm:grid-cols-2 gap-5">
+									<div className="grid sm:grid-cols-2 gap-5">
 									<TextField
 										label="Your name"
 										value={answers.name}
