@@ -48,6 +48,7 @@ export default defineSchema({
     trade: v.string(),
     teamSize: v.string(),
     website: v.string(),
+    painPoint: v.optional(v.string()),
     // Step 2: who to reply to
     name: v.string(),
     email: v.string(),

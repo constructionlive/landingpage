@@ -20,10 +20,13 @@ const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
 /* The contractor type is answered in their own words. These lists are only
    prompts, shown under the field so nobody stares at an empty box, and they
-   branch off the role because a GC and a sub describe themselves differently. */
+   branch off the role because a GC and a sub describe themselves differently.
+   Other has no list on purpose: we'd only be guessing at what they do. */
 const GC = "General Contractor";
 const SUB = "Subcontractor";
-const ROLES = [GC, SUB];
+const PM = "Project Manager";
+const OTHER = "Other";
+const ROLES = [GC, SUB, PM, OTHER];
 
 const TRADE_SUGGESTIONS: Record<string, string[]> = {
 	[GC]: [
@@ -45,9 +48,30 @@ const TRADE_SUGGESTIONS: Record<string, string[]> = {
 		"Fire protection",
 		"Low voltage",
 	],
+	[PM]: [
+		"Owner's rep",
+		"Construction manager",
+		"Tenant fit-out",
+		"Light commercial new build",
+		"Multi-family",
+		"Program management",
+	],
+	/* Nothing sensible to suggest for Other, so the field just stays open. */
 };
 
 const TEAM_SIZES = ["1-5", "6-20", "21-50", "50+"];
+
+/* Optional, but the most useful answer on the form: it tells us which part of
+   the platform to quote and what to open the call with. Chips append rather
+   than replace, because most contractors have more than one of these. */
+const PAIN_POINTS = [
+	"Chasing daily reports",
+	"Change orders getting lost",
+	"Pay apps take too long",
+	"RFIs and submittals slipping",
+	"Can't find the right drawing",
+	"Delay claims with no record",
+];
 
 /* Step 2 */
 const HEARD_ABOUT = [
@@ -94,11 +118,17 @@ const NEXT_STEPS = [
 	},
 ];
 
+/* Changing a field here means changing four other places: the validator in
+   app/api/quote/route.ts, the mutation args in convex/quotes.ts, the
+   quoteRequests table in convex/schema.ts, and BOTH emails in
+   convex/emails.ts (the internal `rows` table and the customer `recap`).
+   A field added here but not there is collected and then silently dropped. */
 type Answers = {
 	role: string;
 	trade: string;
 	teamSize: string;
 	website: string;
+	painPoint: string;
 	name: string;
 	email: string;
 	company: string;
@@ -111,6 +141,7 @@ const EMPTY: Answers = {
 	trade: "",
 	teamSize: "",
 	website: "",
+	painPoint: "",
 	name: "",
 	email: "",
 	company: "",
@@ -257,6 +288,76 @@ function SuggestedField({
 					))}
 				</motion.div>
 			)}
+		</div>
+	);
+}
+
+/* Like SuggestedField, but the chips add to the answer instead of replacing it,
+   and a second tap takes it back off. Contractors rarely have just one problem. */
+function PainPointField({
+	label,
+	value,
+	onChange,
+	suggestions,
+	placeholder,
+}: {
+	label: string;
+	value: string;
+	onChange: (next: string) => void;
+	suggestions: string[];
+	placeholder?: string;
+}) {
+	const parts = value
+		.split(/,\s*/)
+		.map((part) => part.trim())
+		.filter(Boolean);
+
+	const toggle = (suggestion: string) => {
+		const without = parts.filter((part) => part !== suggestion);
+		onChange(
+			without.length === parts.length
+				? [...parts, suggestion].join(", ")
+				: without.join(", "),
+		);
+	};
+
+	return (
+		<div>
+			<label className="block">
+				<span className="block text-sm font-medium text-do-text mb-2">
+					{label}
+					<span className="text-do-text-muted font-normal"> (optional)</span>
+				</span>
+				<textarea
+					value={value}
+					onChange={(e) => onChange(e.target.value)}
+					placeholder={placeholder}
+					rows={3}
+					className="w-full px-4 py-3 rounded-xl border border-do-border bg-do-bg/60 text-do-text placeholder:text-do-text-muted text-sm leading-relaxed resize-y focus:outline-none focus:border-do-orange/40 focus:ring-1 focus:ring-do-orange/40 transition-colors"
+				/>
+			</label>
+
+			<div className="flex flex-wrap items-center gap-2 mt-3">
+				<span className="text-xs text-do-text-muted">Common ones:</span>
+				{suggestions.map((suggestion) => {
+					const isSelected = parts.includes(suggestion);
+					return (
+						<button
+							key={suggestion}
+							type="button"
+							onClick={() => toggle(suggestion)}
+							aria-pressed={isSelected}
+							className={`px-3 py-1.5 rounded-full border text-xs transition-colors ${
+								isSelected
+									? "border-do-orange/40 text-do-orange bg-do-orange/[0.07]"
+									: "border-dashed border-do-border text-do-text-secondary hover:text-do-orange hover:border-do-orange/40"
+							}`}
+						>
+							{suggestion}
+						</button>
+					);
+				})}
+			</div>
 		</div>
 	);
 }
@@ -408,14 +509,14 @@ export default function PricingPage() {
 												/>
 												{/* Always asked. Only the examples wait on the role. */}
 												<SuggestedField
-													label="What kind of contractor are you?"
+													label="What kind of work do you do?"
 													value={answers.trade}
 													onChange={(v) => set("trade", v)}
 													suggestions={TRADE_SUGGESTIONS[answers.role] ?? []}
 													placeholder="Tell us in your own words"
 												/>
 												<ChoiceGroup
-													label="How big is your team?"
+													label="How big is your field team?"
 													options={TEAM_SIZES}
 													value={answers.teamSize}
 													onChange={(v) => set("teamSize", v)}
@@ -425,6 +526,13 @@ export default function PricingPage() {
 													value={answers.website}
 													onChange={(v) => set("website", v)}
 													placeholder="reyeselectric.com"
+												/>
+												<PainPointField
+													label="What are you hoping to fix?"
+													value={answers.painPoint}
+													onChange={(v) => set("painPoint", v)}
+													suggestions={PAIN_POINTS}
+													placeholder="Tell us what's costing you time or money right now. It helps us quote the right thing."
 												/>
 											</>
 										)}

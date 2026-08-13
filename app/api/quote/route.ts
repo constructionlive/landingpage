@@ -34,6 +34,8 @@ export async function POST(request: Request) {
 
 	const phone = asString(payload.phone, 40);
 	const heardAbout = asString(payload.heardAbout, 120);
+	/* Free text, so it gets more room than the other optional answers. */
+	const painPoint = asString(payload.painPoint, 1500);
 
 	try {
 		const convex = new ConvexHttpClient(convexUrl);
@@ -42,6 +44,7 @@ export async function POST(request: Request) {
 			trade: asString(payload.trade, 300),
 			teamSize: asString(payload.teamSize, 40),
 			website: asString(payload.website, 300),
+			painPoint: painPoint || undefined,
 			name,
 			email,
 			company,

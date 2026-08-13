@@ -65,7 +65,9 @@ function recapRows(rows: [string, string][]) {
   return rows
     .map(([label, value], index) => {
       const edge = index === rows.length - 1 ? "" : `border-bottom:1px solid ${BORDER};`;
-      return `<tr><td style="padding:16px 20px; font-family:${FONT}; font-size:13px; line-height:20px; color:#64748b; width:170px; ${edge}">${escapeHtml(label)}</td><td style="padding:16px 20px; font-family:${FONT}; font-size:14px; line-height:20px; font-weight:600; color:${INK}; ${edge}">${escapeHtml(value)}</td></tr>`;
+      /* Free-text answers can be multi-line, and a table cell collapses \n. */
+      const body = escapeHtml(value).replace(/\n/g, "<br />");
+      return `<tr><td style="padding:16px 20px; font-family:${FONT}; font-size:13px; line-height:20px; color:#64748b; width:170px; ${edge}">${escapeHtml(label)}</td><td style="padding:16px 20px; font-family:${FONT}; font-size:14px; line-height:20px; font-weight:600; color:${INK}; ${edge}">${body}</td></tr>`;
     })
     .join("");
 }
@@ -164,6 +166,7 @@ export const sendQuoteRequestEmails = action({
     trade: v.string(),
     teamSize: v.string(),
     website: v.string(),
+    painPoint: v.optional(v.string()),
     name: v.string(),
     email: v.string(),
     company: v.string(),
@@ -180,15 +183,19 @@ export const sendQuoteRequestEmails = action({
     const resend = new Resend(resendApiKey);
     const notifyTo = process.env.QUOTE_NOTIFICATION_EMAIL ?? "rahul@construction.live";
 
+    /* Mirrors the pricing form in app/pricing/page.tsx. Add a question there
+       and it has to be added here too, in both this table and the `recap`
+       below, or the answer never reaches anyone. */
     const rows: [string, string][] = [
       ["Name", args.name],
       ["Company", args.company],
       ["Email", args.email],
       ["Phone", args.phone || "not given"],
       ["Role", args.role],
-      ["Kind of contractor", args.trade],
-      ["Team size", args.teamSize],
+      ["Kind of work", args.trade],
+      ["Field team size", args.teamSize],
       ["Website", args.website],
+      ["What they want to fix", args.painPoint || "not given"],
       ["Heard about us", args.heardAbout || "not given"],
     ];
     const QUOTE_EMAIL = process.env.QUOTE_EMAIL ?? "quotes@ai.construction.live";
@@ -220,9 +227,10 @@ export const sendQuoteRequestEmails = action({
       [
         ["Company", args.company],
         ["Role", args.role],
-        ["Kind of contractor", args.trade],
-        ["Team size", args.teamSize],
+        ["Kind of work", args.trade],
+        ["Field team size", args.teamSize],
         ["Website", args.website],
+        ["What you want to fix", args.painPoint ?? ""],
       ] as [string, string][]
     ).filter(([, value]) => value.trim() !== "");
 

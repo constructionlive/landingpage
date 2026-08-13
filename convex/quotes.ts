@@ -29,6 +29,7 @@ export const submitQuote = mutation({
     trade: v.string(),
     teamSize: v.string(),
     website: v.string(),
+    painPoint: v.optional(v.string()),
     name: v.string(),
     email: v.string(),
     company: v.string(),
@@ -40,6 +41,7 @@ export const submitQuote = mutation({
     const email = args.email.trim();
     const company = args.company.trim();
     const phone = args.phone?.trim() || undefined;
+    const painPoint = args.painPoint?.trim() || undefined;
 
     if (!name || !email || !company) {
       throw new ConvexError("Name, email and company are required.");
@@ -50,6 +52,7 @@ export const submitQuote = mutation({
       trade: args.trade,
       teamSize: args.teamSize,
       website: args.website,
+      painPoint,
       name,
       email,
       normalizedEmail: normalizeEmail(email),
@@ -64,6 +67,7 @@ export const submitQuote = mutation({
       trade: args.trade,
       teamSize: args.teamSize,
       website: args.website,
+      painPoint,
       name,
       email,
       company,
