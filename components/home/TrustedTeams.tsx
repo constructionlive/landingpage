@@ -19,7 +19,7 @@ const clients = [
 	{ name: "Build Scale", subtitle: "" },
 ];
 
-export default function IntegrationsBar() {
+export default function TrustedTeams() {
 	const ref = useRef(null);
 	const inView = useInView(ref, { once: true, margin: "-40px" });
 
