@@ -61,8 +61,7 @@ export default defineSchema({
     .index("by_normalizedEmail", ["normalizedEmail"])
     .index("by_createdAt", ["createdAt"]),
   /* The contact form on /contact. Unlike a quote request this is open-ended:
-     one message, everything else optional, plus an optional photo the sender
-     attached (stored in Convex storage and mailed to us as an attachment). */
+     one message, everything else optional. */
   contactMessages: defineTable({
     name: v.string(),
     email: v.string(),
@@ -70,9 +69,6 @@ export default defineSchema({
     company: v.optional(v.string()),
     topic: v.optional(v.string()),
     message: v.string(),
-    attachmentStorageId: v.optional(v.id("_storage")),
-    attachmentName: v.optional(v.string()),
-    attachmentType: v.optional(v.string()),
     createdAt: v.number(),
   })
     .index("by_normalizedEmail", ["normalizedEmail"])

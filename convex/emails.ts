@@ -335,10 +335,8 @@ export const sendContactMessageEmails = internalAction({
     company: v.optional(v.string()),
     topic: v.optional(v.string()),
     message: v.string(),
-    attachmentStorageId: v.optional(v.id("_storage")),
-    attachmentName: v.optional(v.string()),
   },
-  handler: async (ctx, args) => {
+  handler: async (_ctx, args) => {
     const resendApiKey = process.env.RESEND_API_KEY;
     if (!resendApiKey) {
       console.warn("RESEND_API_KEY is missing; skipping contact message emails.");
@@ -349,29 +347,6 @@ export const sendContactMessageEmails = internalAction({
     const notifyTo = process.env.CONTACT_NOTIFICATION_EMAIL ?? "rahul@construction.live";
     const CONTACT_EMAIL = process.env.CONTACT_EMAIL ?? "hello@ai.construction.live";
 
-    /* The photo rides along on our copy so nobody has to open the dashboard to
-       see what they were pointing at. The link is the fallback for clients that
-       strip attachments. */
-    let attachment: { filename: string; content: string } | undefined;
-    let attachmentUrl: string | null = null;
-    if (args.attachmentStorageId) {
-      try {
-        attachmentUrl = await ctx.storage.getUrl(args.attachmentStorageId);
-        const blob = await ctx.storage.get(args.attachmentStorageId);
-        if (blob) {
-          attachment = {
-            filename: args.attachmentName || "attachment",
-            content: Buffer.from(await blob.arrayBuffer()).toString("base64"),
-          };
-        }
-      } catch (error) {
-        console.error("Failed to read contact attachment", {
-          storageId: args.attachmentStorageId,
-          error,
-        });
-      }
-    }
-
     /* Mirrors the form in app/contact/page.tsx. */
     const rows: [string, string][] = [
       ["Name", args.name],
@@ -379,12 +354,6 @@ export const sendContactMessageEmails = internalAction({
       ["Company", args.company || "not given"],
       ["About", args.topic || "not given"],
       ["Message", args.message],
-      [
-        "Photo",
-        args.attachmentStorageId
-          ? `${args.attachmentName || "attachment"}${attachmentUrl ? ` (${attachmentUrl})` : ""}`
-          : "none",
-      ],
     ];
 
     try {
@@ -400,7 +369,6 @@ export const sendContactMessageEmails = internalAction({
               `<tr><td style="border:1px solid #ddd"><strong>${escapeHtml(label)}</strong></td><td style="border:1px solid #ddd">${escapeHtml(value).replace(/\n/g, "<br>")}</td></tr>`,
           )
           .join("")}</table>`,
-        ...(attachment ? { attachments: [attachment] } : {}),
       });
     } catch (error) {
       console.error("Failed to send contact notification", { email: args.email, error });
@@ -415,7 +383,6 @@ export const sendContactMessageEmails = internalAction({
         ["Company", args.company ?? ""],
         ["About", args.topic ?? ""],
         ["Your message", args.message],
-        ["Photo attached", args.attachmentName ?? ""],
       ] as [string, string][]
     ).filter(([, value]) => value.trim() !== "");
 
