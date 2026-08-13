@@ -69,14 +69,14 @@ export default function SolutionsPage() {
 					>
 						<span className="do-section-label text-do-orange">Solutions</span>
 						<h1 className="text-4xl md:text-5xl font-bold text-do-text mt-4 tracking-tight">
-							Three things we do, and the one thing that only works because of them
+							Your drawings, your email and your daily log finally know about
+							each other
 						</h1>
-						<p className="mt-5 text-lg text-do-text-secondary leading-relaxed">
-							We capture what happens in the field, read everything that arrives from
-							the owner, the GC and the systems you already run, and generate the
-							estimates, submittals and change orders that go back out. Because all
-							three sit on one record, every entry stays linked to whatever caused it.
-						</p>
+						{/* <p className="mt-5 text-lg text-do-text-secondary leading-relaxed">
+							The field captures on voice. The owner&apos;s email updates the drawing
+							and the schedule. The change order builds itself from both, because it
+							is all one record, not four tools pointed at the same job.
+						</p> */}
 						<div className="flex flex-wrap gap-3 mt-8">
 							<a
 								href={demoHref}
