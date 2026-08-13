@@ -16,10 +16,11 @@ export const sendInvitationAddedEmail = action({
     }
 
     const resend = new Resend(resendApiKey);
+    const invitationEmail = process.env.INVITATION_EMAIL ?? "invitation@ai.construction.live";
 
     try {
       await resend.emails.send({
-        from: "construction.live <invitation@construction.live>",
+        from: `construction.live <${invitationEmail}>`,
         to: [args.email],
         subject: "You have been added to the waitlist",
         text: "You have been added to the construction.live waitlist.",
@@ -77,10 +78,11 @@ export const sendQuoteRequestEmails = action({
       ["Website", args.website],
       ["Heard about us", args.heardAbout || "not given"],
     ];
+    const QUOTE_EMAIL = process.env.QUOTE_EMAIL ?? "quotes@ai.construction.live";
 
     try {
       await resend.emails.send({
-        from: "construction.live <quotes@construction.live>",
+        from: `construction.live <${QUOTE_EMAIL}>`,
         to: [notifyTo],
         replyTo: args.email,
         subject: `Quote request: ${args.company} (${args.role})`,
@@ -100,7 +102,7 @@ export const sendQuoteRequestEmails = action({
     /* Auto-reply. Keep the promise here identical to the one on the success screen. */
     try {
       await resend.emails.send({
-        from: "construction.live <quotes@construction.live>",
+        from: `construction.live <${QUOTE_EMAIL}>`,
         to: [args.email],
         replyTo: notifyTo,
         subject: "We got your quote request",
