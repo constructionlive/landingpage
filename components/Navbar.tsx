@@ -7,9 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 import BrandMark from "./BrandMark";
 
 const navLinks = [
-	{ label: "Features", href: "/features" },
-	{ label: "Use Cases", href: "/use-cases" },
-	{ label: "How It Works", href: "/how-it-works" },
+	{ label: "Solutions", href: "/solutions" },
 	{ label: "About", href: "/about" },
 	{ label: "Blog", href: "/blog" },
 ];
