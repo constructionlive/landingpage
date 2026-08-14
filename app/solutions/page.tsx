@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, Calendar, ChevronDown, Image as ImageIcon, Play } from "lucide-react";
+/* Aliased: `Image` is already taken by the lucide icon above. */
+import NextImage from "next/image";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
 import { solutionGroups, contactHref, demoHref, pricingHref } from "@/components/home/nav-data";
@@ -361,13 +363,20 @@ function MediaSlot({ media, label }: { media: SolutionMedia; label: string }) {
 							className="w-full aspect-video bg-black"
 						/>
 					) : (
-						/* eslint-disable-next-line @next/next/no-img-element */
-						<img
-							src={media.src}
-							alt={media.alt ?? `${label} in construction.live`}
-							loading="lazy"
-							className="w-full"
-						/>
+						/* No `src` is filled in yet, so today this renders the labelled
+						   frame below instead. `fill` inside an aspect-video box matches
+						   the video and placeholder siblings, so whatever gets dropped
+						   in /public lands in a slot that's already the right shape and
+						   reserves its space before loading. */
+						<div className="relative w-full aspect-video">
+							<NextImage
+								src={media.src}
+								alt={media.alt ?? `${label} in construction.live`}
+								fill
+								sizes="(max-width: 768px) 100vw, 768px"
+								className="object-cover"
+							/>
+						</div>
 					)
 				) : (
 					<div className="relative aspect-video flex flex-col items-center justify-center gap-3 do-blueprint-grid-dense">

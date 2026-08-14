@@ -11,7 +11,7 @@
      04 → revision-chain   (T&M into finance, schedule against submittals) */
 
 export interface SolutionMedia {
-	/* "video" renders a <video>, "image" renders an <img>. `src` is optional on
+	/* "video" renders a <video>, "image" renders a next/image. `src` is optional on
 	   purpose: until the real asset exists we render a labelled frame in the
 	   same slot, so nothing 404s and the layout is already correct. Drop a file
 	   in /public, fill in `src`, and the frame becomes the real thing. */

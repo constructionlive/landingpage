@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { ShieldCheck, Lock, Ban, KeyRound } from "lucide-react";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
 	title: "Privacy Policy | construction.live",
 	description:
 		"How construction.live (operated by Neuratwin Inc., Toronto, Canada) collects, uses, and protects your data. We do not use your data for AI training without your explicit consent, and every AI model we use runs under a zero-retention policy.",
 	alternates: {
-		canonical: "https://www.construction.live/privacy",
+		canonical: absoluteUrl("/privacy"),
 	},
 };
 

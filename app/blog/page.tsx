@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { getPublishedPosts } from "@/lib/convexServer";
 import EditPostLink from "@components/blog/EditPostLink";
 import WritePostLink from "@components/blog/WritePostLink";
-
-const siteUrl = "https://construction.live";
+import RemoteImage from "@/components/RemoteImage";
+import { SITE_URL as siteUrl } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
@@ -106,9 +106,16 @@ export default async function BlogPage() {
                     </div>
                     <div className="border-t border-do-border lg:border-l lg:border-t-0">
                       {featuredPost.coverImageUrl ? (
-                        <img
+                        /* The featured cover is the LCP element on this page,
+                           so it loads eagerly with a high fetch priority
+                           rather than lazily like the ones below the fold. */
+                        <RemoteImage
                           src={featuredPost.coverImageUrl}
                           alt={featuredPost.title}
+                          width={1200}
+                          height={800}
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          priority
                           className="h-full min-h-64 w-full object-cover"
                         />
                       ) : (
@@ -129,9 +136,12 @@ export default async function BlogPage() {
                       key={post._id}
                     >
                       {post.coverImageUrl ? (
-                        <img
+                        <RemoteImage
                           src={post.coverImageUrl}
                           alt={post.title}
+                          width={800}
+                          height={480}
+                          sizes="(max-width: 768px) 100vw, 50vw"
                           className="h-48 w-full object-cover"
                         />
                       ) : null}
