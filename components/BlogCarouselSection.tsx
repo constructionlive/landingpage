@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import RemoteImage from './RemoteImage'
 
 type BlogPost = {
   _id: string
@@ -91,9 +92,12 @@ export default function BlogCarouselSection({ posts }: BlogCarouselSectionProps)
                   key={post._id}
                 >
                   {post.coverImageUrl ? (
-                    <img
+                    <RemoteImage
                       src={post.coverImageUrl}
                       alt={post.title}
+                      width={704}
+                      height={352}
+                      sizes="(max-width: 400px) 88vw, 22rem"
                       className="mb-4 h-44 w-full rounded-md object-cover"
                     />
                   ) : (

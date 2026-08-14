@@ -3,8 +3,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPostBySlug } from "@/lib/convexServer";
 import EditPostLink from "@components/blog/EditPostLink";
-
-const siteUrl = "https://construction.live";
+import JsonLd from "@/components/JsonLd";
+import RemoteImage from "@/components/RemoteImage";
+import { SITE_URL as siteUrl, absoluteUrl } from "@/lib/site";
+import {
+  ORGANIZATION_ID,
+  WEBSITE_ID,
+  breadcrumbSchema,
+  graph,
+} from "@/lib/schema";
 export const dynamic = "force-dynamic";
 
 function stripHtml(html: string) {
@@ -84,7 +91,6 @@ export default async function BlogPostPage({
   const description = post.metaDescription || fallbackDesc;
   const canonicalUrl = post.canonicalUrl || `${siteUrl}/blog/${post.slug}`;
   const articleSchema = {
-    "@context": "https://schema.org",
     "@type": "Article",
     headline: post.metaTitle || post.title,
     description,
@@ -95,13 +101,19 @@ export default async function BlogPostPage({
       "@type": "Person",
       name: post.authorName,
     },
-    publisher: {
-      "@type": "Organization",
-      name: "construction.live",
-      url: siteUrl,
-    },
+    /* Points at the Organization node the root layout emits, so the logo,
+       legalName and sameAs links come along without being repeated here.
+       Google's Article guidance wants that logo present. */
+    publisher: { "@id": ORGANIZATION_ID },
+    isPartOf: { "@id": WEBSITE_ID },
     mainEntityOfPage: canonicalUrl,
   };
+
+  const breadcrumbs = breadcrumbSchema([
+    { name: "Home", url: absoluteUrl("/") },
+    { name: "Blog", url: absoluteUrl("/blog") },
+    { name: post.title, url: canonicalUrl },
+  ]);
 
   return (
     <main className="min-h-screen px-6 py-12 md:px-8 md:py-14 bg-do-bg">
@@ -143,9 +155,14 @@ export default async function BlogPostPage({
           </header>
 
           {post.coverImageUrl ? (
-            <img
+            /* The post's LCP element. Eager, not lazy. */
+            <RemoteImage
               src={post.coverImageUrl}
               alt={post.title}
+              width={1600}
+              height={900}
+              sizes="(max-width: 896px) 100vw, 896px"
+              priority
               className="mt-6 h-72 w-full rounded-2xl border border-do-border object-cover sm:h-96"
             />
           ) : null}
@@ -162,9 +179,12 @@ export default async function BlogPostPage({
             <p className="text-xs font-mono text-do-orange uppercase tracking-wider">Written by</p>
             <div className="mt-4 flex items-start gap-3">
               {post.authorImageUrl ? (
-                <img
+                <RemoteImage
                   src={post.authorImageUrl}
                   alt={post.authorName}
+                  width={96}
+                  height={96}
+                  sizes="48px"
                   className="h-12 w-12 rounded-full border border-do-border object-cover"
                 />
               ) : (
@@ -195,10 +215,7 @@ export default async function BlogPostPage({
           </div>
         </article>
       </section>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
+      <JsonLd schema={graph(articleSchema, breadcrumbs)} />
     </main>
   );
 }

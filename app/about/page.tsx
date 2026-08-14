@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
 
@@ -40,12 +41,13 @@ function TeamSection() {
 					transition={{ delay: 0.2, duration: 0.5 }}
 				>
 					<div className="relative h-28 w-28 rounded-full mx-auto mb-6 overflow-hidden border-2 border-do-orange/30 shadow-[0_0_30px_rgba(249,115,22,0.15)]">
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img
+						<Image
 							src="/profile.jpg"
 							alt="Rahul Vaishnav, founder of construction.live"
+							width={800}
+							height={800}
+							sizes="112px"
 							className="h-full w-full object-cover"
-							loading="lazy"
 						/>
 					</div>
 					<h3 className="text-lg font-semibold text-do-text mb-1">
