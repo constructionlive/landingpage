@@ -1,17 +1,23 @@
 /**
- * The construction.live CL monogram.
+ * The construction.live CL mark: a disc with the C stem and L foot cut into
+ * it, plus a dot whose diameter matches the stroke weight.
  *
  * Draws in `currentColor`, so callers set the colour with a text class
  * (`text-do-orange` on the site). Background-free by design — the white
  * circle treatment lives only in the favicon assets (app/icon.svg,
- * app/apple-icon.svg), which are static files and repeat these paths.
+ * app/apple-icon.svg), which are static files and repeat these shapes.
+ *
+ * The cut-outs are transparent, so on a light surface the mark reads the same
+ * as public/cl_logo.svg. Keep the geometry here, in the two icon files, in
+ * public/cl_logo.svg and in app/opengraph-image.tsx in sync.
  */
 
-const ARC =
-	"M 463.7 104.3 A 175 175 0 1 0 463.7 351.7 A 15 15 0 0 0 442.5 330.5 A 145 145 0 1 1 442.5 125.5 A 15 15 0 0 0 463.7 104.3 Z";
+const DISC =
+	"M300,65.8 L300,190 A50,50 0 0,0 350,240 L474.2,240 A140,140 0 1,1 300,65.8 Z";
 
-const MONOGRAM =
-	"M 250 145 Q 250 138 255 133 L 279 105 Q 284 100 291 100 L 303 100 Q 310 100 310 107 L 310 255 Q 310 262 317 262 L 463 262 Q 470 262 470 269 L 470 315 Q 470 322 463 322 L 257 322 Q 250 322 250 315 Z M 272 140 L 288 140 Q 293 140 293 145 L 293 161 Q 293 166 288 166 L 272 166 Q 267 166 267 161 L 267 145 Q 267 140 272 140 Z M 272 182 L 288 182 Q 293 182 293 187 L 293 203 Q 293 208 288 208 L 272 208 Q 267 208 267 203 L 267 187 Q 267 182 272 182 Z M 272 224 L 288 224 Q 293 224 293 229 L 293 245 Q 293 250 288 250 L 272 250 Q 267 250 267 245 L 267 229 Q 267 224 272 224 Z M 335 279 L 351 279 Q 356 279 356 284 L 356 300 Q 356 305 351 305 L 335 305 Q 330 305 330 300 L 330 284 Q 330 279 335 279 Z M 382 279 L 398 279 Q 403 279 403 284 L 403 300 Q 403 305 398 305 L 382 305 Q 377 305 377 300 L 377 284 Q 377 279 382 279 Z M 429 279 L 445 279 Q 450 279 450 284 L 450 300 Q 450 305 445 305 L 429 305 Q 424 305 424 300 L 424 284 Q 424 279 429 279 Z";
+/* The dot, as a path rather than <circle> so app/opengraph-image.tsx can
+   reuse the exact same markup under satori. */
+const DOT = "M331,159 A50,50 0 1,1 431,159 A50,50 0 1,1 331,159 Z";
 
 export default function BrandMark({
 	className = "h-8 w-8",
@@ -22,7 +28,7 @@ export default function BrandMark({
 }) {
 	return (
 		<svg
-			viewBox="165 53 350 350"
+			viewBox="200 60 280 280"
 			className={`shrink-0 ${className}`}
 			fill="currentColor"
 			xmlns="http://www.w3.org/2000/svg"
@@ -30,8 +36,8 @@ export default function BrandMark({
 			aria-hidden={title ? undefined : true}
 		>
 			{title ? <title>{title}</title> : null}
-			<path d={ARC} />
-			<path fillRule="evenodd" d={MONOGRAM} />
+			<path d={DISC} />
+			<path d={DOT} />
 		</svg>
 	);
 }

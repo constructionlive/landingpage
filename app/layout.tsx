@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ConvexClientProvider from "./convex-client-provider";
+import CookieConsent from "@/components/CookieConsent";
 import JsonLd from "@/components/JsonLd";
 import {
 	SERP_TITLE,
@@ -64,6 +65,9 @@ export default function RootLayout({
 					)}
 				/>
 				<ConvexClientProvider>{children}</ConvexClientProvider>
+				{/* Renders nothing unless the visitor is in the EEA/UK and hasn't
+				    answered yet, or reopens it from the footer. */}
+				<CookieConsent />
 			</body>
 		</html>
 	);
