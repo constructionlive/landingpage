@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import BrandMark from "@components/BrandMark";
+import { OPEN_PREFERENCES_EVENT } from "@/lib/consent";
 import {
 	solutionGroups,
 	resourceLinks,
@@ -113,6 +114,17 @@ export default function SiteFooter() {
 							>
 								Privacy
 							</a>
+							{/* Reopens the consent banner. Withdrawing consent has to be as
+							    easy as giving it, so this stays reachable from every page. */}
+							<button
+								type="button"
+								onClick={() =>
+									window.dispatchEvent(new Event(OPEN_PREFERENCES_EVENT))
+								}
+								className="text-sm text-do-text-secondary hover:text-do-orange transition-colors"
+							>
+								Cookie preferences
+							</button>
 						</div>
 					</div>
 
