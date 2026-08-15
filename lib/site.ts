@@ -21,7 +21,7 @@ export const SITE_NAME = "construction.live";
 
    SERP_TITLE is kept under ~60 characters because Google truncates there.
    SOCIAL_TITLE runs the full line, where length costs nothing. */
-export const SERP_TITLE = "AI to manage Project Paperwork | construction.live";
+export const SERP_TITLE = "AI to Manage Construction Project Paperwork";
 
 export const SOCIAL_TITLE =
 	"construction.live: Drowned in Project Paperwork? Let Our AI Manage It.";
