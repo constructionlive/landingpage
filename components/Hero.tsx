@@ -95,10 +95,10 @@ export default function Hero() {
 						transition={{ delay: 0.35, duration: 0.7 }}
 					>
 						<span className="block pb-1 bg-gradient-to-r from-do-orange via-orange-400 to-amber-400 bg-clip-text text-transparent text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.02] text-balance">
-							Failing to get on top of a project's paper work?
+							Drowned in project paperwork?
 						</span>
 						<span className="block mt-2 sm:mt-3 text-do-text text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-[1.15] text-balance">
-							Save yourself with our AI project management!
+							Let our AI manage it!
 						</span>
 					</motion.h1>
 

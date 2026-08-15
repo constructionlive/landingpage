@@ -61,8 +61,12 @@ const BODY_TEXT = "#475569";
 const MUTED = "#94a3b8";
 const BORDER = "#e2e8f0";
 const SURFACE = "#f8fafc";
+/* Mirrors the <h1> in components/Hero.tsx, so the email sign-off makes the
+   same promise as the site. Plain enough to drop into both the HTML and the
+   text part: no apostrophes, so it needs no entity escaping. Keep it that way,
+   or the two parts have to diverge again. */
 const HERO_LINE =
-  "Failing to get on top of a project&rsquo;s paper work? Save yourself with our AI project management!";
+  "Drowned in project paperwork? Let our AI manage it!";
 
 function recapRows(rows: [string, string][]) {
   return rows
@@ -314,7 +318,7 @@ export const sendQuoteRequestEmails = action({
         subject: "We got your quote request",
         text: `Hi ${firstName},\n\nThanks for the details. We'll get back to you within one business day with a quote shaped around your projects and team size, not a generic price list.\n\nIf you'd rather not wait, book a 15-minute call here: ${CALENDAR_URL}\n\nWhat you sent us\n${recap
           .map(([label, value]) => `${label}: ${value}`)
-          .join("\n")}\n\nSomething look wrong? Just reply to this email.\n\nconstruction.live\nFailing to get on top of a project's paper work? Save yourself with our AI project management!`,
+          .join("\n")}\n\nSomething look wrong? Just reply to this email.\n\nconstruction.live\n${HERO_LINE}`,
         html: quoteReplyHtml({ firstName, rows: recap }),
       });
     } catch (error) {
@@ -394,7 +398,7 @@ export const sendContactMessageEmails = internalAction({
         subject: "We got your message",
         text: `Hi ${firstName},\n\nYour message went straight to the team, not a ticket queue. Someone will read it and reply within one business day.\n\nIf it's quicker to talk it through, book a 15-minute call here: ${CALENDAR_URL}\n\nWhat you sent us\n${recap
           .map(([label, value]) => `${label}: ${value}`)
-          .join("\n")}\n\nForgot something? Just reply to this email and it lands in the same thread.\n\nconstruction.live\nFailing to get on top of a project's paper work? Save yourself with our AI project management!`,
+          .join("\n")}\n\nForgot something? Just reply to this email and it lands in the same thread.\n\nconstruction.live\n${HERO_LINE}`,
         html: contactReplyHtml({ firstName, rows: recap }),
       });
     } catch (error) {

@@ -10,7 +10,7 @@ import { SITE_NAME } from "@/lib/site";
    names do nothing here, so the brand tokens are inlined as literals. */
 
 export const alt =
-	"construction.live: get paid for what you did, get covered for what you couldn't.";
+	"construction.live: AI to manage project paperwork.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -72,18 +72,35 @@ export default function OpengraphImage() {
 					>
 						Agentic AI for construction
 					</div>
+					{/* Two lines, orange then white, mirroring the two-tone <h1> in
+					    components/Hero.tsx. Sized so the question clears 1040px on one
+					    line — wrapped, it breaks as "Drowned in project / paperwork?",
+					    which reads as two thoughts. Re-check this if the copy changes. */}
 					<div
 						style={{
 							marginTop: 24,
-							fontSize: 72,
+							fontSize: 66,
 							fontWeight: 700,
-							color: TEXT,
+							color: ORANGE,
 							lineHeight: 1.1,
 							letterSpacing: "-0.03em",
-							maxWidth: 980,
+							maxWidth: 1040,
 						}}
 					>
-						Get paid for what you did. Get covered for what you couldn&apos;t.
+						Drowned in project paperwork?
+					</div>
+					<div
+						style={{
+							marginTop: 12,
+							fontSize: 50,
+							fontWeight: 700,
+							color: TEXT,
+							lineHeight: 1.15,
+							letterSpacing: "-0.02em",
+							maxWidth: 1040,
+						}}
+					>
+						Let our AI manage it!
 					</div>
 				</div>
 
