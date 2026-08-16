@@ -87,10 +87,15 @@ export default function SiteNav() {
 				onMouseLeave={scheduleClose}
 			>
 				<div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-					<a href="/" className="flex items-center gap-2.5" aria-label="construction.live home">
-						<BrandMark className="h-8 w-8 text-do-orange" />
-						<span className="text-do-text font-semibold text-lg tracking-tight">
-							construction<span className="text-do-orange">.live</span>
+					{/* The mark stands as the word's own c, so the text picks up at
+					    "onstruction" — same lockup as public/logo.svg. It only reads as a
+					    letter if it stays tucked against the o (hence -ml-px, no gap) and
+					    sized off the cap height, not the icon slot. The link's aria-label
+					    keeps the accessible name whole. */}
+					<a href="/" className="flex items-center" aria-label="construction.live home">
+						<BrandMark className="h-6 w-6 text-do-orange" />
+						<span className="-ml-px text-do-text font-semibold text-lg tracking-tight">
+							onstruction<span className="text-do-orange">.live</span>
 						</span>
 					</a>
 
