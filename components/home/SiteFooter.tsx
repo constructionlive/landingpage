@@ -20,10 +20,12 @@ export default function SiteFooter() {
 				<div className="grid lg:grid-cols-4 gap-10 lg:gap-12">
 					{/* Brand */}
 					<div className="lg:col-span-1">
-						<a href="/" className="flex items-center gap-2.5 mb-4" aria-label="construction.live home">
-							<BrandMark className="h-8 w-8 text-do-orange" />
-							<span className="text-do-text font-semibold text-lg tracking-tight">
-								construction<span className="text-do-orange">.live</span>
+						{/* Mark-as-c lockup, matching SiteNav and public/logo.svg: the text
+						    starts at "onstruction" and stays tucked against the mark. */}
+						<a href="/" className="flex items-center mb-4" aria-label="construction.live home">
+							<BrandMark className="h-6 w-6 text-do-orange" />
+							<span className="-ml-px text-do-text font-semibold text-lg tracking-tight">
+								onstruction<span className="text-do-orange">.live</span>
 							</span>
 						</a>
 						<p className="text-sm text-do-text-secondary leading-relaxed mb-6 max-w-xs">

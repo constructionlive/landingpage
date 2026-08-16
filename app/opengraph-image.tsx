@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/og";
-import { SITE_NAME } from "@/lib/site";
 
 /* The site-wide social card. Next picks this file up by convention and emits
    both og:image and twitter:image, so nothing in layout.tsx has to reference
@@ -45,7 +44,7 @@ export default function OpengraphImage() {
 					    Absolute coordinates, no <g transform>: satori applies its own
 					    layout pass to SVG children and a translated group lands off
 					    centre. */}
-					<svg width="72" height="72" viewBox="0 0 280 280" fill="none" stroke={ORANGE}>
+					<svg width="58" height="58" viewBox="0 0 280 280" fill="none" stroke={ORANGE}>
 						<path d="M230.1,203.1 A110,110 0 1 1 230.1,76.9" strokeWidth={34} />
 						<path d="M179.9,187.5 A62,62 0 1 1 179.9,92.5" strokeWidth={30} />
 						<path
@@ -54,16 +53,22 @@ export default function OpengraphImage() {
 							stroke="none"
 						/>
 					</svg>
+					{/* The mark is the word's c, so the text starts at "onstruction" —
+					    written out rather than sliced off SITE_NAME, which stays the whole
+					    name everywhere it is read aloud (alt text, metadata, schema). The
+					    72/34 icon-plus-label pairing is gone: the mark is now sized off the
+					    cap height and the negative margin closes the viewBox's own padding,
+					    so the two shapes touch the way they do in public/logo.svg. */}
 					<span
 						style={{
-							marginLeft: 20,
-							fontSize: 34,
+							marginLeft: -2,
+							fontSize: 44,
 							fontWeight: 700,
 							color: TEXT,
 							letterSpacing: "-0.02em",
 						}}
 					>
-						{SITE_NAME}
+						onstruction<span style={{ color: ORANGE }}>.live</span>
 					</span>
 				</div>
 

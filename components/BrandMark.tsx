@@ -2,6 +2,11 @@
  * The construction.live mark: the C drawn as a live signal — two broadcast
  * rings opening rightward around a solid core.
  *
+ * In the wordmark it stands as the c of "construction" rather than sitting
+ * beside a second one, so callers pair it with "onstruction.live" and size it
+ * off the text's cap height (h-6 against text-lg). Alone — favicons, the
+ * schema.org raster — it is just the mark.
+ *
  * Draws in `currentColor`, so callers set the colour with a text class
  * (`text-do-orange` on the site). That is deliberate: in the nav and footer the
  * mark sits beside `.live` in the same accent, and the brand's own two tints
