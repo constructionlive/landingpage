@@ -5,8 +5,8 @@ import { SITE_NAME, SITE_URL, absoluteUrl } from "./site";
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
 
-/* Google's Article guidance asks for a raster logo, so this is the PNG export
-   of cl_logo.svg rather than the SVG itself. */
+/* Google's Article guidance asks for a raster logo, so this is the 512px PNG
+   export of public/logo.svg rather than the SVG itself. */
 export const LOGO_URL = absoluteUrl("/logo.png");
 
 /* construction.live is the brand; Neuratwin Inc. is the registered company.

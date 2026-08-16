@@ -41,10 +41,18 @@ export default function OpengraphImage() {
 			>
 				{/* Wordmark */}
 				<div style={{ display: "flex", alignItems: "center" }}>
-					{/* Same geometry as components/BrandMark.tsx — keep the two in sync. */}
-					<svg width="72" height="72" viewBox="200 60 280 280" fill={ORANGE}>
-						<path d="M300,65.8 L300,190 A50,50 0 0,0 350,240 L474.2,240 A140,140 0 1,1 300,65.8 Z" />
-						<path d="M331,159 A50,50 0 1,1 431,159 A50,50 0 1,1 331,159 Z" />
+					{/* Same geometry as components/BrandMark.tsx — keep the two in sync.
+					    Absolute coordinates, no <g transform>: satori applies its own
+					    layout pass to SVG children and a translated group lands off
+					    centre. */}
+					<svg width="72" height="72" viewBox="0 0 280 280" fill="none" stroke={ORANGE}>
+						<path d="M230.1,203.1 A110,110 0 1 1 230.1,76.9" strokeWidth={34} />
+						<path d="M179.9,187.5 A62,62 0 1 1 179.9,92.5" strokeWidth={30} />
+						<path
+							d="M110,140 A30,30 0 1,1 170,140 A30,30 0 1,1 110,140 Z"
+							fill={ORANGE}
+							stroke="none"
+						/>
 					</svg>
 					<span
 						style={{

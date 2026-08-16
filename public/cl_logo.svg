@@ -1,8 +1,0 @@
-<svg width="280" height="280" viewBox="200 60 280 280" xmlns="http://www.w3.org/2000/svg" role="img">
-	<title>construction.live CL mark</title>
-	<desc>An orange disc with a vertical stem edge and a horizontal foot edge cut into it, joined by a rounded inside corner, with a separate orange dot whose diameter equals the thickness of the C and L strokes.</desc>
-	<g fill="#f97316">
-		<path d="M300,65.8 L300,190 A50,50 0 0,0 350,240 L474.2,240 A140,140 0 1,1 300,65.8 Z"/>
-		<circle cx="381" cy="159" r="50"/>
-	</g>
-</svg>

@@ -1,23 +1,31 @@
 /**
- * The construction.live CL mark: a disc with the C stem and L foot cut into
- * it, plus a dot whose diameter matches the stroke weight.
+ * The construction.live mark: the C drawn as a live signal — two broadcast
+ * rings opening rightward around a solid core.
  *
  * Draws in `currentColor`, so callers set the colour with a text class
- * (`text-do-orange` on the site). Background-free by design — the white
- * circle treatment lives only in the favicon assets (app/icon.svg,
- * app/apple-icon.svg), which are static files and repeat these shapes.
+ * (`text-do-orange` on the site). That is deliberate: in the nav and footer the
+ * mark sits beside `.live` in the same accent, and the brand's own two tints
+ * (#e8531a on light, #ff6b35 on dark) would read as a near-miss against it.
+ * The literal tints live only in the static assets, which have no theme to
+ * inherit: public/icon.svg, public/icon-light.svg, public/icon-dark.svg and
+ * public/logo.svg.
  *
- * The cut-outs are transparent, so on a light surface the mark reads the same
- * as public/cl_logo.svg. Keep the geometry here, in the two icon files, in
- * public/cl_logo.svg and in app/opengraph-image.tsx in sync.
+ * Background-free by design — the white disc treatment belongs to the favicons
+ * (app/icon.svg, app/apple-icon.svg), which repeat these shapes as static
+ * files. Coordinates are absolute rather than wrapped in a translate so
+ * app/opengraph-image.tsx can reuse them verbatim under satori. Keep the
+ * geometry here, in the two icon files and in the OG card in sync.
  */
 
-const DISC =
-	"M300,65.8 L300,190 A50,50 0 0,0 350,240 L474.2,240 A140,140 0 1,1 300,65.8 Z";
+/* Both rings are stroked, not filled, so the gap between them is the surface
+   showing through. Stroke widths differ (34 / 30) on purpose: the outer ring
+   carries at favicon sizes, the inner one has to stay lighter or the two close
+   up into a blob. */
+const OUTER_RING = "M230.1,203.1 A110,110 0 1 1 230.1,76.9";
+const INNER_RING = "M179.9,187.5 A62,62 0 1 1 179.9,92.5";
 
-/* The dot, as a path rather than <circle> so app/opengraph-image.tsx can
-   reuse the exact same markup under satori. */
-const DOT = "M331,159 A50,50 0 1,1 431,159 A50,50 0 1,1 331,159 Z";
+/* The core, as a path rather than <circle> so satori renders the same markup. */
+const CORE = "M110,140 A30,30 0 1,1 170,140 A30,30 0 1,1 110,140 Z";
 
 export default function BrandMark({
 	className = "h-8 w-8",
@@ -28,16 +36,18 @@ export default function BrandMark({
 }) {
 	return (
 		<svg
-			viewBox="200 60 280 280"
+			viewBox="0 0 280 280"
 			className={`shrink-0 ${className}`}
-			fill="currentColor"
+			fill="none"
+			stroke="currentColor"
 			xmlns="http://www.w3.org/2000/svg"
 			role={title ? "img" : undefined}
 			aria-hidden={title ? undefined : true}
 		>
 			{title ? <title>{title}</title> : null}
-			<path d={DISC} />
-			<path d={DOT} />
+			<path d={OUTER_RING} strokeWidth={34} />
+			<path d={INNER_RING} strokeWidth={30} />
+			<path d={CORE} fill="currentColor" stroke="none" />
 		</svg>
 	);
 }
