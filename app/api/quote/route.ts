@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
+import {
+	describeAttribution,
+	sanitizeAttributionPayload,
+} from "@/lib/attribution";
 
 /* The Convex React provider is disabled app-wide, so the quote form posts here
    and we call the mutation server-side over HTTP instead. */
@@ -37,6 +41,12 @@ export async function POST(request: Request) {
 	/* Free text, so it gets more room than the other optional answers. */
 	const painPoint = asString(payload.painPoint, 1500);
 
+	/* Whatever the browser sent is treated as hostile until this returns: UTMs
+	   are just query-string text and anyone can put anything in a link. Returns
+	   undefined when there's nothing usable, which leaves the field off the row
+	   entirely rather than storing an empty shell. */
+	const attribution = sanitizeAttributionPayload(payload.attribution);
+
 	try {
 		const convex = new ConvexHttpClient(convexUrl);
 		await convex.mutation(api.quotes.submitQuote, {
@@ -50,6 +60,9 @@ export async function POST(request: Request) {
 			company,
 			phone: phone || undefined,
 			heardAbout: heardAbout || undefined,
+			attribution,
+			sourceFirst: attribution?.first && describeAttribution(attribution.first),
+			sourceLast: attribution?.last && describeAttribution(attribution.last),
 		});
 	} catch (error) {
 		console.error("Failed to record quote request", { email, error });

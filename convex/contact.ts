@@ -2,6 +2,7 @@ import { ConvexError, v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation, query } from "./functions";
 import { internal } from "./_generated/api";
+import { attributionValidator } from "./schema";
 
 /* The /contact form. It runs the same shape as a quote request, write the row
    then mail both sides, with one difference: the message is free text rather
@@ -41,6 +42,10 @@ export const submitContact = mutation({
     company: v.optional(v.string()),
     topic: v.optional(v.string()),
     message: v.string(),
+    /* See the note on quotes.submitQuote: sanitised in the route, never here. */
+    attribution: v.optional(attributionValidator),
+    sourceFirst: v.optional(v.string()),
+    sourceLast: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const name = args.name.trim();
@@ -60,6 +65,7 @@ export const submitContact = mutation({
       company,
       topic,
       message,
+      attribution: args.attribution,
       createdAt: Date.now(),
     });
 
@@ -71,6 +77,8 @@ export const submitContact = mutation({
       company,
       topic,
       message,
+      sourceFirst: args.sourceFirst,
+      sourceLast: args.sourceLast,
     });
 
     return { status: "created" as const };

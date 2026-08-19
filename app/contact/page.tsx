@@ -3,10 +3,11 @@
 import { motion } from "framer-motion";
 import { useState, FormEvent } from "react";
 import { ArrowRight, Calendar, Check, CheckCircle2 } from "lucide-react";
+import BookingLink from "@/components/BookingLink";
+import { EVENTS, track } from "@/lib/analytics";
+import { attributionForSubmit } from "@/lib/attribution";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
-
-const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
 /* Optional, and the answer that decides who reads it first. Left open-ended at
    the end because a contact form that forces a category gets the wrong one. */
@@ -144,11 +145,20 @@ export default function ContactPage() {
 			const response = await fetch("/api/contact", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ ...answers, company_website: honeypot }),
+				/* Read at submit time, not page load — that is what keeps it
+				   working for visitors who never accepted the cookie. */
+				body: JSON.stringify({
+					...answers,
+					company_website: honeypot,
+					attribution: attributionForSubmit(),
+				}),
 			});
 			if (!response.ok) throw new Error("submit_failed");
+			track(EVENTS.CONTACT_SUBMITTED, { topic: answers.topic || "unspecified" });
 			setStatus("done");
 		} catch {
+			/* A spike here means a broken form, not a quiet week. */
+			track(EVENTS.CONTACT_FAILED);
 			setStatus("error");
 		}
 	}
@@ -212,16 +222,14 @@ export default function ContactPage() {
 									it if you remember something else and it lands in the same
 									thread.
 								</p>
-								<a
-									href={CALENDAR_URL}
-									target="_blank"
-									rel="noopener noreferrer"
+								<BookingLink
+									location="contact_success"
 									className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
 								>
 									<Calendar className="h-4 w-4" />
 									Book 15 minutes now
 									<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-								</a>
+								</BookingLink>
 								<p className="mt-4 text-xs text-do-text-muted">
 									Opens Google Calendar in a new tab.
 								</p>

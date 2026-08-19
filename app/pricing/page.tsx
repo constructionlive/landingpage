@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, FormEvent } from "react";
+import { useState, useRef, FormEvent } from "react";
 import {
 	ArrowRight,
 	ArrowLeft,
@@ -13,10 +13,11 @@ import {
 	Mail,
 	Users,
 } from "lucide-react";
+import BookingLink from "@/components/BookingLink";
+import { EVENTS, track } from "@/lib/analytics";
+import { attributionForSubmit } from "@/lib/attribution";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
-
-const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
 /* The contractor type is answered in their own words. These lists are only
    prompts, shown under the field so nobody stares at an empty box, and they
@@ -368,9 +369,22 @@ export default function PricingPage() {
 	const [step, setStep] = useState(0);
 	const [answers, setAnswers] = useState<Answers>(EMPTY);
 	const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
+	/* A ref, not state: flipping it must not re-render the form mid-typing. */
+	const startedRef = useRef(false);
 
-	const set = <K extends keyof Answers>(key: K, value: Answers[K]) =>
+	/* `quote_started` fires on the first real answer, not on page view.
+
+	   A pageview is not an intent signal — /pricing is linked from the nav, so
+	   most views never intended to fill anything in. Counting them as funnel
+	   entries would bury a genuine step-1 drop-off under people who were only
+	   looking at the page. */
+	const set = <K extends keyof Answers>(key: K, value: Answers[K]) => {
+		if (!startedRef.current) {
+			startedRef.current = true;
+			track(EVENTS.QUOTE_STARTED, { firstField: key });
+		}
 		setAnswers((prev) => ({ ...prev, [key]: value }));
+	};
 
 	/* Each step gates the next one, so nobody lands on the contact fields
 	   without us knowing what we're quoting, and nobody sends the form
@@ -393,11 +407,23 @@ export default function PricingPage() {
 			const response = await fetch("/api/quote", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(answers),
+				/* Attribution is read here, at submit time, rather than held in
+				   state from page load. That is what makes it work for a visitor
+				   who never accepted the cookie: nothing was ever stored, so the
+				   live URL and referrer are the only source of truth. */
+				body: JSON.stringify({ ...answers, attribution: attributionForSubmit() }),
 			});
 			if (!response.ok) throw new Error("submit_failed");
+			track(EVENTS.QUOTE_STEP_COMPLETED, { step: LAST_STEP });
+			track(EVENTS.QUOTE_SUBMITTED, {
+				role: answers.role,
+				teamSize: answers.teamSize,
+			});
 			setStatus("done");
 		} catch {
+			/* Tracked because a spike here is a broken form, not weak demand —
+			   and the two look identical in a conversion chart. */
+			track(EVENTS.QUOTE_FAILED);
 			setStatus("error");
 		}
 	}
@@ -459,16 +485,14 @@ export default function PricingPage() {
 									you&apos;d rather not wait, grab a time now and we&apos;ll walk
 									through the quote live.
 								</p>
-								<a
-									href={CALENDAR_URL}
-									target="_blank"
-									rel="noopener noreferrer"
+								<BookingLink
+									location="pricing_success"
 									className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
 								>
 									<Calendar className="h-4 w-4" />
 									Book 15 minutes now
 									<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-								</a>
+								</BookingLink>
 								<p className="mt-4 text-xs text-do-text-muted">
 									Opens Google Calendar in a new tab.
 								</p>
@@ -613,7 +637,15 @@ export default function PricingPage() {
 									{step < LAST_STEP ? (
 										<button
 											type="button"
-											onClick={() => setStep(step + 1)}
+											onClick={() => {
+												/* The step boundary is the whole point of
+												   instrumenting this form. Step 0 asks what you
+												   run, step 1 asks who you are; people abandon
+												   those for completely different reasons, and
+												   without this the two are indistinguishable. */
+												track(EVENTS.QUOTE_STEP_COMPLETED, { step });
+												setStep(step + 1);
+											}}
 											disabled={!stepReady[step]}
 											className="group inline-flex items-center gap-2 px-7 py-3 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_45px_rgba(249,115,22,0.45)] disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed"
 										>
@@ -679,15 +711,13 @@ export default function PricingPage() {
 					</div>
 
 					<div className="flex flex-wrap justify-center gap-3 mt-12">
-						<a
-							href={CALENDAR_URL}
-							target="_blank"
-							rel="noopener noreferrer"
+						<BookingLink
+							location="pricing_footer"
 							className="group inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-do-text-secondary hover:text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all"
 						>
 							<Calendar className="h-4 w-4" />
 							Rather just book a time?
-						</a>
+						</BookingLink>
 						<a
 							href="mailto:rahul@construction.live"
 							className="group inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-do-text-secondary hover:text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all"

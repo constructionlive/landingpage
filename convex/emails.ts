@@ -68,6 +68,29 @@ const SURFACE = "#f8fafc";
 const HERO_LINE =
   "Drowned in project paperwork? Let our AI manage it!";
 
+/* Source lines for the internal notification.
+
+   Deliberately not in the customer auto-reply: the lead does not need to see
+   how we tagged them, and "you came from paid_social · linkedin" reads as
+   surveillance rather than service.
+
+   Whoever picks up the reply sees the channel in the same glance as the phone
+   number, which is the entire point of putting it here rather than only in a
+   dashboard nobody opens before answering an email.
+
+   "First touch" is omitted rather than guessed when the visitor never accepted
+   the attribution cookie. An absent first touch is not the same fact as
+   "first touch equals last touch", and printing the latter would invent data. */
+function sourceRows(args: { sourceFirst?: string; sourceLast?: string }): [string, string][] {
+  const rows: [string, string][] = [];
+  if (args.sourceLast) rows.push(["Source (last touch)", args.sourceLast]);
+  if (args.sourceFirst && args.sourceFirst !== args.sourceLast) {
+    rows.push(["Source (first touch)", args.sourceFirst]);
+  }
+  if (rows.length === 0) rows.push(["Source", "unknown"]);
+  return rows;
+}
+
 function recapRows(rows: [string, string][]) {
   return rows
     .map(([label, value], index) => {
@@ -248,6 +271,10 @@ export const sendQuoteRequestEmails = action({
     company: v.string(),
     phone: v.optional(v.string()),
     heardAbout: v.optional(v.string()),
+    /* Marketing source, already formatted by describeAttribution() in
+       lib/attribution.ts. Internal notification only — see sourceRows(). */
+    sourceFirst: v.optional(v.string()),
+    sourceLast: v.optional(v.string()),
   },
   handler: async (_ctx, args) => {
     const resendApiKey = process.env.RESEND_API_KEY;
@@ -273,6 +300,7 @@ export const sendQuoteRequestEmails = action({
       ["Website", args.website],
       ["What they want to fix", args.painPoint || "not given"],
       ["Heard about us", args.heardAbout || "not given"],
+      ...sourceRows(args),
     ];
     const QUOTE_EMAIL = process.env.QUOTE_EMAIL ?? "quotes@ai.construction.live";
 
@@ -339,6 +367,9 @@ export const sendContactMessageEmails = internalAction({
     company: v.optional(v.string()),
     topic: v.optional(v.string()),
     message: v.string(),
+    /* See the note on sendQuoteRequestEmails. */
+    sourceFirst: v.optional(v.string()),
+    sourceLast: v.optional(v.string()),
   },
   handler: async (_ctx, args) => {
     const resendApiKey = process.env.RESEND_API_KEY;
@@ -358,6 +389,7 @@ export const sendContactMessageEmails = internalAction({
       ["Company", args.company || "not given"],
       ["About", args.topic || "not given"],
       ["Message", args.message],
+      ...sourceRows(args),
     ];
 
     try {

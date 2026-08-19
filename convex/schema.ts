@@ -2,6 +2,44 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
 
+/* Marketing attribution, mirrored from lib/attribution.ts.
+
+   Every field is optional and `channel` is a plain string rather than a union
+   of the eight known values. That is deliberate: Convex validates mutation args
+   before they run, so a stricter validator would reject the whole submission
+   over an unrecognised reporting label — losing a real lead to protect a tidy
+   enum. Normalisation happens in sanitizeAttributionPayload() before the write.
+
+   Optional-everywhere also matters for the migration: rows written before this
+   field existed carry no attribution, and Convex validates the entire table on
+   deploy. A required field here would refuse to deploy at all. */
+const attributionTouch = v.object({
+  utmSource: v.optional(v.string()),
+  utmMedium: v.optional(v.string()),
+  utmCampaign: v.optional(v.string()),
+  utmContent: v.optional(v.string()),
+  utmTerm: v.optional(v.string()),
+  gclid: v.optional(v.string()),
+  fbclid: v.optional(v.string()),
+  liFatId: v.optional(v.string()),
+  ttclid: v.optional(v.string()),
+  msclkid: v.optional(v.string()),
+  channel: v.string(),
+  landingPath: v.optional(v.string()),
+  referrer: v.optional(v.string()),
+  referrerHost: v.optional(v.string()),
+  at: v.number(),
+});
+
+/* `first` is absent for visitors who never consented to the attribution cookie
+   — we know what closed them, not what found them. See the two-tier note in
+   lib/attribution.ts. Reports must treat a missing first-touch as unknown
+   rather than assuming it equals last-touch. */
+export const attributionValidator = v.object({
+  first: v.optional(attributionTouch),
+  last: v.optional(attributionTouch),
+});
+
 export default defineSchema({
   ...authTables,
   userProfiles: defineTable({
@@ -56,6 +94,7 @@ export default defineSchema({
     company: v.string(),
     phone: v.optional(v.string()),
     heardAbout: v.optional(v.string()),
+    attribution: v.optional(attributionValidator),
     createdAt: v.number(),
   })
     .index("by_normalizedEmail", ["normalizedEmail"])
@@ -69,6 +108,7 @@ export default defineSchema({
     company: v.optional(v.string()),
     topic: v.optional(v.string()),
     message: v.string(),
+    attribution: v.optional(attributionValidator),
     createdAt: v.number(),
   })
     .index("by_normalizedEmail", ["normalizedEmail"])

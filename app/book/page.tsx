@@ -10,10 +10,9 @@ import {
 	Receipt,
 	AlertTriangle,
 } from "lucide-react";
+import BookingLink from "@/components/BookingLink";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
-
-const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
 const agenda = [
 	{
@@ -112,16 +111,14 @@ export default function BookPage() {
 							</div>
 						</div>
 
-						<a
-							href={CALENDAR_URL}
-							target="_blank"
-							rel="noopener noreferrer"
+						<BookingLink
+							location="booking_page"
 							className="group w-full inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
 						>
 							<Calendar className="h-4 w-4" />
 							Pick a Time
 							<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-						</a>
+						</BookingLink>
 
 						<p className="mt-4 text-center text-xs text-do-text-muted">
 							Opens Google Calendar in a new tab.

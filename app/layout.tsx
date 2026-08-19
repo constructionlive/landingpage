@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ConvexClientProvider from "./convex-client-provider";
 import CookieConsent from "@/components/CookieConsent";
+import AttributionTracker from "@/components/AttributionTracker";
 import JsonLd from "@/components/JsonLd";
 import {
 	SERP_TITLE,
@@ -64,6 +65,9 @@ export default function RootLayout({
 						softwareApplicationSchema,
 					)}
 				/>
+				{/* Renders nothing. Records the marketing source of each visit,
+				    for visitors who have allowed it. */}
+				<AttributionTracker />
 				<ConvexClientProvider>{children}</ConvexClientProvider>
 				{/* Renders nothing unless the visitor is in the EEA/UK and hasn't
 				    answered yet, or reopens it from the footer. */}

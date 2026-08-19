@@ -2,6 +2,7 @@ import { ConvexError, v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation, query } from "./functions";
 import { api } from "./_generated/api";
+import { attributionValidator } from "./schema";
 
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
@@ -35,6 +36,15 @@ export const submitQuote = mutation({
     company: v.string(),
     phone: v.optional(v.string()),
     heardAbout: v.optional(v.string()),
+    /* Where this lead came from. Sanitised in app/api/quote/route.ts before it
+       gets here — a query string is whatever the person sharing the link chose
+       to put in it, so none of it is trusted raw. */
+    attribution: v.optional(attributionValidator),
+    /* Pre-formatted one-liners for the notification email, built by
+       describeAttribution() in lib/attribution.ts so the wording lives in one
+       place rather than being re-derived here and drifting. */
+    sourceFirst: v.optional(v.string()),
+    sourceLast: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const name = args.name.trim();
@@ -59,6 +69,7 @@ export const submitQuote = mutation({
       company,
       phone,
       heardAbout: args.heardAbout,
+      attribution: args.attribution,
       createdAt: Date.now(),
     });
 
@@ -73,6 +84,8 @@ export const submitQuote = mutation({
       company,
       phone,
       heardAbout: args.heardAbout,
+      sourceFirst: args.sourceFirst,
+      sourceLast: args.sourceLast,
     });
 
     return { status: "created" as const };

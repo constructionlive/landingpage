@@ -3,9 +3,8 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Calendar, ArrowRight, CheckCircle2, Clock } from "lucide-react";
+import BookingLink from "@/components/BookingLink";
 import { contactHref } from "@/components/home/nav-data";
-
-const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
 const agenda = [
 	"Where the paper trail breaks on your projects today",
@@ -91,16 +90,14 @@ export default function DemoCTA() {
 							))}
 						</div>
 
-						<a
-							href={CALENDAR_URL}
-							target="_blank"
-							rel="noopener noreferrer"
+						<BookingLink
+							location="home_demo_cta"
 							className="group w-full inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]"
 						>
 							<Calendar className="h-4 w-4" />
 							Book a demo
 							<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-						</a>
+						</BookingLink>
 
 						<p className="mt-4 text-center text-xs text-do-text-muted">
 							Not ready for a call?{" "}

@@ -29,6 +29,16 @@ export const SOCIAL_TITLE =
 export const SITE_DESCRIPTION =
 	"Agentic AI for construction. It reads every email, voice note, document revision and photo off your project, files it against the right job, links it to the drawing revision and schedule behind it, and flags the mismatches.";
 
+/* The booking calendar. Was duplicated across four page files and
+   convex/emails.ts; components/BookingLink.tsx is the only thing that should
+   read it on the site side.
+
+   convex/emails.ts keeps its own copy on purpose — Convex functions bundle
+   separately from the Next app, so importing this file into them would drag the
+   whole module across a bundle boundary for one string. Change one, change
+   both. */
+export const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
+
 /** Absolute URL for a path, for canonicals and sitemap entries. */
 export function absoluteUrl(path = "/") {
 	if (!path || path === "/") return SITE_URL;

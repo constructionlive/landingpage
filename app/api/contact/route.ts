@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
+import {
+	describeAttribution,
+	sanitizeAttributionPayload,
+} from "@/lib/attribution";
 
 /* The Convex React provider is disabled app-wide, so the contact form posts
    here and we call the action server-side over HTTP instead. */
@@ -47,6 +51,11 @@ export async function POST(request: Request) {
 	const company = asString(payload.company, 200);
 	const topic = asString(payload.topic, 120);
 
+	/* See the note in app/api/quote/route.ts. Reached only after the honeypot
+	   check above, so a bot submission never gets attributed — otherwise crawler
+	   traffic would quietly inflate whichever channel it happened to arrive on. */
+	const attribution = sanitizeAttributionPayload(payload.attribution);
+
 	try {
 		const convex = new ConvexHttpClient(convexUrl);
 		await convex.mutation(api.contact.submitContact, {
@@ -55,6 +64,9 @@ export async function POST(request: Request) {
 			company: company || undefined,
 			topic: topic || undefined,
 			message,
+			attribution,
+			sourceFirst: attribution?.first && describeAttribution(attribution.first),
+			sourceLast: attribution?.last && describeAttribution(attribution.last),
 		});
 	} catch (error) {
 		console.error("Failed to record contact message", { email, error });

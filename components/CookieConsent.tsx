@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Cookie } from "lucide-react";
 import posthog from "posthog-js";
 import { OPEN_PREFERENCES_EVENT, consentRequired } from "@/lib/consent";
+import { clearStoredAttribution, recordVisit } from "@/lib/attribution";
 
 /* The consent banner. PostHog stores the decision itself, in
    `__ph_opt_in_out_<token>`, so this component holds no persistence of its own
@@ -24,8 +25,17 @@ export default function CookieConsent() {
 		   nothing to consent to. */
 		if (!posthog.__loaded) return;
 
-		const decided =
-			posthog.has_opted_in_capturing() || posthog.has_opted_out_capturing();
+		/* `get_explicit_consent_status()` and not the has_opted_* pair, which
+		   cannot answer this question. posthog-js resolves
+		   `has_opted_out_capturing()` through `isRejected()`, which is true when
+		   the visitor is merely *undecided* and `opt_out_capturing_by_default`
+		   is set — which is exactly every EEA visitor, since
+		   instrumentation-client.ts sets that flag for them. So the old
+		   `has_opted_in || has_opted_out` test read `decided === true` for the
+		   one group the banner exists to ask, and the banner never opened in
+		   the EEA at all: those visitors were silently opted out with no way to
+		   opt in. This call returns "pending" until a real choice is stored. */
+		const decided = posthog.get_explicit_consent_status() !== "pending";
 
 		if (consentRequired() && !decided) setOpen(true);
 
@@ -47,8 +57,17 @@ export default function CookieConsent() {
 			   Guarded so reopening the banner and accepting again doesn't
 			   double-count it. */
 			if (!wasOptedIn) posthog.capture("$pageview");
+			/* Same reasoning for attribution: they may well have arrived on a
+			   campaign link and only reached this banner afterwards. Recording
+			   now captures that as first-touch instead of losing the very visit
+			   that brought them here. */
+			recordVisit(true);
 		} else {
 			posthog.opt_out_capturing();
+			/* Withdrawing consent has to actually withdraw it. Leaving the
+			   attribution cookie behind would keep a marketing identifier on the
+			   device of someone who just said no. */
+			clearStoredAttribution();
 		}
 
 		setOpen(false);

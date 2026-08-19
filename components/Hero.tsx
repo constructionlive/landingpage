@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { trackCta } from "@/lib/analytics";
 import {
 	HardHat,
 	Mic,
@@ -128,6 +129,7 @@ export default function Hero() {
 					>
 						<a
 							href="/book"
+							onClick={() => trackCta("hero", "Book a Demo", "/book")}
 							className="group px-8 py-3.5 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] flex items-center gap-2"
 						>
 							Book a Demo
