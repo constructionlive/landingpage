@@ -12,6 +12,7 @@ import { getPublishedPosts } from "@/lib/convexServer";
 const staticRoutes: MetadataRoute.Sitemap = [
 	{ url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
 	{ url: absoluteUrl("/solutions"), changeFrequency: "weekly", priority: 0.9 },
+	{ url: absoluteUrl("/hardware"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/pricing"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/book"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.8 },

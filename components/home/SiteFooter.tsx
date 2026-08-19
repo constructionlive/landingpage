@@ -8,6 +8,7 @@ import {
 	resourceLinks,
 	companyLinks,
 	pricingHref,
+	hardwareHref,
 	demoHref,
 } from "./nav-data";
 
@@ -89,6 +90,12 @@ export default function SiteFooter() {
 									{link.label}
 								</a>
 							))}
+							<a
+								href={hardwareHref}
+								className="text-sm text-do-text-secondary hover:text-do-orange transition-colors"
+							>
+								Hardware
+							</a>
 							<a
 								href={pricingHref}
 								className="text-sm text-do-text-secondary hover:text-do-orange transition-colors"

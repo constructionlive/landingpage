@@ -11,6 +11,7 @@ import {
 	resourceLinks,
 	companyLinks,
 	pricingHref,
+	hardwareHref,
 	contactHref,
 	demoHref,
 } from "./nav-data";
@@ -101,6 +102,13 @@ export default function SiteNav() {
 
 					<div className="hidden lg:flex items-center gap-1">
 						{trigger("solutions", "Solutions")}
+						<a
+							href={hardwareHref}
+							className="px-3.5 py-2 text-sm text-do-text-secondary hover:text-do-text transition-colors rounded-lg hover:bg-do-bg-light"
+							onMouseEnter={() => setOpenMenu(null)}
+						>
+							Hardware
+						</a>
 						<a
 							href={pricingHref}
 							className="px-3.5 py-2 text-sm text-do-text-secondary hover:text-do-text transition-colors rounded-lg hover:bg-do-bg-light"
@@ -274,6 +282,14 @@ export default function SiteNav() {
 								))}
 							</div>
 						</MobileSection>
+
+						<a
+							href={hardwareHref}
+							className="block py-3.5 text-lg text-do-text border-b border-do-border"
+							onClick={() => setMobileOpen(false)}
+						>
+							Hardware
+						</a>
 
 						<a
 							href={pricingHref}

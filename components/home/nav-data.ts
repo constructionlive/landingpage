@@ -180,6 +180,10 @@ export const companyLinks = [
 
 /* No pricing page yet, pricing conversations happen on the demo call. */
 export const pricingHref = "/pricing";
+/* The on-premise box. Sits next to Pricing in the nav rather than inside
+   Solutions: it isn't another capability, it's the same platform bought a
+   different way, and the people who need it arrive looking for it by name. */
+export const hardwareHref = "/hardware";
 /* A form, not a mailto: a message we can answer, file and reply to from one
    place, rather than one that dies in whichever client the browser opens. */
 export const contactHref = "/contact";
