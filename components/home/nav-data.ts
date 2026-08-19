@@ -175,6 +175,7 @@ export const resourceLinks = [
 
 export const companyLinks = [
 	{ label: "About Us", href: "/about" },
+	{ label: "Security", href: "/security" },
 	{ label: "Contact Us", href: "/contact" },
 ];
 
@@ -184,6 +185,10 @@ export const pricingHref = "/pricing";
    Solutions: it isn't another capability, it's the same platform bought a
    different way, and the people who need it arrive looking for it by name. */
 export const hardwareHref = "/hardware";
+/* Security posture, statuses and subprocessors. Also listed in companyLinks so
+   the nav and footer pick it up; this constant is for the pages that link to it
+   directly. */
+export const securityHref = "/security";
 /* A form, not a mailto: a message we can answer, file and reply to from one
    place, rather than one that dies in whichever client the browser opens. */
 export const contactHref = "/contact";

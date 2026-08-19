@@ -4,7 +4,7 @@ import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 
 /* Homepage, section order follows the homepage wireframe:
-   nav, hero, logo strip, meet the platform, personas, features, hardware,
+   nav, hero, logo strip, meet the platform, personas, features, hardware, trust,
    success stories, blog teaser, FAQs, book a demo, footer.
    The previous homepage is preserved at /home. */
 
@@ -15,6 +15,7 @@ import PlatformOverview from "@components/home/PlatformOverview";
 import Personas from "@components/home/Personas";
 import FeatureGrid from "@components/home/FeatureGrid";
 import HardwareTeaser from "@components/home/HardwareTeaser";
+import TrustStrip from "@components/home/TrustStrip";
 import SuccessStories from "@components/home/SuccessStories";
 import FAQ from "@components/home/FAQ";
 import DemoCTA from "@components/home/DemoCTA";
@@ -32,6 +33,7 @@ export default function HomeContent() {
 			<Personas />
 			<FeatureGrid />
 			<HardwareTeaser />
+			<TrustStrip />
 			<SuccessStories />
 			{posts.length > 0 && <BlogCarouselSection posts={posts} />}
 			<FAQ />

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ArrowRight, Check, ChevronDown, Cpu } from "lucide-react";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
-import { contactHref, demoHref } from "@/components/home/nav-data";
+import { contactHref, demoHref, securityHref } from "@/components/home/nav-data";
 import {
 	ALSO_RUNS,
 	ASSURANCES,
@@ -366,13 +366,22 @@ export default function HardwarePage() {
 					</div>
 
 					<motion.div className="mt-10" {...rise}>
-						<a
-							href={contactHref}
-							className="group inline-flex items-center gap-2 px-6 py-3.5 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-lg transition-all"
-						>
-							Talk to our public sector team
-							<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-						</a>
+						<div className="flex flex-wrap items-center gap-3">
+							<a
+								href={contactHref}
+								className="group inline-flex items-center gap-2 px-6 py-3.5 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-lg transition-all"
+							>
+								Talk to our public sector team
+								<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+							</a>
+							{/* Procurement reads the posture page before it reads the pitch. */}
+							<a
+								href={securityHref}
+								className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-medium text-do-text-secondary hover:text-do-text border border-do-border hover:border-do-border-accent rounded-lg transition-all"
+							>
+								Our security posture
+							</a>
+						</div>
 					</motion.div>
 				</div>
 			</section>
