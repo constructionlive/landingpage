@@ -13,7 +13,6 @@ import {
 	LAST_REVIEWED,
 	SECURITY_EMAIL,
 	STATUS_META,
-	SUBPROCESSORS,
 	type Status,
 } from "./content";
 
@@ -270,53 +269,8 @@ export default function SecurityPage() {
 							</motion.div>
 						))}
 					</div>
-				</div>
-			</section>
 
-			{/* ── Subprocessors ──────────────────────────────────────────────── */}
-			<section
-				id="subprocessors"
-				className="relative py-20 md:py-24 scroll-mt-28 bg-do-bg-card border-y border-do-border"
-			>
-				<div className="relative z-10 max-w-4xl mx-auto px-6">
-					<motion.div className="mb-10" {...rise}>
-						<span className="do-section-label text-do-orange">Subprocessors</span>
-						<h2 className="text-3xl md:text-4xl font-bold text-do-text mt-4 tracking-tight leading-[1.1]">
-							Who else touches the data.
-						</h2>
-						<p className="text-lg text-do-text-secondary leading-relaxed mt-5">
-							For the hosted product only. On an air-gapped deployment this table is
-							empty, which is the entire argument for buying one.
-						</p>
-					</motion.div>
-
-					<motion.div
-						className="rounded-2xl border border-do-border bg-do-bg overflow-hidden"
-						{...rise}
-					>
-						{SUBPROCESSORS.map((sub) => (
-							<div
-								key={sub.name}
-								className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 px-6 py-5 border-b border-do-border last:border-b-0"
-							>
-								<div className="flex items-center gap-3 sm:w-44 shrink-0">
-									<div className="h-8 w-8 rounded-lg bg-do-orange/10 flex items-center justify-center shrink-0">
-										<sub.icon className="h-4 w-4 text-do-orange" />
-									</div>
-									<span className="text-[15px] font-semibold text-do-text">{sub.name}</span>
-								</div>
-								<div className="flex-1 min-w-0">
-									<p className="text-[14px] text-do-text">{sub.purpose}</p>
-									<p className="text-[13px] text-do-text-secondary mt-0.5">{sub.data}</p>
-								</div>
-								<span className="text-[11px] font-mono text-do-text-muted uppercase tracking-wider shrink-0">
-									{sub.region}
-								</span>
-							</div>
-						))}
-					</motion.div>
-
-					<motion.p className="text-sm text-do-text-muted mt-6" {...rise}>
+					<motion.p className="text-sm text-do-text-muted mt-8" {...rise}>
 						Data handling, your rights under PIPEDA, the GDPR and the CCPA, and how to
 						exercise them are set out in full in our{" "}
 						<a href="/privacy" className="text-do-orange hover:underline">

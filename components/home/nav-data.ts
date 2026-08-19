@@ -185,7 +185,7 @@ export const pricingHref = "/pricing";
    Solutions: it isn't another capability, it's the same platform bought a
    different way, and the people who need it arrive looking for it by name. */
 export const hardwareHref = "/hardware";
-/* Security posture, statuses and subprocessors. Also listed in companyLinks so
+/* Security posture and claim statuses. Also listed in companyLinks so
    the nav and footer pick it up; this constant is for the pages that link to it
    directly. */
 export const securityHref = "/security";

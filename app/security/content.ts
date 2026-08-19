@@ -5,8 +5,6 @@ import {
 	KeyRound,
 	Server,
 	Database,
-	Mail,
-	BarChart3,
 	Users,
 	History,
 	Fingerprint,
@@ -224,42 +222,6 @@ export const CLOUD_PRACTICES: Practice[] = [
 		detail:
 			"Close your account and we delete your project data on request, subject only to limited retention the law requires of us, such as billing records.",
 		status: "attested",
-	},
-];
-
-/* ── Subprocessors ────────────────────────────────────────────────────────── */
-
-export interface Subprocessor {
-	icon: LucideIcon;
-	name: string;
-	purpose: string;
-	data: string;
-	region: string;
-}
-
-/* Applies to the hosted product only. The whole argument of the air-gapped
-   configuration is that this table is empty for those deployments. */
-export const SUBPROCESSORS: Subprocessor[] = [
-	{
-		icon: Database,
-		name: "Convex",
-		purpose: "Application database and backend functions",
-		data: "Project records, account data, form submissions",
-		region: "United States",
-	},
-	{
-		icon: BarChart3,
-		name: "PostHog",
-		purpose: "Website product analytics",
-		data: "Public website usage only. Never project content",
-		region: "United States",
-	},
-	{
-		icon: Mail,
-		name: "Resend",
-		purpose: "Transactional email delivery",
-		data: "Name, email address, message contents",
-		region: "United States",
 	},
 ];
 
