@@ -7,8 +7,15 @@ import { ArrowRight, Calendar, ChevronDown, Image as ImageIcon, Play } from "luc
 import NextImage from "next/image";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
-import { solutionGroups, contactHref, demoHref, pricingHref } from "@/components/home/nav-data";
-import { GROUP_INTROS, SOLUTION_DETAILS, type SolutionMedia } from "./content";
+import {
+	solutionGroups,
+	privateCloud,
+	hardwareHref,
+	contactHref,
+	demoHref,
+	pricingHref,
+} from "@/components/home/nav-data";
+import { GROUP_INTROS, PRIVATE_CLOUD, SOLUTION_DETAILS, type SolutionMedia } from "./content";
 
 /* Anchor targets have to clear the fixed nav, and on mobile the jump bar sits
    under it too. Native hash navigation respects scroll-margin-top, so linking
@@ -17,7 +24,10 @@ const SCROLL_MT = "scroll-mt-32 lg:scroll-mt-24";
 
 export default function SolutionsPage() {
 	const slugs = useMemo(
-		() => solutionGroups.flatMap((group) => group.items.map((item) => item.slug)),
+		() => [
+			...solutionGroups.flatMap((group) => group.items.map((item) => item.slug)),
+			privateCloud.slug,
+		],
 		[],
 	);
 	const [activeSlug, setActiveSlug] = useState(slugs[0]);
@@ -51,7 +61,10 @@ export default function SolutionsPage() {
 	const activeGroup = solutionGroups.find((group) =>
 		group.items.some((item) => item.slug === activeSlug),
 	);
-	const activeLabel = activeGroup?.items.find((item) => item.slug === activeSlug)?.label;
+	const activeLabel =
+		activeSlug === privateCloud.slug
+			? privateCloud.label
+			: activeGroup?.items.find((item) => item.slug === activeSlug)?.label;
 
 	return (
 		<main className="min-h-screen bg-do-bg">
@@ -187,6 +200,17 @@ export default function SolutionsPage() {
 								))}
 							</div>
 						))}
+
+						<a
+							href={`#${privateCloud.slug}`}
+							onClick={() => setJumpOpen(false)}
+							className={`flex items-center gap-2.5 mt-4 pt-4 border-t border-do-border text-sm ${
+								activeSlug === privateCloud.slug ? "text-do-orange" : "text-do-text-secondary"
+							}`}
+						>
+							<privateCloud.icon className="h-4 w-4 shrink-0" />
+							{privateCloud.label}
+						</a>
 					</div>
 				)}
 			</div>
@@ -229,6 +253,19 @@ export default function SolutionsPage() {
 									</div>
 								</div>
 							))}
+
+							<a
+								href={`#${privateCloud.slug}`}
+								aria-current={activeSlug === privateCloud.slug ? "true" : undefined}
+								className={`flex items-center gap-2 pt-4 border-t border-do-border text-[13px] transition-colors ${
+									activeSlug === privateCloud.slug
+										? "text-do-orange font-medium"
+										: "text-do-text-secondary hover:text-do-text"
+								}`}
+							>
+								<privateCloud.icon className="h-3.5 w-3.5 shrink-0" />
+								{privateCloud.label}
+							</a>
 						</nav>
 					</aside>
 
@@ -308,6 +345,63 @@ export default function SolutionsPage() {
 								})}
 							</section>
 						))}
+
+						{/* Deployment, not a fifth pillar: everything above, run inside
+						    your own perimeter. The machine itself has its own page, so this
+						    makes the argument and hands off rather than restating specs. */}
+						<section
+							id={privateCloud.slug}
+							className={`pt-14 ${SCROLL_MT}`}
+						>
+							<div className="pb-3 border-b border-do-border">
+								<span className="do-section-label text-do-orange">Deployment</span>
+								<h2 className="text-2xl md:text-3xl font-bold text-do-text tracking-tight mt-3">
+									{privateCloud.label}
+								</h2>
+								<p className="mt-3 text-do-text font-medium leading-relaxed max-w-2xl">
+									{PRIVATE_CLOUD.kicker}
+								</p>
+								<p className="mt-2 mb-4 text-do-text-secondary leading-relaxed max-w-2xl">
+									{PRIVATE_CLOUD.body}
+								</p>
+							</div>
+
+							<motion.div
+								className="grid sm:grid-cols-3 gap-4 mt-8"
+								initial={{ opacity: 0, y: 16 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								viewport={{ once: true, margin: "-80px" }}
+								transition={{ duration: 0.4 }}
+							>
+								{PRIVATE_CLOUD.points.map((point) => (
+									<div
+										key={point.title}
+										className="rounded-2xl border border-do-border bg-do-bg-card/60 p-5"
+									>
+										<h3 className="text-sm font-semibold text-do-text">{point.title}</h3>
+										<p className="mt-2 text-[13px] text-do-text-secondary leading-relaxed">
+											{point.detail}
+										</p>
+									</div>
+								))}
+							</motion.div>
+
+							<div className="flex flex-wrap gap-3 mt-6">
+								<a
+									href={hardwareHref}
+									className="group inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-do-text border border-do-border hover:border-do-orange/50 rounded-xl transition-all"
+								>
+									See the hardware and configurations
+									<ArrowRight className="h-3.5 w-3.5 text-do-orange group-hover:translate-x-0.5 transition-transform" />
+								</a>
+								<a
+									href={`${hardwareHref}#government`}
+									className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-do-text-secondary hover:text-do-text border border-do-border hover:border-do-border-accent rounded-xl transition-all"
+								>
+									For government
+								</a>
+							</div>
+						</section>
 
 						{/* Closing CTA */}
 						<div className="mt-14 rounded-2xl border border-do-orange/20 bg-do-bg-card/80 p-8 text-center">

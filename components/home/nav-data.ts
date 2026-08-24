@@ -15,6 +15,7 @@ import {
 	Search,
 	ArrowLeftRight,
 	Waypoints,
+	Server,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -168,6 +169,20 @@ export const solutionGroups: NavGroup[] = [
 	},
 ];
 
+/* Deployment, not a fifth capability, which is why it hangs off the bottom of
+   the Solutions menu instead of taking a column beside the four pillars: it is
+   everything above, run inside your own perimeter. Public owners, defence and
+   anyone under a residency clause come looking for exactly this, so it stays
+   one click from every page — as a solution we offer, not as a box we sell.
+   The section on /solutions makes the argument and links on to /hardware. */
+export const privateCloud: NavItem & { blurb: string } = {
+	label: "Private Cloud",
+	slug: "private-cloud",
+	href: at("private-cloud"),
+	icon: Server,
+	blurb: "The whole platform on hardware in your building. Air-gapped for government.",
+};
+
 export const resourceLinks = [
 	{ label: "Blog", href: "/blog" },
 	{ label: "FAQs", href: "/faqs" },
@@ -181,9 +196,10 @@ export const companyLinks = [
 
 /* No pricing page yet, pricing conversations happen on the demo call. */
 export const pricingHref = "/pricing";
-/* The on-premise box. Sits next to Pricing in the nav rather than inside
-   Solutions: it isn't another capability, it's the same platform bought a
-   different way, and the people who need it arrive looking for it by name. */
+/* The on-premise box. Reached through Private Cloud rather than from the top
+   bar: we sell software, and a Hardware tab beside Pricing reads like we sell
+   machines. The page still carries the specs, the tiers and the air-gapped
+   configuration for whoever arrives looking for them by name. */
 export const hardwareHref = "/hardware";
 /* Security posture and claim statuses. Also listed in companyLinks so
    the nav and footer pick it up; this constant is for the pages that link to it
