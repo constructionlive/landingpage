@@ -149,6 +149,13 @@ export async function GET(request: Request) {
    Body: { "subscribers": [ { "email", "name"?, "company"?, "interest"?,
    "status"?, "subscribedAt"?, "consentSource"? } ] }
 
+   Set "expressOptIn": true when a person is ticking a box right now — at
+   product signup, say. That mode lets a previously-unsubscribed address back on
+   the list, because an explicit tick is fresh consent, and sends the welcome
+   email so the first thing they get carries an unsubscribe link. It requires
+   consentSource on every row and caps the batch, because those two rules are
+   exactly what stops a bulk restore from re-mailing everyone who left.
+
    `status` defaults to "subscribed"; send "unsubscribed" to bring over an old
    suppression list, which is worth doing FIRST and separately — see the note on
    importSubscribers in convex/newsletter.ts for what an import will and won't
@@ -162,6 +169,11 @@ export async function GET(request: Request) {
    bad address in a five-hundred-row export should not cost the other 499. */
 
 const MAX_IMPORT_ROWS = 500;
+/* An express opt-in is one person ticking a box, so a batch of them is a
+   handful at most. The low cap is a circuit breaker: it makes "restore the
+   whole list with expressOptIn set" fail loudly instead of mailing a welcome
+   to everyone who ever unsubscribed. */
+const MAX_OPT_IN_ROWS = 50;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function asString(value: unknown, max = 500) {
@@ -207,9 +219,12 @@ export async function POST(request: Request) {
 	/* Rejected rather than truncated. Silently importing the first 500 of 2000
 	   and answering 200 looks exactly like a complete import, and the 1500 who
 	   were dropped are invisible until someone counts. */
-	if (rows.length > MAX_IMPORT_ROWS) {
+	const expressOptIn = (body as Record<string, unknown>)?.expressOptIn === true;
+
+	const maxRows = expressOptIn ? MAX_OPT_IN_ROWS : MAX_IMPORT_ROWS;
+	if (rows.length > maxRows) {
 		return NextResponse.json(
-			{ error: "too_many_rows", max: MAX_IMPORT_ROWS, received: rows.length },
+			{ error: "too_many_rows", max: maxRows, received: rows.length },
 			{ status: 413 },
 		);
 	}
@@ -258,6 +273,15 @@ export async function POST(request: Request) {
 			return;
 		}
 
+		/* Required on an express opt-in, and only there. This is the mode that
+		   can put a previously-unsubscribed address back on the list and send
+		   mail, so "where did this consent come from" has to have an answer
+		   before it runs, not after somebody complains. */
+		if (expressOptIn && !asString(row.consentSource, 300)) {
+			invalid.push({ index, email, reason: "missing_consent_source" });
+			return;
+		}
+
 		subscribers.push({
 			email,
 			normalizedEmail,
@@ -282,6 +306,7 @@ export async function POST(request: Request) {
 		const convex = new ConvexHttpClient(convexUrl);
 		const result = await convex.mutation(api.newsletter.importSubscribers, {
 			apiKey,
+			expressOptIn,
 			subscribers,
 		});
 

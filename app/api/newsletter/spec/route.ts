@@ -30,7 +30,13 @@ export const dynamic = "force-dynamic";
    next.config.ts names this file in outputFileTracingIncludes so it ships with
    the deployed function — a file that only exists in the repo isn't there at
    runtime on a traced build. */
-const SPEC_PATH = "docs/newsletter-agent-spec.md";
+const SPECS: Record<string, string> = {
+	/* The sending agent's operating manual. */
+	agent: "docs/newsletter-agent-spec.md",
+	/* How the product's signup checkbox opts somebody in. */
+	product: "docs/product-newsletter-optin.md",
+};
+const DEFAULT_SPEC = "agent";
 
 export async function GET(request: Request) {
 	if (!apiKeyMatches(bearerFrom(request))) {
@@ -40,11 +46,23 @@ export async function GET(request: Request) {
 		return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 	}
 
+	/* ?doc=agent (default) or ?doc=product. An unknown name is a 404 rather
+	   than a silent fall back to the default: an agent that asked for the
+	   product spec and got the sending manual would follow the wrong one. */
+	const requested = new URL(request.url).searchParams.get("doc")?.trim() || DEFAULT_SPEC;
+	const specPath = SPECS[requested];
+	if (!specPath) {
+		return NextResponse.json(
+			{ error: "unknown_doc", available: Object.keys(SPECS) },
+			{ status: 404 },
+		);
+	}
+
 	let spec: string;
 	try {
-		spec = await readFile(path.join(process.cwd(), SPEC_PATH), "utf8");
+		spec = await readFile(path.join(process.cwd(), specPath), "utf8");
 	} catch (error) {
-		console.error("Agent spec is missing from the deployment", { path: SPEC_PATH, error });
+		console.error("Spec is missing from the deployment", { path: specPath, error });
 		return NextResponse.json({ error: "spec_unavailable" }, { status: 503 });
 	}
 
