@@ -261,6 +261,123 @@ export const subscribersForSending = query({
   },
 });
 
+/* Bulk import, for a list collected before this register existed.
+
+   Two rules make this different from subscribe() above, and both exist because
+   an import is the easiest way to mail someone who told you not to.
+
+   It never sends the welcome email. These people did not just sign up; they
+   subscribed somewhere else, possibly years ago, and "welcome, you're
+   subscribed!" reads as either a mistake or a list purchase.
+
+   It never resurrects an address that is unsubscribed HERE. Re-importing an
+   old export is the normal way somebody who opted out last month quietly
+   reappears on the list, and under CASL mailing them again is a fresh
+   violation rather than a tidy-up. Their row wins over the file, always.
+
+   The reverse does apply: a row marked unsubscribed in the import suppresses
+   someone we still think is subscribed, so bringing over an old suppression
+   list works and is the safe direction to be wrong in.
+
+   `subscribedAt` is preserved rather than stamped with the import time. It is
+   the date of consent, and overwriting it throws away the answer to the only
+   question that matters if the consent is ever challenged. */
+export const importSubscribers = mutation({
+  args: {
+    apiKey: v.string(),
+    subscribers: v.array(
+      v.object({
+        email: v.string(),
+        normalizedEmail: v.string(),
+        name: v.optional(v.string()),
+        company: v.optional(v.string()),
+        interest: v.optional(v.string()),
+        status: v.union(v.literal("subscribed"), v.literal("unsubscribed")),
+        /* When they originally agreed, in epoch ms. */
+        subscribedAt: v.optional(v.number()),
+        consentSource: v.optional(v.string()),
+        /* Minted per row in the route, used only if a row is created. */
+        unsubscribeToken: v.string(),
+      }),
+    ),
+  },
+  handler: async (ctx, args) => {
+    const expected = process.env.NEWSLETTER_API_KEY;
+    if (!expected) {
+      throw new ConvexError("Newsletter sending API is not configured.");
+    }
+    if (!secretMatches(args.apiKey, expected)) {
+      throw new ConvexError("Invalid API key.");
+    }
+
+    const now = Date.now();
+    const results: { email: string; result: string }[] = [];
+
+    for (const row of args.subscribers) {
+      const existing = await ctx.db
+        .query("newsletterSubscribers")
+        .withIndex("by_normalizedEmail", (q) => q.eq("normalizedEmail", row.normalizedEmail))
+        .unique();
+
+      if (!existing) {
+        await ctx.db.insert("newsletterSubscribers", {
+          email: row.email,
+          normalizedEmail: row.normalizedEmail,
+          name: row.name,
+          company: row.company,
+          interest: row.interest,
+          status: row.status,
+          unsubscribeToken: row.unsubscribeToken,
+          consentSource: row.consentSource,
+          /* Their consent date, not this import's date. */
+          createdAt: row.subscribedAt ?? now,
+          ...(row.status === "unsubscribed" && { unsubscribedAt: row.subscribedAt ?? now }),
+          updatedAt: now,
+        });
+        results.push({ email: row.email, result: "created" });
+        continue;
+      }
+
+      /* Already opted out here. The file does not get to overrule that. */
+      if (existing.status === "unsubscribed" && row.status === "subscribed") {
+        results.push({ email: row.email, result: "suppressed" });
+        continue;
+      }
+
+      /* Opted out in the file but not here: honour it. */
+      if (existing.status === "subscribed" && row.status === "unsubscribed") {
+        await ctx.db.patch(existing._id, {
+          status: "unsubscribed",
+          unsubscribedAt: now,
+          updatedAt: now,
+        });
+        results.push({ email: row.email, result: "unsubscribed" });
+        continue;
+      }
+
+      /* Same status on both sides. Fill in anything we are missing, but never
+         blank a detail they gave us with an empty column from a spreadsheet. */
+      await ctx.db.patch(existing._id, {
+        ...(row.name && !existing.name && { name: row.name }),
+        ...(row.company && !existing.company && { company: row.company }),
+        ...(row.interest && !existing.interest && { interest: row.interest }),
+        ...(row.consentSource && !existing.consentSource && {
+          consentSource: row.consentSource,
+        }),
+        updatedAt: now,
+      });
+      results.push({ email: row.email, result: "updated" });
+    }
+
+    const counts = results.reduce<Record<string, number>>((tally, row) => {
+      tally[row.result] = (tally[row.result] ?? 0) + 1;
+      return tally;
+    }, {});
+
+    return { results, counts };
+  },
+});
+
 /* Opting out by address, for a link the sending app signed itself.
 
    The signature is verified in app/api/newsletter/unsubscribe/route.ts, which
