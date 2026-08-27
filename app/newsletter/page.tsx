@@ -17,7 +17,7 @@ import { SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
    the preview card thousands of people see before they see the page. */
 
 const DESCRIPTION =
-	"One email a month on what AI actually does with construction paperwork: what we see working on real jobs, what it still gets wrong, and what changed in the tools. No drip sequence, no sales cadence.";
+	"One email a week on what AI actually does with construction paperwork: what we see working on real jobs, what it still gets wrong, and what changed in the tools. No drip sequence, no sales cadence.";
 
 export const metadata: Metadata = {
 	title: "Newsletter | construction.live",
@@ -41,7 +41,7 @@ const WHAT_YOU_GET = [
 	{
 		icon: Wrench,
 		title: "What we see on real jobs",
-		body: "The paperwork failures that cost our customers money this month, and what the fix actually looked like. Anonymised, but not invented.",
+		body: "The paperwork failures that cost our customers money that week, and what the fix actually looked like. Anonymised, but not invented.",
 	},
 	{
 		icon: PenLine,
@@ -50,7 +50,7 @@ const WHAT_YOU_GET = [
 	},
 	{
 		icon: Mail,
-		title: "About once a month",
+		title: "About once a week",
 		body: "One email. Not a sequence, not a drip campaign, and never a shared list — we don't sell or pass on your address.",
 	},
 ];
@@ -81,7 +81,7 @@ export default function NewsletterPage() {
 							What AI is actually doing to construction paperwork
 						</h1>
 						<p className="mt-5 text-base md:text-lg text-do-text-secondary leading-relaxed">
-							One email a month, written by the team building it. What we see working
+							One email a week, written by the team building it. What we see working
 							on real jobs, what still doesn&apos;t, and what changed in the tools.
 							No pitch, and one click to leave.
 						</p>
