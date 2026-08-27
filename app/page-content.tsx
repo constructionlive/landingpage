@@ -14,7 +14,6 @@ import TrustedTeams from "@/components/home/TrustedTeams";
 import PlatformOverview from "@components/home/PlatformOverview";
 import Personas from "@components/home/Personas";
 import FeatureGrid from "@components/home/FeatureGrid";
-import HardwareTeaser from "@components/home/HardwareTeaser";
 import TrustStrip from "@components/home/TrustStrip";
 import SuccessStories from "@components/home/SuccessStories";
 import FAQ from "@components/home/FAQ";
@@ -32,7 +31,6 @@ export default function HomeContent() {
 			<PlatformOverview />
 			<Personas />
 			<FeatureGrid />
-			<HardwareTeaser />
 			<TrustStrip />
 			<SuccessStories />
 			{posts.length > 0 && <BlogCarouselSection posts={posts} />}
