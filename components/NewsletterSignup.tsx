@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import { ArrowRight, Check, CheckCircle2 } from "lucide-react";
 import { EVENTS, track } from "@/lib/analytics";
 import { attributionForSubmit } from "@/lib/attribution";
+import { silenceNewsletterPrompt } from "@/components/NewsletterPrompt";
 
 /* One form, three shapes.
 
@@ -91,6 +92,13 @@ export default function NewsletterSignup({
 			if (!response.ok) throw new Error("submit_failed");
 
 			const result = (await response.json()) as { status?: string };
+
+			/* Whichever form they used, stop the scroll prompt asking again.
+			   "already" counts: they are on the list, and being asked to join it
+			   is the same annoyance whether or not today's submit changed
+			   anything. */
+			silenceNewsletterPrompt("subscribed");
+
 			if (result.status === "already") {
 				track(EVENTS.NEWSLETTER_ALREADY_SUBSCRIBED, { location });
 				setStatus("already");
