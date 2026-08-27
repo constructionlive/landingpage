@@ -57,8 +57,9 @@ reason is given so you do not reason your way around the rule later.
 6. **Never re-add someone who unsubscribed.** The server enforces this, but do
    not attempt it: check the `suppressed` count after every import.
 
-7. **Send about once a month.** The website and the welcome email both promise
-   that. Exceeding it breaks a promise made in writing.
+7. **Send about once a week.** The website and the welcome email both promise
+   that. Sending more often breaks a promise made in writing; sending much
+   less often means people forget they subscribed and mark it as spam.
 
 8. **When your local copy and a sync disagree, the sync wins.** Always.
 

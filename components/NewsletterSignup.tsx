@@ -110,7 +110,7 @@ export default function NewsletterSignup({
 		const detail =
 			status === "already"
 				? `${email.trim()} was already subscribed, so nothing changed. The next issue goes out to it as normal.`
-				: `Check ${email.trim()} for a confirmation. The next issue lands in about a month, and every one has an unsubscribe link.`;
+				: `Check ${email.trim()} for a confirmation. The next issue lands within a week, and every one has an unsubscribe link.`;
 
 		if (!isCard) {
 			return (
@@ -277,7 +277,7 @@ export default function NewsletterSignup({
 
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-7 border-t border-do-border">
 				<span className="text-xs text-do-text-muted">
-					One email a month. Unsubscribe from any of them in one click.
+					One email a week. Unsubscribe from any of them in one click.
 				</span>
 				<button
 					type="submit"

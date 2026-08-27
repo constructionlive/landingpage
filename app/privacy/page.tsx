@@ -73,7 +73,7 @@ const sections = [
 	{
 		heading: "Newsletter and marketing emails",
 		paragraphs: [
-			"If you subscribe to our newsletter, we use your email address to send you roughly one email a month about our product and about AI in construction documentation. We send it only to people who asked for it, whether that was through the form on our website or a link we sent you directly.",
+			"If you subscribe to our newsletter, we use your email address to send you roughly one email a week about our product and about AI in construction documentation. We send it only to people who asked for it, whether that was through the form on our website or a link we sent you directly.",
 			"Every issue carries an unsubscribe link that works without a password or an account, and your mail app's own unsubscribe button works too. Unsubscribing takes effect immediately and we do not need a reason.",
 			"When you unsubscribe, we keep a record that your address opted out. We keep it precisely so that we do not mail you again if the same address is later added by another form; it is not used for any other purpose.",
 			"Your subscription is separate from your account. Unsubscribing from the newsletter does not affect emails about your account, your support requests, or a quote or message you sent us, and it does not close your account.",
