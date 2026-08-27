@@ -16,7 +16,10 @@ const nextConfig: NextConfig = {
 	   at runtime isn't visible to that analysis — so without this the route
 	   deploys fine and then 503s on every call. */
 	outputFileTracingIncludes: {
-		"/api/newsletter/spec": ["./docs/newsletter-agent-spec.md"],
+		"/api/newsletter/spec": [
+			"./docs/newsletter-agent-spec.md",
+			"./docs/product-newsletter-optin.md",
+		],
 	},
 	/* /solutions replaced these. A 308 keeps whatever ranking and inbound links
 	   the old URLs earned, and redirects run before filesystem routing, so
