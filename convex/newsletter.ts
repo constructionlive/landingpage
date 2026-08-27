@@ -231,6 +231,57 @@ export const subscribersForSending = query({
   },
 });
 
+/* Opting out by address, for a link the sending app signed itself.
+
+   The signature is verified in app/api/newsletter/unsubscribe/route.ts, which
+   runs on Node and can do HMAC. By the time it calls this, the caller has
+   proved they hold the shared secret — so this takes the address directly, and
+   guards itself with that same secret for the reason given on
+   subscribersForSending: a public Convex function is callable by anyone who
+   knows the deployment URL, and an unsubscribe-by-address endpoint without a
+   guard is an endpoint for removing anyone whose address you can guess.
+
+   Answers rather than throws for an address we don't hold. Someone clicking an
+   opt-out link wants to be off the list; whether we ever had them is our
+   bookkeeping, not their problem. */
+export const unsubscribeByEmail = mutation({
+  args: {
+    email: v.string(),
+    apiKey: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const expected = process.env.NEWSLETTER_API_KEY;
+    if (!expected) {
+      throw new ConvexError("Newsletter sending API is not configured.");
+    }
+    if (!secretMatches(args.apiKey, expected)) {
+      throw new ConvexError("Invalid API key.");
+    }
+
+    const normalizedEmail = normalizeEmail(args.email);
+
+    const subscriber = await ctx.db
+      .query("newsletterSubscribers")
+      .withIndex("by_normalizedEmail", (q) => q.eq("normalizedEmail", normalizedEmail))
+      .unique();
+
+    if (!subscriber) {
+      return { status: "unknown" as const };
+    }
+
+    if (subscriber.status === "unsubscribed") {
+      return { status: "already" as const, email: subscriber.email };
+    }
+
+    await ctx.db.patch(subscriber._id, {
+      status: "unsubscribed",
+      unsubscribedAt: Date.now(),
+    });
+
+    return { status: "unsubscribed" as const, email: subscriber.email };
+  },
+});
+
 export const dashboard = query({
   args: {
     limit: v.optional(v.number()),
