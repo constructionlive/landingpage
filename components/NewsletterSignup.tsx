@@ -4,13 +4,19 @@ import { useState, FormEvent } from "react";
 import { ArrowRight, Check, CheckCircle2 } from "lucide-react";
 import { EVENTS, track } from "@/lib/analytics";
 import { attributionForSubmit } from "@/lib/attribution";
+import { silenceNewsletterPrompt } from "@/components/NewsletterPrompt";
 
-/* One form, two shapes.
+/* One form, three shapes.
 
    "inline" is the strip in the footer of every page: an address and a button,
    because a footer that asks four questions gets none of them answered.
    "card" is the form on /newsletter, where someone arrived on purpose and the
    extra answers are worth asking for.
+   "minimal" is the card's single-field form, for /newsletter?type=emailOnly —
+   a link pasted into a LinkedIn message, where every field between the click
+   and the subscription is one more reason to close the tab. Same one field as
+   the footer, but the page-sized confirmation, because this is the whole point
+   of the visit rather than a strip at the bottom of another page.
 
    Both post to the same endpoint, so the register never has to care which one
    an address came from. Adding a field means changing this file, the validator
@@ -40,7 +46,7 @@ export default function NewsletterSignup({
 	variant = "card",
 	location,
 }: {
-	variant?: "inline" | "card";
+	variant?: "inline" | "card" | "minimal";
 	/* Which copy of the form this is, for the event. See EVENTS in
 	   lib/analytics.ts: without it, the footer and the page share one number. */
 	location: string;
@@ -53,7 +59,12 @@ export default function NewsletterSignup({
 	const [honeypot, setHoneypot] = useState("");
 	const [status, setStatus] = useState<Status>("idle");
 
+	/* Whether the extra questions are asked at all. */
 	const isCard = variant === "card";
+	/* Only the footer gets the one-line confirmation. On a page someone opened
+	   to subscribe, a single sentence tucked under a field reads like nothing
+	   happened. */
+	const isCompactSuccess = variant === "inline";
 	const ready = EMAIL_PATTERN.test(email.trim());
 
 	async function onSubmit(e: FormEvent) {
@@ -81,6 +92,13 @@ export default function NewsletterSignup({
 			if (!response.ok) throw new Error("submit_failed");
 
 			const result = (await response.json()) as { status?: string };
+
+			/* Whichever form they used, stop the scroll prompt asking again.
+			   "already" counts: they are on the list, and being asked to join it
+			   is the same annoyance whether or not today's submit changed
+			   anything. */
+			silenceNewsletterPrompt("subscribed");
+
 			if (result.status === "already") {
 				track(EVENTS.NEWSLETTER_ALREADY_SUBSCRIBED, { location });
 				setStatus("already");
@@ -110,9 +128,9 @@ export default function NewsletterSignup({
 		const detail =
 			status === "already"
 				? `${email.trim()} was already subscribed, so nothing changed. The next issue goes out to it as normal.`
-				: `Check ${email.trim()} for a confirmation. The next issue lands in about a month, and every one has an unsubscribe link.`;
+				: `Check ${email.trim()} for a confirmation. The next issue lands within a week, and every one has an unsubscribe link.`;
 
-		if (!isCard) {
+		if (isCompactSuccess) {
 			return (
 				<div className="flex items-start gap-2.5">
 					<CheckCircle2 className="h-4 w-4 text-do-orange shrink-0 mt-0.5" />
@@ -139,9 +157,10 @@ export default function NewsletterSignup({
 	/* ── Form ────────────────────────────────────────────────────────── */
 
 	/* Off-screen rather than display:none, which some bots know to skip, and
-	   never announced or tabbed into. The id is suffixed because the footer
-	   renders this form on the same page as the one on /newsletter, and two
-	   inputs sharing an id is exactly the ambiguity a screen reader trips on. */
+	   never announced or tabbed into. The id is suffixed with the variant because
+	   the footer renders this form on the same page as the one on /newsletter,
+	   and two inputs sharing an id is exactly the ambiguity a screen reader
+	   trips on. */
 	const honeypotId = `company_website_${variant}`;
 	const honeypotField = (
 		<div aria-hidden="true" className="absolute left-[-9999px] top-auto">
@@ -169,6 +188,7 @@ export default function NewsletterSignup({
 	);
 
 	if (!isCard) {
+		const minimal = variant === "minimal";
 		return (
 			<form onSubmit={onSubmit} className="relative">
 				<div className="flex flex-col sm:flex-row gap-2.5">
@@ -180,13 +200,20 @@ export default function NewsletterSignup({
 							onChange={(e) => setEmail(e.target.value)}
 							placeholder="you@company.com"
 							required
-							className={INPUT_CLASS}
+							/* Focused only on the page built around this field. Stealing
+							   focus from the footer would yank the page down on load. */
+							autoFocus={minimal}
+							className={`${INPUT_CLASS} ${minimal ? "sm:py-4 sm:text-base" : ""}`}
 						/>
 					</label>
 					<button
 						type="submit"
 						disabled={status === "submitting" || !ready}
-						className="group inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+						className={`group inline-flex items-center justify-center gap-2 font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shrink-0 disabled:opacity-40 disabled:cursor-not-allowed ${
+							minimal
+								? "px-7 py-3 sm:py-4 text-sm sm:text-base shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_45px_rgba(249,115,22,0.45)] disabled:shadow-none"
+								: "px-5 py-3 text-sm"
+						}`}
 					>
 						{status === "submitting" ? "Subscribing..." : "Subscribe"}
 						<ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -194,6 +221,11 @@ export default function NewsletterSignup({
 				</div>
 				{honeypotField}
 				{errorNote && <div className="mt-2.5">{errorNote}</div>}
+				{minimal && (
+					<p className="mt-4 text-xs text-do-text-muted text-center">
+						One email a week. Unsubscribe from any of them in one click.
+					</p>
+				)}
 			</form>
 		);
 	}
@@ -277,7 +309,7 @@ export default function NewsletterSignup({
 
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-7 border-t border-do-border">
 				<span className="text-xs text-do-text-muted">
-					One email a month. Unsubscribe from any of them in one click.
+					One email a week. Unsubscribe from any of them in one click.
 				</span>
 				<button
 					type="submit"

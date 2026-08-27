@@ -473,11 +473,11 @@ function newsletterWelcomeHtml(args: { firstName?: string; unsubscribeUrl: strin
 
   return brandedReplyHtml({
     documentTitle: "You're subscribed to the construction.live newsletter",
-    preheader: "One email a month on what AI actually does with project paperwork. No pitch.",
+    preheader: "One email a week on what AI actually does with project paperwork. No pitch.",
     eyebrow: "Newsletter",
     heading: greeting,
     paragraphs: [
-      `About <strong style="color:${INK}; font-weight:600;">once a month</strong> you&rsquo;ll get one email: what we&rsquo;re seeing on real jobs, what AI is genuinely good at in construction paperwork, and what it still gets wrong.`,
+      `About <strong style="color:${INK}; font-weight:600;">once a week</strong> you&rsquo;ll get one email: what we&rsquo;re seeing on real jobs, what AI is genuinely good at in construction paperwork, and what it still gets wrong.`,
       "No drip sequence, no sales cadence. Reply to any of them and it reaches a person.",
     ],
     cta: { label: "Read what we&rsquo;ve written &rarr;", href: `${SITE_ORIGIN}/blog` },
@@ -526,7 +526,7 @@ export const sendNewsletterWelcomeEmail = internalAction({
           "List-Unsubscribe": `<${oneClickUrl}>`,
           "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
         },
-        text: `${greeting}\n\nYou're on the list. About once a month you'll get one email: what we're seeing on real jobs, what AI is genuinely good at in construction paperwork, and what it still gets wrong.\n\nNo drip sequence, no sales cadence. Reply to any of them and it reaches a person.\n\nRead what we've written: ${SITE_ORIGIN}/blog\n\nUnsubscribe any time: ${optOutUrl}\n\nconstruction.live\n${HERO_LINE}`,
+        text: `${greeting}\n\nYou're on the list. About once a week you'll get one email: what we're seeing on real jobs, what AI is genuinely good at in construction paperwork, and what it still gets wrong.\n\nNo drip sequence, no sales cadence. Reply to any of them and it reaches a person.\n\nRead what we've written: ${SITE_ORIGIN}/blog\n\nUnsubscribe any time: ${optOutUrl}\n\nconstruction.live\n${HERO_LINE}`,
         html: newsletterWelcomeHtml({ firstName, unsubscribeUrl: optOutUrl }),
       });
 

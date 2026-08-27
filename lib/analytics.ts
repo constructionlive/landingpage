@@ -43,6 +43,14 @@ export const EVENTS = {
 	NEWSLETTER_FAILED: "newsletter_failed",
 	NEWSLETTER_UNSUBSCRIBED: "newsletter_unsubscribed",
 
+	/* The scroll prompt. Shown and dismissed are both recorded, because the
+	   only way to judge whether the thing is worth its interruption is
+	   dismissals against subscribes from the same `location`. A prompt nobody
+	   converts from is a prompt that should be turned off, and without the
+	   denominator that argument can't be made either way. */
+	NEWSLETTER_PROMPT_SHOWN: "newsletter_prompt_shown",
+	NEWSLETTER_PROMPT_DISMISSED: "newsletter_prompt_dismissed",
+
 	/* Named for what it is. The booking itself happens on Google Calendar,
 	   which never calls back, so this is the click and not the booking. Calling
 	   it `demo_booked` would put a number in a dashboard that quietly means

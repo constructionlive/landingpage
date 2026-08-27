@@ -113,7 +113,7 @@ export default function SiteFooter() {
 							<ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
 						</a>
 						<p className="mt-1.5 text-sm text-do-text-secondary leading-relaxed">
-							One email a month on what AI is actually doing to construction
+							One email a week on what AI is actually doing to construction
 							paperwork. No pitch, one click to leave.
 						</p>
 					</div>
