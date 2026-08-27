@@ -156,6 +156,81 @@ export const unsubscribe = mutation({
   },
 });
 
+/* ── The sending integration ────────────────────────────────────────────
+   What an external sender — the Resend app — reads to build an issue.
+
+   Two things separate this from dashboard() above. It returns the unsubscribe
+   token, because a per-recipient opt-out link is the whole point and a Bcc
+   blast cannot carry one. And it authenticates with a shared secret rather than
+   an admin session, because the caller is a program with no user to sign in as.
+
+   The secret is checked HERE and not only in the Next route in front of it.
+   Convex queries are addressable by URL: anything public is callable by anyone
+   who knows the deployment address, so a check that lives only in the route is
+   a check that can be walked around. */
+
+/* Compares in time that doesn't depend on where the first difference is. A
+   plain === returns as soon as two characters differ, and the difference is
+   measurable across enough requests — which is enough to recover a secret one
+   character at a time. */
+function secretMatches(provided: string, expected: string) {
+  if (provided.length !== expected.length) return false;
+  let diff = 0;
+  for (let i = 0; i < provided.length; i++) {
+    diff |= provided.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+export const subscribersForSending = query({
+  args: {
+    apiKey: v.string(),
+    /* Convex's own cursor, passed straight back from the previous page. Real
+       pagination rather than a "first 1000" cap: a silent ceiling on a mailing
+       list reads as "that's everyone" right up until it isn't, and the people
+       past it never get the issue. */
+    cursor: v.optional(v.union(v.string(), v.null())),
+    numItems: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const expected = process.env.NEWSLETTER_API_KEY;
+    if (!expected) {
+      /* Refuse rather than fall open. An unset secret must not mean "no secret
+         required" — that turns a missing env var into a public subscriber list. */
+      throw new ConvexError("Newsletter sending API is not configured.");
+    }
+    if (!secretMatches(args.apiKey, expected)) {
+      throw new ConvexError("Invalid API key.");
+    }
+
+    const numItems = Math.max(1, Math.min(args.numItems ?? 200, 500));
+
+    const results = await ctx.db
+      .query("newsletterSubscribers")
+      .withIndex("by_createdAt")
+      .order("desc")
+      .paginate({ cursor: args.cursor ?? null, numItems });
+
+    /* Filtered after the page is taken, so `isDone` and the cursor still
+       describe the whole table. Pages therefore vary in size — the caller
+       follows the cursor until isDone rather than counting rows. */
+    return {
+      subscribers: results.page
+        .filter((subscriber: any) => subscriber.status === "subscribed")
+        .map((subscriber: any) => ({
+          email: subscriber.email,
+          name: subscriber.name,
+          company: subscriber.company,
+          interest: subscriber.interest,
+          unsubscribeToken: subscriber.unsubscribeToken,
+          createdAt: subscriber.createdAt,
+        })),
+      isDone: results.isDone,
+      cursor: results.continueCursor,
+    };
+  },
+});
+
 export const dashboard = query({
   args: {
     limit: v.optional(v.number()),
