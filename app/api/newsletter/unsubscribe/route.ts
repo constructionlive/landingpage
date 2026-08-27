@@ -2,14 +2,14 @@ import { NextResponse } from "next/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
 import { absoluteUrl } from "@/lib/site";
-import { verifyEmailToken } from "@/lib/newsletterToken";
+import { unsubscribeSecrets, verifyEmailTokenWithAny } from "@/lib/newsletterToken";
 
 /* Opting out. Two link shapes reach here, and both have to keep working.
 
    SIGNED — ?email=you@co.com&token=<hmac>. What the sending app builds: it
-   derives the token from the address with the shared secret, so it needs no
-   call back here and no list of tokens. We recompute the signature and, if it
-   matches, unsubscribe that address. See lib/newsletterToken.ts.
+   derives the token from the address with NEWSLETTER_UNSUBSCRIBE_SECRET, so it
+   needs no call back here and no list of tokens. We recompute the signature
+   and, if it matches, unsubscribe that address. See lib/newsletterToken.ts.
 
    STORED — ?token=<random>. The original scheme, and the one in every welcome
    email already delivered. Those links are in people's inboxes and must not
@@ -72,15 +72,23 @@ export async function POST(request: Request) {
 
 	/* ── Signed link ─────────────────────────────────────────────────── */
 	if (email) {
-		const secret = process.env.NEWSLETTER_API_KEY;
-		if (!secret) {
+		/* Two different secrets, and they are not interchangeable. The signature
+		   is verified with the dedicated signing secret; the Convex mutation
+		   behind it is guarded by the API key. See lib/newsletterToken.ts for
+		   why these are kept apart. */
+		const signingSecrets = unsubscribeSecrets();
+		const apiKey = process.env.NEWSLETTER_API_KEY;
+
+		if (signingSecrets.length === 0 || !apiKey) {
 			/* Refuse rather than fall through to the stored-token path, which
 			   would accept the signature as if it were a random token. */
-			console.error("Signed unsubscribe link received but NEWSLETTER_API_KEY is not set.");
+			console.error(
+				"Signed unsubscribe link received but NEWSLETTER_UNSUBSCRIBE_SECRET or NEWSLETTER_API_KEY is not set.",
+			);
 			return NextResponse.json({ error: "not_configured" }, { status: 503 });
 		}
 
-		if (!verifyEmailToken(email, token, secret)) {
+		if (!verifyEmailTokenWithAny(email, token, signingSecrets)) {
 			/* Deliberately vague. A caller probing addresses learns only that this
 			   link is bad, not whether the address is on the list. */
 			return NextResponse.json({ error: "invalid_token" }, { status: 403 });
@@ -89,7 +97,7 @@ export async function POST(request: Request) {
 		try {
 			const result = await convex.mutation(api.newsletter.unsubscribeByEmail, {
 				email,
-				apiKey: secret,
+				apiKey,
 			});
 			return NextResponse.json(result);
 		} catch (error) {
