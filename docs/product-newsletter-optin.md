@@ -34,6 +34,7 @@ Content-Type: application/json
 ```json
 {
   "expressOptIn": true,
+  "sendWelcome": false,
   "subscribers": {
     "email": "jordan@reyeselectric.com",
     "name": "Jordan Reyes",
@@ -47,14 +48,27 @@ Content-Type: application/json
 Send one subscriber, as an object. (An array is also accepted, for bulk
 migrations — you will not need it. One signup, one call.)
 
-`expressOptIn: true` is required for this use case. It does two things:
+`expressOptIn: true` is required for this use case. It **allows a
+previously-unsubscribed address back onto the list**. Without it the server
+refuses, which is correct for a bulk file restore and wrong here: someone who
+unsubscribed last year and has now deliberately ticked a box has given fresh
+consent, and silently ignoring it means they never hear from us.
 
-- **Allows a previously-unsubscribed address back onto the list.** Without it
-  the server refuses, which is correct for a bulk file restore and wrong here:
-  someone who unsubscribed last year and has now deliberately ticked a box has
-  given fresh consent, and silently ignoring it means they never hear from us.
-- **Sends the welcome email**, so the first thing they receive confirms what
-  they signed up for and carries an unsubscribe link.
+`sendWelcome: false` is also required for this use case. Without it the
+newsletter sends its own "you're subscribed" email, which would land next to
+your signup email and make both look automated. **You own the email this user
+receives.**
+
+Because we send them nothing, two things are on you:
+
+- **Mention the newsletter in your own signup email.** One line is enough —
+  "you'll also get our weekly newsletter" — so the subscription is confirmed
+  in writing somewhere.
+- **Do not attempt to include a newsletter unsubscribe link.** Building one
+  needs a signing secret you do not have and should not request. Their first
+  newsletter issue carries an unsubscribe link, which is what the law requires
+  of the newsletter; your signup email is not a marketing message and does not
+  need one.
 
 `consentSource` is **required** whenever `expressOptIn` is true. Say where the
 tick happened, specifically enough to find it later. A row without it is
@@ -126,6 +140,7 @@ async function handleNewsletterOptIn(job) {
       },
       body: JSON.stringify({
         expressOptIn: true,
+        sendWelcome: false,   // you send the signup email; we send nothing
         subscribers: {
           email: job.email,
           name: job.name,

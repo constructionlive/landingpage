@@ -297,6 +297,15 @@ export const importSubscribers = mutation({
        in it did not agree to anything this morning, and the two rules above
        are exactly the ones that stop an old export re-mailing people who left. */
     expressOptIn: v.optional(v.boolean()),
+    /* Whether the welcome email goes out. Only consulted on an express opt-in;
+       a restore never greets anybody regardless.
+
+       Defaults to true, because a fresh subscriber who hears nothing has no
+       confirmation of what they agreed to. The product sets it false: it sends
+       its own signup email, and two arriving together is noise that makes both
+       look automated. Skipping it costs nothing legally — a message we never
+       send needs no unsubscribe link, and their first issue carries one. */
+    sendWelcome: v.optional(v.boolean()),
     subscribers: v.array(
       v.object({
         email: v.string(),
@@ -324,6 +333,8 @@ export const importSubscribers = mutation({
 
     const now = Date.now();
     const results: { email: string; result: string }[] = [];
+    /* Absent means yes; only an explicit false suppresses it. */
+    const welcome = args.expressOptIn === true && args.sendWelcome !== false;
 
     for (const row of args.subscribers) {
       const existing = await ctx.db
@@ -346,9 +357,10 @@ export const importSubscribers = mutation({
           ...(row.status === "unsubscribed" && { unsubscribedAt: row.subscribedAt ?? now }),
           updatedAt: now,
         });
-        /* Only on an express opt-in. A restored file greeting five hundred
-           people with "welcome!" is how a migration turns into a spam report. */
-        if (args.expressOptIn && row.status === "subscribed") {
+        /* Only on an express opt-in, and only if the caller wants it. A
+           restored file greeting five hundred people with "welcome!" is how a
+           migration turns into a spam report. */
+        if (welcome && row.status === "subscribed") {
           await ctx.scheduler.runAfter(0, internal.emails.sendNewsletterWelcomeEmail, {
             email: row.email,
             name: row.name,
@@ -375,13 +387,15 @@ export const importSubscribers = mutation({
             updatedAt: now,
           });
 
-          await ctx.scheduler.runAfter(0, internal.emails.sendNewsletterWelcomeEmail, {
-            email: existing.email,
-            name: row.name ?? existing.name,
-            /* Their original token: it is already printed in every email we
-               ever sent them, and those links have to keep working. */
-            unsubscribeToken: existing.unsubscribeToken,
-          });
+          if (welcome) {
+            await ctx.scheduler.runAfter(0, internal.emails.sendNewsletterWelcomeEmail, {
+              email: existing.email,
+              name: row.name ?? existing.name,
+              /* Their original token: it is already printed in every email we
+                 ever sent them, and those links have to keep working. */
+              unsubscribeToken: existing.unsubscribeToken,
+            });
+          }
 
           results.push({ email: row.email, result: "resubscribed" });
           continue;

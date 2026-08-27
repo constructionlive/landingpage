@@ -153,7 +153,9 @@ export async function GET(request: Request) {
    Set "expressOptIn": true when a person is ticking a box right now — at
    product signup, say. That mode lets a previously-unsubscribed address back on
    the list, because an explicit tick is fresh consent, and sends the welcome
-   email so the first thing they get carries an unsubscribe link. It requires
+   email so the first thing they get carries an unsubscribe link. Add
+   "sendWelcome": false when the caller is already emailing them itself, as the
+   product does at signup. It requires
    consentSource on every row and caps the batch, because those two rules are
    exactly what stops a bulk restore from re-mailing everyone who left.
 
@@ -229,6 +231,9 @@ export async function POST(request: Request) {
 	   and answering 200 looks exactly like a complete import, and the 1500 who
 	   were dropped are invisible until someone counts. */
 	const expressOptIn = (body as Record<string, unknown>)?.expressOptIn === true;
+	/* Only an explicit false turns the welcome off, so a caller that omits it
+	   gets the safe behaviour: a new subscriber hears something. */
+	const sendWelcome = (body as Record<string, unknown>)?.sendWelcome !== false;
 
 	const maxRows = expressOptIn ? MAX_OPT_IN_ROWS : MAX_IMPORT_ROWS;
 	if (rows.length > maxRows) {
@@ -316,6 +321,7 @@ export async function POST(request: Request) {
 		const result = await convex.mutation(api.newsletter.importSubscribers, {
 			apiKey,
 			expressOptIn,
+			sendWelcome,
 			subscribers,
 		});
 
