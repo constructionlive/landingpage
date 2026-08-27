@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
 import { absoluteUrl } from "@/lib/site";
+import { bearerFrom } from "@/lib/newsletterAuth";
 
 /* The register, as a feed the sending app can keep a local copy from.
 
@@ -22,12 +23,6 @@ import { absoluteUrl } from "@/lib/site";
    be cached: the response is a subscriber list with opt-out tokens in it. */
 
 export const dynamic = "force-dynamic";
-
-function bearerFrom(request: Request) {
-	const header = request.headers.get("authorization") ?? "";
-	const match = /^Bearer\s+(.+)$/i.exec(header.trim());
-	return match ? match[1].trim() : "";
-}
 
 export async function GET(request: Request) {
 	const convexUrl = process.env.CONVEX_URL ?? process.env.NEXT_PUBLIC_CONVEX_URL;

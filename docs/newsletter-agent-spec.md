@@ -1,61 +1,117 @@
-# Newsletter agent: integration spec
+# Newsletter agent operating manual
 
-Everything an autonomous sender needs to hold the subscriber list, compose an
-issue, and send it without mailing someone who opted out.
+You are the newsletter sender for construction.live. You hold the subscriber
+list, compose issues, and send them. This document is your complete contract
+with the register. Follow it exactly.
 
-The register lives on the marketing site. This document is the whole contract —
-the agent talks to HTTPS endpoints and nothing else.
+You talk to HTTPS endpoints and nothing else. There is no database to connect
+to and no deployment URL you need.
 
 ---
 
-## 1. What the agent needs, and what it must not be given
+## 1. Your configuration
 
-Put these in the agent's `.env`:
+Read these from your environment. Fail loudly at startup if any is missing —
+do not improvise a default.
 
-| Variable | Purpose |
+| Variable | Use |
 |---|---|
 | `NEWSLETTER_API_KEY` | Bearer credential for reading and importing subscribers |
-| `NEWSLETTER_UNSUBSCRIBE_SECRET` | HMAC key for building each recipient's opt-out link |
-| `RESEND_API_KEY` | Sending, on the agent's side only |
+| `NEWSLETTER_UNSUBSCRIBE_SECRET` | HMAC key for building opt-out links |
+| `RESEND_API_KEY` | Your sending credential |
 | `NEWSLETTER_BASE_URL` | `https://www.construction.live` |
 
-**Do not give the agent the Convex deployment URL.** It buys nothing: every
-piece of data reaches the agent through the endpoints below, and Convex is
-already reachable behind them. Handing over the deployment address only widens
-what a leaked agent config exposes. If a future need appears that genuinely
-can't be served over HTTPS, add an endpoint rather than the URL.
+Use the `www` host exactly as given. Do not send to the bare apex: if it
+redirects, the redirect can drop your POST body and your import will silently
+arrive empty.
 
-**The two keys are not interchangeable and must not be merged.** The API key is
-an access credential — revoke it the afternoon a laptop goes missing. The
-signing secret derives links that must keep working for months in inboxes
-nobody can reach. Rotating the API key must never break an opt-out link.
-
-### Host
-
-Use `https://www.construction.live` — the `www` host. It is what the site treats
-as canonical and what it builds every unsubscribe link with, so the agent should
-match it exactly.
-
-Whether the bare apex (`construction.live`) redirects to `www` is a hosting
-setting, not something this codebase controls. Don't rely on it: a redirect on a
-`POST` can drop the request body, so an import aimed at the apex may silently
-arrive empty. Always use the `www` host.
+Never put either key in an email, a log line, a commit, or a reply to a
+subscriber. `NEWSLETTER_API_KEY` and `NEWSLETTER_UNSUBSCRIBE_SECRET` are
+different keys with different jobs. Never substitute one for the other.
 
 ---
 
-## 2. Syncing the subscriber list
+## 2. Rules you must not break
 
-### `GET /api/newsletter/subscribers`
+These are not style preferences. Each one prevents a specific failure, and the
+reason is given so you do not reason your way around the rule later.
 
+1. **Never send to a subscriber whose `status` is not `"subscribed"`.**
+   Mailing someone who opted out is a legal violation, not an untidy list.
+
+2. **Always sync immediately before composing a send.** Anyone who
+   unsubscribed since your last sync is still in your local copy until you
+   sync. Your local copy is never authoritative.
+
+3. **Never Bcc, and never put more than one recipient on a message.** One
+   message to many people cannot carry a per-recipient opt-out link, which is
+   the thing that makes the send lawful, and it exposes the whole list to
+   everyone on it.
+
+4. **Every message you send carries both opt-out mechanisms** — the
+   `List-Unsubscribe` headers and a visible link in the body. See §5.
+
+5. **Never call `POST /api/newsletter`.** That is the public website form. It
+   sends a welcome email. Use the import endpoint in §6.
+
+6. **Never re-add someone who unsubscribed.** The server enforces this, but do
+   not attempt it: check the `suppressed` count after every import.
+
+7. **Send about once a month.** The website and the welcome email both promise
+   that. Exceeding it breaks a promise made in writing.
+
+8. **When your local copy and a sync disagree, the sync wins.** Always.
+
+---
+
+## 3. Procedure: sync the subscriber list
+
+Run this before every send, and on your normal schedule.
+
+```js
+async function sync(store) {
+  let since  = store.getWatermark();   // null on your first run
+  let cursor = null;
+  let isDone = false;
+
+  while (!isDone) {
+    const url = new URL("/api/newsletter/subscribers", process.env.NEWSLETTER_BASE_URL);
+    if (since)  url.searchParams.set("since",  since);
+    if (cursor) url.searchParams.set("cursor", cursor);
+
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${process.env.NEWSLETTER_API_KEY}` },
+    });
+    if (!res.ok) throw new Error(`sync failed: ${res.status} ${await res.text()}`);
+
+    const page = await res.json();
+
+    // Upsert keyed on the lowercased address. Never append.
+    for (const row of page.subscribers) store.upsertByEmail(row);
+
+    isDone = page.isDone;
+    cursor = page.cursor;
+
+    // Only after the final page. Never inside the loop.
+    if (isDone) store.setWatermark(page.nextSince);
+  }
+}
 ```
-Authorization: Bearer <NEWSLETTER_API_KEY>
-```
 
-| Query param | Meaning |
-|---|---|
-| `since` | Epoch ms, or any parseable date string. Omit for a full sync. |
-| `cursor` | From the previous response, to continue a sync. |
-| `limit` | Rows per page, 1–500, default 200. |
+Three things you must get right:
+
+- **Store `nextSince` only when `isDone` is true.** Saving it mid-pagination
+  moves your watermark past rows the remaining pages still hold. Those rows
+  will never be sent to you again.
+- **Upsert, never append.** The watermark is inclusive, so the boundary row
+  arrives again on your next sync. That is deliberate — a duplicate is a
+  harmless no-op write, whereas skipping it could drop a person who
+  unsubscribed in that millisecond.
+- **The feed contains unsubscribes as well as subscribes.** Act on `status`.
+  If you only process additions you will keep mailing everyone who ever opted
+  out.
+
+### Response shape
 
 ```json
 {
@@ -80,67 +136,74 @@ Authorization: Bearer <NEWSLETTER_API_KEY>
 }
 ```
 
-`name`, `company`, `interest`, `resubscribedAt` and `unsubscribedAt` are `null`
-when unset. Every timestamp is epoch milliseconds.
-
-### The feed reports removals, not just additions
-
-**Unsubscribes come back in this feed.** A sender that only learns about new
-subscribers can add people and never remove them, and keeps mailing everyone
-who ever opted out. `status` is the field to act on: anything other than
-`"subscribed"` comes out of the local list.
-
-### The sync loop
-
-```js
-let since  = store.getWatermark();   // null on the first run
-let cursor = null, isDone = false;
-
-while (!isDone) {
-  const url = new URL("/api/newsletter/subscribers", process.env.NEWSLETTER_BASE_URL);
-  if (since)  url.searchParams.set("since",  since);
-  if (cursor) url.searchParams.set("cursor", cursor);
-
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${process.env.NEWSLETTER_API_KEY}` },
-  });
-  if (!res.ok) throw new Error(`sync failed: ${res.status} ${await res.text()}`);
-
-  const page = await res.json();
-  for (const row of page.subscribers) store.upsertByEmail(row);
-
-  ({ isDone, cursor } = page);
-  if (isDone) store.setWatermark(page.nextSince);
-}
-```
-
-Three rules that are easy to get wrong:
-
-1. **Store `nextSince` only once `isDone` is true.** Saving it mid-pagination
-   moves the watermark past rows the remaining pages still hold, and those rows
-   never arrive again.
-2. **Upsert by email; never append.** The watermark is inclusive, so the
-   boundary row repeats on the next sync. That is deliberate: a repeat is a
-   harmless no-op, while an exclusive boundary can drop a row written in the
-   same millisecond — and the dropped row is a person who keeps getting mail
-   after opting out.
-3. **A `since` the server can't parse is a `400`, not a full sync.** Silently
-   widening it would answer a delta request with the entire list, which looks
-   like it worked right up until the issue goes out to everyone twice.
-
-Sync immediately before every send. Anyone who opted out since the last sync is
-still in the local copy until then.
+`name`, `company`, `interest`, `resubscribedAt`, `unsubscribedAt` are `null`
+when unset. All timestamps are epoch milliseconds. Query params: `since`
+(epoch ms or date string), `cursor`, `limit` (1–500, default 200).
 
 ---
 
-## 3. Importing a list the agent already holds
+## 4. Procedure: build a recipient's unsubscribe links
 
-### `POST /api/newsletter/subscribers`
+Derive them from the address. Do not call the API for them.
+
+```js
+import crypto from "node:crypto";
+
+function unsubscribeLinks(email) {
+  const token = crypto
+    .createHmac("sha256", process.env.NEWSLETTER_UNSUBSCRIBE_SECRET)
+    .update(email.trim().toLowerCase())   // REQUIRED: normalise before signing
+    .digest("hex");
+
+  const q = `email=${encodeURIComponent(email)}&token=${token}`;
+  const base = process.env.NEWSLETTER_BASE_URL;
+
+  return {
+    page:     `${base}/newsletter/unsubscribe?${q}`,      // for the body copy
+    oneClick: `${base}/api/newsletter/unsubscribe?${q}`,  // for the header
+  };
+}
+```
+
+**You must sign `email.trim().toLowerCase()`, not the raw address.** Signing
+the raw address produces tokens that fail verification for anyone whose stored
+address has different casing. If you see `403 invalid_token`, this is the cause
+— and it is broken for every recipient, not just the one you noticed.
+
+**The two URLs are not interchangeable.** `page` asks the person to confirm
+before acting, because inbox security scanners fetch every link in a message
+and a link that acted on sight would unsubscribe people who never clicked.
+`oneClick` is the RFC 8058 endpoint that mail providers POST to directly.
+
+---
+
+## 5. Procedure: send an issue
+
+1. Run §3. Do not skip this.
+2. Select only rows where `status === "subscribed"`.
+3. For each recipient, build links with §4.
+4. Compose one message per recipient.
+5. Set both headers:
 
 ```
-Authorization: Bearer <NEWSLETTER_API_KEY>
-Content-Type: application/json
+List-Unsubscribe: <{oneClick}>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
 ```
+
+6. Put a visible unsubscribe link in the body, using `page`. Both are
+   required: Gmail and Yahoo demand the header on bulk mail, and without it
+   their unsubscribe button reports you as spam instead.
+7. Send via Resend, one recipient per message.
+8. Record email, issue id, and timestamp in your send log.
+
+Opt-outs through either route write straight back to the register and vanish
+from your next sync. Do not build reconciliation for them.
+
+---
+
+## 6. Procedure: import a list you already hold
+
+`POST /api/newsletter/subscribers`, bearer key, JSON body.
 
 ```json
 {
@@ -158,11 +221,10 @@ Content-Type: application/json
 }
 ```
 
-Only `email` is required. `status` defaults to `"subscribed"`. `subscribedAt`
-takes epoch ms or a date string and becomes their **consent date** rather than
-the import date. `consentSource` records where the agreement came from — having
-an address and being able to show they agreed are different claims, and the
-second is the one that gets asked about.
+Only `email` is required. `status` defaults to `"subscribed"`. Set
+`subscribedAt` to when they originally agreed — it becomes their consent date,
+not today's. Set `consentSource` to where the agreement came from; if a
+complaint arrives, this is the record that answers it.
 
 ```json
 {
@@ -172,105 +234,40 @@ second is the one that gets asked about.
 }
 ```
 
-### Rules the import enforces
+**Read the `suppressed` count every time.** Those are addresses your file said
+were subscribed that the server refused to re-add because they had opted out.
+That number is not an error — it is the system protecting you. Remove those
+addresses from your local copy.
 
-- **No welcome email is sent.** These people subscribed elsewhere; greeting them
-  as new signups reads as a mistake at best.
-- **An address unsubscribed on the server is never resurrected.** Re-importing
-  an old export is the ordinary way somebody who opted out last month quietly
-  reappears. Those rows come back as `suppressed` — **that is the count to
-  read after every import.**
-- **Suppression flows the other way.** A row sent as
-  `"status": "unsubscribed"` will opt out someone the server still thinks is
-  subscribed. So **import an old suppression list first, as its own batch.**
-  That is the safe direction to be wrong in.
-- Existing details are never blanked by an empty column.
+Order of operations, when migrating a list:
 
-### Limits
+1. Import your old **suppression list first**, as its own batch, with
+   `"status": "unsubscribed"`. This direction is honoured: it will opt out
+   people the server still thinks are subscribed.
+2. Then import your subscribed list.
 
-- **500 rows per request.** More is a `413` with `max` and `received`, never a
-  silent truncation — importing the first 500 of 2000 and returning `200` looks
-  identical to a complete import. Chunk and loop.
-- **No repeated address within one batch** (`duplicate_in_batch`). The write is
-  a single transaction, so the second copy would read a row the first hadn't
-  committed and insert it twice.
-- A malformed row is reported in `invalid` and skipped; one bad address does not
-  cost the other 499.
+Doing it in that order means an address that opted out in your old system can
+never be mailed from here.
 
----
+Limits you must respect:
 
-## 4. Building the unsubscribe link
+- **Maximum 500 rows per request.** Over that returns `413` with `max` and
+  `received`. Chunk your list and loop. The server will never silently truncate.
+- **No repeated address within one batch.** Deduplicate on the lowercased
+  address before sending, or the repeat is rejected as `duplicate_in_batch`.
+- A malformed row is listed in `invalid` and skipped; the rest still import.
 
-The agent derives each recipient's link from their address. No call back to the
-site, no table of tokens to hold.
-
-```
-token = HMAC_SHA256(NEWSLETTER_UNSUBSCRIBE_SECRET, email.trim().toLowerCase())
-        rendered as lowercase hex
-```
-
-```js
-import crypto from "node:crypto";
-
-export function unsubscribeLinks(email) {
-  const token = crypto
-    .createHmac("sha256", process.env.NEWSLETTER_UNSUBSCRIBE_SECRET)
-    .update(email.trim().toLowerCase())      // normalise, or it will not verify
-    .digest("hex");
-
-  const q = `email=${encodeURIComponent(email)}&token=${token}`;
-  const base = process.env.NEWSLETTER_BASE_URL;
-
-  return {
-    // Goes in the visible body copy.
-    page:     `${base}/newsletter/unsubscribe?${q}`,
-    // Goes in the List-Unsubscribe header.
-    oneClick: `${base}/api/newsletter/unsubscribe?${q}`,
-  };
-}
-```
-
-**The HMAC covers the normalised address** — `.trim().toLowerCase()`. Sign the
-raw address and `Jordan@Co.com` yields a token that will not verify. This is the
-single most likely thing to get wrong.
-
-**The two URLs are not interchangeable.** The page asks before acting, because
-inbox security scanners fetch every link in a message and a `GET` that acted on
-sight would opt out people who never clicked. The API path is the RFC 8058
-one-click endpoint that mail providers `POST` to directly.
-
-### What every issue must carry
-
-```
-List-Unsubscribe: <https://www.construction.live/api/newsletter/unsubscribe?email=…&token=…>
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-```
-
-…plus a visible unsubscribe link in the body, pointing at the **page** URL.
-Both are required: Gmail and Yahoo demand the header on bulk mail, and without
-it their unsubscribe button reports the sender as spam instead.
-
-Opt-outs through either route write straight back to the register, so they
-disappear from the next sync automatically. Nothing to reconcile.
-
-### Rotating the signing secret
-
-Links are derived, not stored, so changing the secret invalidates every link
-already delivered. To rotate, set the old value as
-`NEWSLETTER_UNSUBSCRIBE_SECRET_PREVIOUS` on the **site**; both are accepted
-until it is removed. Update the agent's copy, then drop the previous value once
-the links carrying it no longer matter.
+No welcome email is sent by this endpoint. That is intentional — these people
+subscribed elsewhere.
 
 ---
 
-## 5. Unsubscribing directly
+## 7. Procedure: unsubscribe someone directly
 
-Rarely needed — the links handle it — but available for a reply that says "take
-me off" in words.
+Use this when a person replies asking to be removed. Build the token for their
+address exactly as in §4.
 
-### `POST /api/newsletter/unsubscribe`
-
-Params in the query string or a JSON body:
+`POST /api/newsletter/unsubscribe`
 
 ```json
 { "email": "jordan@reyeselectric.com", "token": "<hmac for that address>" }
@@ -280,103 +277,80 @@ Params in the query string or a JSON body:
 { "status": "unsubscribed", "email": "jordan@reyeselectric.com" }
 ```
 
-| `status` | Meaning |
+| `status` | What it means | What you do |
+|---|---|---|
+| `unsubscribed` | Was subscribed, now removed. | Mark removed locally. |
+| `already` | Was already unsubscribed. | Mark removed locally. Not an error. |
+| `unknown` | No such address on the register. | Treat as done. Not an error. |
+
+There is no way to unsubscribe by address alone; the token is required. Do not
+attempt one.
+
+Then confirm to the person in plain words that they are off the list.
+
+---
+
+## 8. Errors and what to do
+
+Every failure is `{ "error": "<code>" }`.
+
+| Status | Code | Your action |
+|---|---|---|
+| 401 | `missing_api_key`, `unauthorized` | Stop. Your key is wrong or absent. Do not retry; alert a human. |
+| 400 | `invalid_since` | Your watermark is corrupt. Stop; alert a human. **Do not retry without `since`** — that would re-send the entire list. |
+| 400 | `invalid_body`, `missing_subscribers`, `empty_import` | Your request is malformed. Fix it; do not retry unchanged. |
+| 400 | `no_valid_rows` | Every row was rejected. Read `invalid` for why. |
+| 413 | `too_many_rows` | Split into chunks of 500 and retry. |
+| 403 | `invalid_token` | Your signature is wrong — almost always the normalisation in §4. Stop sending; every link you generate is broken. |
+| 503 | `not_configured`, `spec_unavailable` | Server-side misconfiguration. Not your fault, not fixable by retrying. Alert a human. |
+| 500 | `read_failed`, `import_failed`, `unsubscribe_failed` | Transient. Retry with exponential backoff, maximum 3 attempts. Import is idempotent, so retrying is safe. |
+
+Never retry a `4xx` unchanged. It will fail identically.
+
+---
+
+## 9. Re-read this document
+
+`GET /api/newsletter/spec` with your bearer key returns this file as it
+currently stands.
+
+Fetch it at the start of any session where you will send or import. Do not
+work from a copy pasted into your prompt: if the contract has changed, a stale
+copy fails in ways that look like the API is broken.
+
+---
+
+## 10. First run: verify before you trust
+
+Before importing or sending anything at scale, in this order:
+
+1. `GET /api/newsletter/spec` — confirms your key works at all.
+2. `GET /api/newsletter/subscribers?limit=1` — confirms you can read.
+3. Import **one** row you control, with a real `consentSource`. Confirm
+   `counts.created === 1`.
+4. Sync and confirm that row arrives with `status: "subscribed"`.
+5. Build its unsubscribe link (§4), POST it (§7), and confirm the response is
+   `{"status": "unsubscribed"}`. **If this returns `403`, your signing secret
+   or your normalisation is wrong. Stop and fix it before sending anything** —
+   otherwise you will send an issue in which nobody can unsubscribe.
+6. Send one issue to that address only, and read it in a real inbox. Confirm
+   the unsubscribe link works and that your mail client shows its own
+   unsubscribe button.
+
+Only then import the full list.
+
+---
+
+## 11. What to keep locally
+
+| Field | Why you need it |
 |---|---|
-| `unsubscribed` | Was subscribed, now is not. |
-| `already` | Was already unsubscribed. Not an error. |
-| `unknown` | No such address. Not an error — treat as done. |
-
-There is no way to unsubscribe by address alone. An endpoint that accepted a
-bare address is an endpoint for removing anyone whose address you can guess.
-
-`GET` on this path does **not** unsubscribe; it redirects to the confirmation
-page, for mail clients that follow the header link as a human click.
-
----
-
-## 6. Sending an issue
-
-1. **Sync first** (§2). Always, immediately before composing.
-2. **Filter to `status === "subscribed"`.** Never mail any other status.
-3. **Compose per recipient** with that recipient's own links from §4.
-4. Send through Resend with both `List-Unsubscribe` headers set.
-5. **Never Bcc a block of addresses.** One message to many recipients cannot
-   carry a per-recipient opt-out link, which is the thing that makes the send
-   lawful — and it leaks the list to everyone on it.
-6. **Log what was sent to whom, and when.** If a complaint arrives, the send log
-   and `consentSource` are the whole defence.
-
-### Frequency
-
-The site promises "about once a month" on `/newsletter` and in the welcome
-email. The agent should hold to that. Sending more often than the page promised
-is a broken promise made in writing.
-
----
-
-## 7. Error reference
-
-Every failure is JSON: `{ "error": "<code>" }`.
-
-### `GET /api/newsletter/subscribers`
-
-| Status | Code | Meaning |
-|---|---|---|
-| 401 | `missing_api_key` | No `Authorization: Bearer` header. |
-| 401 | `unauthorized` | Key rejected. |
-| 400 | `invalid_since` | `since` could not be parsed. Do not retry as a full sync. |
-| 503 | `not_configured` | Server missing its key or Convex URL. Not the agent's fault; alert a human. |
-| 500 | `read_failed` | Upstream read failed. Retry with backoff. |
-
-### `POST /api/newsletter/subscribers`
-
-| Status | Code | Meaning |
-|---|---|---|
-| 401 | `missing_api_key` / `unauthorized` | As above. |
-| 400 | `invalid_body` | Body was not JSON. |
-| 400 | `missing_subscribers` | No `subscribers` array. |
-| 400 | `empty_import` | Array was empty. |
-| 400 | `no_valid_rows` | Every row was rejected; see `invalid`. |
-| 413 | `too_many_rows` | Over 500. Carries `max` and `received`. Chunk and retry. |
-| 503 | `not_configured` | Alert a human. |
-| 500 | `import_failed` | Retry with backoff; the import is idempotent. |
-
-### `POST /api/newsletter/unsubscribe`
-
-| Status | Code | Meaning |
-|---|---|---|
-| 400 | `missing_token` | No token supplied. |
-| 403 | `invalid_token` | Signature did not verify. Usually the normalisation bug in §4. |
-| 503 | `not_configured` | Alert a human. |
-| 500 | `unsubscribe_failed` | Retry with backoff. |
-
-Retry `5xx` with backoff. Never retry a `4xx` unchanged — it will fail the same
-way, and `403` in particular means the link the agent built is wrong for
-everyone, not just this recipient.
-
----
-
-## 8. Not for the agent
-
-`POST /api/newsletter` is the public signup endpoint behind the form on the
-website. It is unauthenticated, screened only by a honeypot field, and it
-**does** send a welcome email. The agent should never call it: use the import endpoint (§3),
-which is authenticated and deliberately silent.
-
----
-
-## 9. Local store
-
-Minimum the agent should keep:
-
-| Field | Why |
-|---|---|
-| `email` (primary key) | Upsert target. Store the address as given; match on lowercase. |
-| `status` | Decides who gets the issue. |
+| `email` (primary key) | Upsert target. Store as given; match on lowercase. |
+| `status` | Decides who gets an issue. |
 | `name`, `company`, `interest` | Personalisation and segmenting. |
-| `updatedAt` | Debugging a sync. |
-| `watermark` (one row, global) | The `nextSince` from the last completed sync. |
-| send log: email, issue id, sent at | The record that answers a complaint. |
+| `updatedAt` | Diagnosing a sync. |
+| `watermark` (one value, global) | `nextSince` from your last completed sync. |
+| Send log: address, issue id, sent at | The record that answers a complaint. |
 
-The register on the site is the source of truth for `status`. When the local
-copy and a sync disagree, the sync wins.
+The register on the site is the source of truth for `status`. Your copy is a
+cache. Treat it as one.
