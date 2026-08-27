@@ -81,6 +81,7 @@ export const subscribe = mutation({
         status: "subscribed" as const,
         ...(returning && { resubscribedAt: now, unsubscribedAt: undefined }),
         ...(args.attribution && { attribution: args.attribution }),
+        updatedAt: now,
       });
 
       /* Welcome mail on the way back in, but not for someone who was already
@@ -107,6 +108,7 @@ export const subscribe = mutation({
       unsubscribeToken: args.unsubscribeToken,
       attribution: args.attribution,
       createdAt: now,
+      updatedAt: now,
     });
 
     /* Scheduled rather than awaited: a Resend outage should not cost us the
@@ -147,9 +149,282 @@ export const unsubscribe = mutation({
       return { status: "already" as const, email: subscriber.email };
     }
 
+    const now = Date.now();
     await ctx.db.patch(subscriber._id, {
       status: "unsubscribed",
-      unsubscribedAt: Date.now(),
+      unsubscribedAt: now,
+      updatedAt: now,
+    });
+
+    return { status: "unsubscribed" as const, email: subscriber.email };
+  },
+});
+
+/* ── The sending integration ────────────────────────────────────────────
+   What an external sender — the Resend app — reads to build an issue.
+
+   Two things separate this from dashboard() above. It returns the unsubscribe
+   token, because a per-recipient opt-out link is the whole point and a Bcc
+   blast cannot carry one. And it authenticates with a shared secret rather than
+   an admin session, because the caller is a program with no user to sign in as.
+
+   The secret is checked HERE and not only in the Next route in front of it.
+   Convex queries are addressable by URL: anything public is callable by anyone
+   who knows the deployment address, so a check that lives only in the route is
+   a check that can be walked around. */
+
+/* Compares in time that doesn't depend on where the first difference is. A
+   plain === returns as soon as two characters differ, and the difference is
+   measurable across enough requests — which is enough to recover a secret one
+   character at a time. */
+function secretMatches(provided: string, expected: string) {
+  if (provided.length !== expected.length) return false;
+  let diff = 0;
+  for (let i = 0; i < provided.length; i++) {
+    diff |= provided.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+export const subscribersForSending = query({
+  args: {
+    apiKey: v.string(),
+    /* The caller's watermark: return every row changed at or after this, in the
+       order it changed. Absent means a full sync from the beginning.
+
+       Inclusive (gte), not exclusive. A row landing on the boundary is handed
+       over twice rather than risking a row that changed in the same
+       millisecond as the last sync being handed over never. The caller keys on
+       the address, so a repeat is a no-op write and a miss is a person who
+       keeps getting mail after opting out. */
+    since: v.optional(v.number()),
+    cursor: v.optional(v.union(v.string(), v.null())),
+    numItems: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const expected = process.env.NEWSLETTER_API_KEY;
+    if (!expected) {
+      /* Refuse rather than fall open. An unset secret must not mean "no secret
+         required" — that turns a missing env var into a public subscriber list. */
+      throw new ConvexError("Newsletter sending API is not configured.");
+    }
+    if (!secretMatches(args.apiKey, expected)) {
+      throw new ConvexError("Invalid API key.");
+    }
+
+    const numItems = Math.max(1, Math.min(args.numItems ?? 200, 500));
+    const since = args.since ?? 0;
+
+    /* Ascending, so the walk goes forward through time and a cursor can be
+       resumed. Any write moves a row to the end of this order, which is what
+       makes the scan complete: a row updated mid-sync is ahead of the walk,
+       not behind it. */
+    const results = await ctx.db
+      .query("newsletterSubscribers")
+      .withIndex("by_updatedAt", (q) => q.gte("updatedAt", since))
+      .order("asc")
+      .paginate({ cursor: args.cursor ?? null, numItems });
+
+    /* Unsubscribed rows are returned too, and that is the point of the feed
+       rather than an oversight. A sender that only ever hears about
+       subscriptions can add people but never remove them, and keeps mailing
+       everyone who ever opted out. `status` is what the caller acts on. */
+    const subscribers = results.page.map((subscriber: any) => ({
+      email: subscriber.email,
+      name: subscriber.name,
+      company: subscriber.company,
+      interest: subscriber.interest,
+      status: subscriber.status,
+      unsubscribeToken: subscriber.unsubscribeToken,
+      createdAt: subscriber.createdAt,
+      resubscribedAt: subscriber.resubscribedAt,
+      unsubscribedAt: subscriber.unsubscribedAt,
+      updatedAt: subscriber.updatedAt,
+    }));
+
+    /* The next watermark is the newest row actually handed over, never the
+       server's clock. Using "now" would silently skip anything written between
+       the last page being read and the caller storing the value. An empty page
+       changes nothing, so the caller keeps the watermark it came in with. */
+    const latest = subscribers.reduce(
+      (newest: number, subscriber: { updatedAt: number }) =>
+        subscriber.updatedAt > newest ? subscriber.updatedAt : newest,
+      since,
+    );
+
+    return {
+      subscribers,
+      isDone: results.isDone,
+      cursor: results.continueCursor,
+      nextSince: latest,
+    };
+  },
+});
+
+/* Bulk import, for a list collected before this register existed.
+
+   Two rules make this different from subscribe() above, and both exist because
+   an import is the easiest way to mail someone who told you not to.
+
+   It never sends the welcome email. These people did not just sign up; they
+   subscribed somewhere else, possibly years ago, and "welcome, you're
+   subscribed!" reads as either a mistake or a list purchase.
+
+   It never resurrects an address that is unsubscribed HERE. Re-importing an
+   old export is the normal way somebody who opted out last month quietly
+   reappears on the list, and under CASL mailing them again is a fresh
+   violation rather than a tidy-up. Their row wins over the file, always.
+
+   The reverse does apply: a row marked unsubscribed in the import suppresses
+   someone we still think is subscribed, so bringing over an old suppression
+   list works and is the safe direction to be wrong in.
+
+   `subscribedAt` is preserved rather than stamped with the import time. It is
+   the date of consent, and overwriting it throws away the answer to the only
+   question that matters if the consent is ever challenged. */
+export const importSubscribers = mutation({
+  args: {
+    apiKey: v.string(),
+    subscribers: v.array(
+      v.object({
+        email: v.string(),
+        normalizedEmail: v.string(),
+        name: v.optional(v.string()),
+        company: v.optional(v.string()),
+        interest: v.optional(v.string()),
+        status: v.union(v.literal("subscribed"), v.literal("unsubscribed")),
+        /* When they originally agreed, in epoch ms. */
+        subscribedAt: v.optional(v.number()),
+        consentSource: v.optional(v.string()),
+        /* Minted per row in the route, used only if a row is created. */
+        unsubscribeToken: v.string(),
+      }),
+    ),
+  },
+  handler: async (ctx, args) => {
+    const expected = process.env.NEWSLETTER_API_KEY;
+    if (!expected) {
+      throw new ConvexError("Newsletter sending API is not configured.");
+    }
+    if (!secretMatches(args.apiKey, expected)) {
+      throw new ConvexError("Invalid API key.");
+    }
+
+    const now = Date.now();
+    const results: { email: string; result: string }[] = [];
+
+    for (const row of args.subscribers) {
+      const existing = await ctx.db
+        .query("newsletterSubscribers")
+        .withIndex("by_normalizedEmail", (q) => q.eq("normalizedEmail", row.normalizedEmail))
+        .unique();
+
+      if (!existing) {
+        await ctx.db.insert("newsletterSubscribers", {
+          email: row.email,
+          normalizedEmail: row.normalizedEmail,
+          name: row.name,
+          company: row.company,
+          interest: row.interest,
+          status: row.status,
+          unsubscribeToken: row.unsubscribeToken,
+          consentSource: row.consentSource,
+          /* Their consent date, not this import's date. */
+          createdAt: row.subscribedAt ?? now,
+          ...(row.status === "unsubscribed" && { unsubscribedAt: row.subscribedAt ?? now }),
+          updatedAt: now,
+        });
+        results.push({ email: row.email, result: "created" });
+        continue;
+      }
+
+      /* Already opted out here. The file does not get to overrule that. */
+      if (existing.status === "unsubscribed" && row.status === "subscribed") {
+        results.push({ email: row.email, result: "suppressed" });
+        continue;
+      }
+
+      /* Opted out in the file but not here: honour it. */
+      if (existing.status === "subscribed" && row.status === "unsubscribed") {
+        await ctx.db.patch(existing._id, {
+          status: "unsubscribed",
+          unsubscribedAt: now,
+          updatedAt: now,
+        });
+        results.push({ email: row.email, result: "unsubscribed" });
+        continue;
+      }
+
+      /* Same status on both sides. Fill in anything we are missing, but never
+         blank a detail they gave us with an empty column from a spreadsheet. */
+      await ctx.db.patch(existing._id, {
+        ...(row.name && !existing.name && { name: row.name }),
+        ...(row.company && !existing.company && { company: row.company }),
+        ...(row.interest && !existing.interest && { interest: row.interest }),
+        ...(row.consentSource && !existing.consentSource && {
+          consentSource: row.consentSource,
+        }),
+        updatedAt: now,
+      });
+      results.push({ email: row.email, result: "updated" });
+    }
+
+    const counts = results.reduce<Record<string, number>>((tally, row) => {
+      tally[row.result] = (tally[row.result] ?? 0) + 1;
+      return tally;
+    }, {});
+
+    return { results, counts };
+  },
+});
+
+/* Opting out by address, for a link the sending app signed itself.
+
+   The signature is verified in app/api/newsletter/unsubscribe/route.ts, which
+   runs on Node and can do HMAC. By the time it calls this, the caller has
+   proved they hold the shared secret — so this takes the address directly, and
+   guards itself with that same secret for the reason given on
+   subscribersForSending: a public Convex function is callable by anyone who
+   knows the deployment URL, and an unsubscribe-by-address endpoint without a
+   guard is an endpoint for removing anyone whose address you can guess.
+
+   Answers rather than throws for an address we don't hold. Someone clicking an
+   opt-out link wants to be off the list; whether we ever had them is our
+   bookkeeping, not their problem. */
+export const unsubscribeByEmail = mutation({
+  args: {
+    email: v.string(),
+    apiKey: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const expected = process.env.NEWSLETTER_API_KEY;
+    if (!expected) {
+      throw new ConvexError("Newsletter sending API is not configured.");
+    }
+    if (!secretMatches(args.apiKey, expected)) {
+      throw new ConvexError("Invalid API key.");
+    }
+
+    const normalizedEmail = normalizeEmail(args.email);
+
+    const subscriber = await ctx.db
+      .query("newsletterSubscribers")
+      .withIndex("by_normalizedEmail", (q) => q.eq("normalizedEmail", normalizedEmail))
+      .unique();
+
+    if (!subscriber) {
+      return { status: "unknown" as const };
+    }
+
+    if (subscriber.status === "unsubscribed") {
+      return { status: "already" as const, email: subscriber.email };
+    }
+
+    const now = Date.now();
+    await ctx.db.patch(subscriber._id, {
+      status: "unsubscribed",
+      unsubscribedAt: now,
+      updatedAt: now,
     });
 
     return { status: "unsubscribed" as const, email: subscriber.email };
