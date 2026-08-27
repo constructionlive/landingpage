@@ -34,17 +34,18 @@ Content-Type: application/json
 ```json
 {
   "expressOptIn": true,
-  "subscribers": [
-    {
-      "email": "jordan@reyeselectric.com",
-      "name": "Jordan Reyes",
-      "company": "Reyes Electric",
-      "subscribedAt": 1756080000000,
-      "consentSource": "product signup checkbox, onboarding step 2"
-    }
-  ]
+  "subscribers": {
+    "email": "jordan@reyeselectric.com",
+    "name": "Jordan Reyes",
+    "company": "Reyes Electric",
+    "subscribedAt": 1756080000000,
+    "consentSource": "product signup checkbox, onboarding step 2"
+  }
 }
 ```
+
+Send one subscriber, as an object. (An array is also accepted, for bulk
+migrations — you will not need it. One signup, one call.)
 
 `expressOptIn: true` is required for this use case. It does two things:
 
@@ -61,7 +62,9 @@ rejected.
 
 `subscribedAt` should be the moment they ticked the box, in epoch ms.
 
-Batch limit in this mode is **50 rows**. You will normally send one.
+You send one subscriber per call, at the moment they sign up. The endpoint
+caps this mode at 50 in a batch, but that limit exists to stop a bulk restore
+being run through it — it is not something you should ever approach.
 
 ### Response
 
@@ -123,15 +126,13 @@ async function handleNewsletterOptIn(job) {
       },
       body: JSON.stringify({
         expressOptIn: true,
-        subscribers: [
-          {
-            email: job.email,
-            name: job.name,
-            company: job.company,
-            subscribedAt: job.at,
-            consentSource: `product signup checkbox, user ${job.userId}`,
-          },
-        ],
+        subscribers: {
+          email: job.email,
+          name: job.name,
+          company: job.company,
+          subscribedAt: job.at,
+          consentSource: `product signup checkbox, user ${job.userId}`,
+        },
       }),
       signal: AbortSignal.timeout(10_000),
     },
