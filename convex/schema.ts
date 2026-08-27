@@ -103,6 +103,12 @@ export default defineSchema({
        use to unsubscribe anyone. */
     unsubscribeToken: v.string(),
     attribution: v.optional(attributionValidator),
+    /* Where the consent came from, for rows we did not collect ourselves.
+       Absent on anyone who used the form — the attribution above already says
+       how they arrived. Set on imports, because "we have their address" and
+       "we can prove they agreed" are different claims, and the second is the
+       one that matters if a complaint ever lands. */
+    consentSource: v.optional(v.string()),
     createdAt: v.number(),
     /* Set on the most recent (re)subscribe, so a returning address shows when
        it came back rather than when it first arrived. */

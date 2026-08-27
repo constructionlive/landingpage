@@ -147,3 +147,165 @@ export async function GET(request: Request) {
 		{ headers: { "Cache-Control": "no-store, private" } },
 	);
 }
+
+/* ── Import ─────────────────────────────────────────────────────────────
+   POST the same path to push a list collected before this register existed.
+
+   Body: { "subscribers": [ { "email", "name"?, "company"?, "interest"?,
+   "status"?, "subscribedAt"?, "consentSource"? } ] }
+
+   `status` defaults to "subscribed"; send "unsubscribed" to bring over an old
+   suppression list, which is worth doing FIRST and separately — see the note on
+   importSubscribers in convex/newsletter.ts for what an import will and won't
+   overwrite. `subscribedAt` is when they originally agreed, epoch ms or a date
+   string; it becomes their consent date rather than today's.
+
+   No welcome email goes out. These people subscribed elsewhere, and greeting
+   them as new signups reads as a mistake at best.
+
+   A malformed row is reported and skipped rather than failing the batch: one
+   bad address in a five-hundred-row export should not cost the other 499. */
+
+const MAX_IMPORT_ROWS = 500;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function asString(value: unknown, max = 500) {
+	return typeof value === "string" ? value.trim().slice(0, max) : "";
+}
+
+/** Epoch ms, or any date string Date can parse. Undefined when absent/unusable. */
+function asTimestamp(value: unknown) {
+	if (typeof value === "number" && Number.isFinite(value)) return value;
+	if (typeof value === "string" && value.trim() !== "") {
+		const parsed = /^\d+$/.test(value.trim()) ? Number(value.trim()) : Date.parse(value.trim());
+		if (Number.isFinite(parsed)) return parsed;
+	}
+	return undefined;
+}
+
+export async function POST(request: Request) {
+	const convexUrl = process.env.CONVEX_URL ?? process.env.NEXT_PUBLIC_CONVEX_URL;
+	if (!convexUrl) {
+		console.error("Subscriber import attempted but no Convex URL is configured.");
+		return NextResponse.json({ error: "not_configured" }, { status: 503 });
+	}
+
+	const apiKey = bearerFrom(request);
+	if (!apiKey) {
+		return NextResponse.json({ error: "missing_api_key" }, { status: 401 });
+	}
+
+	let body: unknown;
+	try {
+		body = await request.json();
+	} catch {
+		return NextResponse.json({ error: "invalid_body" }, { status: 400 });
+	}
+
+	const rows = (body as Record<string, unknown>)?.subscribers;
+	if (!Array.isArray(rows)) {
+		return NextResponse.json({ error: "missing_subscribers" }, { status: 400 });
+	}
+	if (rows.length === 0) {
+		return NextResponse.json({ error: "empty_import" }, { status: 400 });
+	}
+	/* Rejected rather than truncated. Silently importing the first 500 of 2000
+	   and answering 200 looks exactly like a complete import, and the 1500 who
+	   were dropped are invisible until someone counts. */
+	if (rows.length > MAX_IMPORT_ROWS) {
+		return NextResponse.json(
+			{ error: "too_many_rows", max: MAX_IMPORT_ROWS, received: rows.length },
+			{ status: 413 },
+		);
+	}
+
+	/* Mirrors the args validator on newsletter.importSubscribers. Spelled out
+	   rather than inferred so a field renamed there fails to compile here,
+	   instead of arriving as undefined and importing blanks. */
+	type ImportRow = {
+		email: string;
+		normalizedEmail: string;
+		name?: string;
+		company?: string;
+		interest?: string;
+		status: "subscribed" | "unsubscribed";
+		subscribedAt?: number;
+		consentSource?: string;
+		unsubscribeToken: string;
+	};
+
+	const invalid: { index: number; email: string; reason: string }[] = [];
+	const subscribers: ImportRow[] = [];
+	const seen = new Set<string>();
+
+	rows.forEach((raw, index) => {
+		const row = (raw ?? {}) as Record<string, unknown>;
+		const email = asString(row.email, 200);
+
+		if (!email || !EMAIL_PATTERN.test(email)) {
+			invalid.push({ index, email, reason: "invalid_email" });
+			return;
+		}
+
+		/* Convex mutations run in one transaction, so two rows for the same
+		   address would have the second read a row the first had not committed
+		   and insert a duplicate. Deduped here instead. */
+		const normalizedEmail = email.toLowerCase();
+		if (seen.has(normalizedEmail)) {
+			invalid.push({ index, email, reason: "duplicate_in_batch" });
+			return;
+		}
+		seen.add(normalizedEmail);
+
+		const status = asString(row.status, 20).toLowerCase();
+		if (status && status !== "subscribed" && status !== "unsubscribed") {
+			invalid.push({ index, email, reason: "invalid_status" });
+			return;
+		}
+
+		subscribers.push({
+			email,
+			normalizedEmail,
+			name: asString(row.name, 120) || undefined,
+			company: asString(row.company, 200) || undefined,
+			interest: asString(row.interest, 120) || undefined,
+			status: status === "unsubscribed" ? "unsubscribed" : "subscribed",
+			subscribedAt: asTimestamp(row.subscribedAt),
+			consentSource: asString(row.consentSource, 300) || undefined,
+			/* One per row, from the platform CSPRNG, used only if a row is
+			   created. An existing subscriber keeps the token already printed in
+			   every email we have sent them. */
+			unsubscribeToken: crypto.randomUUID(),
+		});
+	});
+
+	if (subscribers.length === 0) {
+		return NextResponse.json({ error: "no_valid_rows", invalid }, { status: 400 });
+	}
+
+	try {
+		const convex = new ConvexHttpClient(convexUrl);
+		const result = await convex.mutation(api.newsletter.importSubscribers, {
+			apiKey,
+			subscribers,
+		});
+
+		/* `suppressed` is the count worth reading: addresses the file said were
+		   subscribed that we refused to re-add because they opted out here. */
+		return NextResponse.json(
+			{ counts: result.counts, results: result.results, invalid },
+			{ headers: { "Cache-Control": "no-store, private" } },
+		);
+	} catch (error) {
+		const message = error instanceof Error ? error.message : "";
+		if (message.includes("not configured")) {
+			console.error("NEWSLETTER_API_KEY is not set on the Convex deployment.");
+			return NextResponse.json({ error: "not_configured" }, { status: 503 });
+		}
+		if (message.includes("Invalid API key")) {
+			return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+		}
+		console.error("Failed to import subscribers", { error });
+		return NextResponse.json({ error: "import_failed" }, { status: 500 });
+	}
+}
