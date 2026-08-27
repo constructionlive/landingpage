@@ -285,6 +285,27 @@ export const subscribersForSending = query({
 export const importSubscribers = mutation({
   args: {
     apiKey: v.string(),
+    /* Marks this as a person opting in right now, not a file being restored.
+
+       It changes two things, and only these two. An address that unsubscribed
+       here is allowed back on the list, because an explicit tick is fresh
+       consent and refusing it means somebody who deliberately re-subscribed
+       silently never hears from us. And a welcome email goes out, because they
+       just agreed to something and should see what it was.
+
+       Never set this for a bulk restore. A file is not consent, the addresses
+       in it did not agree to anything this morning, and the two rules above
+       are exactly the ones that stop an old export re-mailing people who left. */
+    expressOptIn: v.optional(v.boolean()),
+    /* Whether the welcome email goes out. Only consulted on an express opt-in;
+       a restore never greets anybody regardless.
+
+       Defaults to true, because a fresh subscriber who hears nothing has no
+       confirmation of what they agreed to. The product sets it false: it sends
+       its own signup email, and two arriving together is noise that makes both
+       look automated. Skipping it costs nothing legally — a message we never
+       send needs no unsubscribe link, and their first issue carries one. */
+    sendWelcome: v.optional(v.boolean()),
     subscribers: v.array(
       v.object({
         email: v.string(),
@@ -312,6 +333,8 @@ export const importSubscribers = mutation({
 
     const now = Date.now();
     const results: { email: string; result: string }[] = [];
+    /* Absent means yes; only an explicit false suppresses it. */
+    const welcome = args.expressOptIn === true && args.sendWelcome !== false;
 
     for (const row of args.subscribers) {
       const existing = await ctx.db
@@ -334,12 +357,51 @@ export const importSubscribers = mutation({
           ...(row.status === "unsubscribed" && { unsubscribedAt: row.subscribedAt ?? now }),
           updatedAt: now,
         });
+        /* Only on an express opt-in, and only if the caller wants it. A
+           restored file greeting five hundred people with "welcome!" is how a
+           migration turns into a spam report. */
+        if (welcome && row.status === "subscribed") {
+          await ctx.scheduler.runAfter(0, internal.emails.sendNewsletterWelcomeEmail, {
+            email: row.email,
+            name: row.name,
+            unsubscribeToken: row.unsubscribeToken,
+          });
+        }
+
         results.push({ email: row.email, result: "created" });
         continue;
       }
 
-      /* Already opted out here. The file does not get to overrule that. */
       if (existing.status === "unsubscribed" && row.status === "subscribed") {
+        /* They left, and have now deliberately asked to come back. Honour it,
+           and send the welcome so the first thing they get carries a fresh
+           unsubscribe link. */
+        if (args.expressOptIn) {
+          await ctx.db.patch(existing._id, {
+            status: "subscribed",
+            resubscribedAt: now,
+            unsubscribedAt: undefined,
+            ...(row.name && !existing.name && { name: row.name }),
+            ...(row.company && !existing.company && { company: row.company }),
+            ...(row.consentSource && { consentSource: row.consentSource }),
+            updatedAt: now,
+          });
+
+          if (welcome) {
+            await ctx.scheduler.runAfter(0, internal.emails.sendNewsletterWelcomeEmail, {
+              email: existing.email,
+              name: row.name ?? existing.name,
+              /* Their original token: it is already printed in every email we
+                 ever sent them, and those links have to keep working. */
+              unsubscribeToken: existing.unsubscribeToken,
+            });
+          }
+
+          results.push({ email: row.email, result: "resubscribed" });
+          continue;
+        }
+
+        /* A file does not get to overrule an opt-out. */
         results.push({ email: row.email, result: "suppressed" });
         continue;
       }
