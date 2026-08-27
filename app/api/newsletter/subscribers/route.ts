@@ -146,8 +146,9 @@ export async function GET(request: Request) {
 /* ── Import ─────────────────────────────────────────────────────────────
    POST the same path to push a list collected before this register existed.
 
-   Body: { "subscribers": [ { "email", "name"?, "company"?, "interest"?,
-   "status"?, "subscribedAt"?, "consentSource"? } ] }
+   Body: { "subscribers": <one subscriber, or an array of them> }, where a
+   subscriber is { "email", "name"?, "company"?, "interest"?, "status"?,
+   "subscribedAt"?, "consentSource"? }.
 
    Set "expressOptIn": true when a person is ticking a box right now — at
    product signup, say. That mode lets a previously-unsubscribed address back on
@@ -209,8 +210,16 @@ export async function POST(request: Request) {
 		return NextResponse.json({ error: "invalid_body" }, { status: 400 });
 	}
 
-	const rows = (body as Record<string, unknown>)?.subscribers;
-	if (!Array.isArray(rows)) {
+	/* `subscribers` takes one object or an array of them.
+
+	   The array is what a migration needs; a single object is what the product
+	   sends when somebody ticks the box at signup, which is one person at a
+	   time and every time. Wrapping that lone user in an array to satisfy a
+	   shape they don't otherwise care about is a step to forget, and forgetting
+	   it fails the opt-in of a real person who asked for the newsletter. */
+	const raw = (body as Record<string, unknown>)?.subscribers;
+	const rows = Array.isArray(raw) ? raw : raw && typeof raw === "object" ? [raw] : null;
+	if (!rows) {
 		return NextResponse.json({ error: "missing_subscribers" }, { status: 400 });
 	}
 	if (rows.length === 0) {
