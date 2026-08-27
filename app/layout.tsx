@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ConvexClientProvider from "./convex-client-provider";
 import CookieConsent from "@/components/CookieConsent";
+import NewsletterPrompt from "@/components/NewsletterPrompt";
 import AttributionTracker from "@/components/AttributionTracker";
 import JsonLd from "@/components/JsonLd";
 import {
@@ -72,6 +73,10 @@ export default function RootLayout({
 				{/* Renders nothing unless the visitor is in the EEA/UK and hasn't
 				    answered yet, or reopens it from the footer. */}
 				<CookieConsent />
+				{/* Renders nothing for 90 seconds, and then only if they have
+				    scrolled, haven't subscribed, haven't dismissed it in the last
+				    month, and aren't looking at the consent banner. */}
+				<NewsletterPrompt />
 			</body>
 		</html>
 	);
