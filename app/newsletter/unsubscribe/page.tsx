@@ -23,9 +23,14 @@ import { EVENTS, track } from "@/lib/analytics";
 type Status = "idle" | "submitting" | "done" | "error";
 
 function UnsubscribeCard() {
-	const token = useSearchParams().get("token")?.trim() ?? "";
+	const searchParams = useSearchParams();
+	const token = searchParams.get("token")?.trim() ?? "";
+	/* Present on links the sending app signed, absent on the original
+	   stored-token links. Passed straight back so the route can tell which
+	   scheme it is verifying. */
+	const email = searchParams.get("email")?.trim() ?? "";
 	const [status, setStatus] = useState<Status>("idle");
-	const [email, setEmail] = useState<string | null>(null);
+	const [confirmedEmail, setConfirmedEmail] = useState<string | null>(null);
 
 	async function onConfirm() {
 		if (status === "submitting" || !token) return;
@@ -34,12 +39,12 @@ function UnsubscribeCard() {
 			const response = await fetch("/api/newsletter/unsubscribe", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ token }),
+				body: JSON.stringify({ token, email }),
 			});
 			if (!response.ok) throw new Error("unsubscribe_failed");
 
 			const result = (await response.json()) as { status?: string; email?: string };
-			setEmail(result.email ?? null);
+			setConfirmedEmail(result.email ?? email ?? null);
 			track(EVENTS.NEWSLETTER_UNSUBSCRIBED, {
 				/* An unknown token is still a completed opt-out from where the person
 				   is standing, but it is not a list change, and the two should not be
@@ -83,10 +88,10 @@ function UnsubscribeCard() {
 					You&apos;re unsubscribed.
 				</h1>
 				<p className="text-base text-do-text-secondary max-w-lg mx-auto leading-relaxed">
-					{email ? (
+					{confirmedEmail ? (
 						<>
-							<span className="text-do-text font-medium">{email}</span> won&apos;t get
-							the newsletter again.
+							<span className="text-do-text font-medium">{confirmedEmail}</span>{" "}
+							won&apos;t get the newsletter again.
 						</>
 					) : (
 						<>That address won&apos;t get the newsletter again.</>
