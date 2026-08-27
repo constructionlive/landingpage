@@ -14,7 +14,19 @@ import { SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
 
    The metadata matters more here than on most pages. This URL is meant to be
    pasted into LinkedIn messages and posts, so og:title and og:description are
-   the preview card thousands of people see before they see the page. */
+   the preview card thousands of people see before they see the page.
+
+   ?type=emailOnly renders one field and nothing else. That is the link to send
+   in a DM: someone who agreed to a newsletter mid-conversation is not going to
+   fill in their trade, and every field between the click and the subscription
+   is another reason to close the tab. Bare /newsletter keeps the fuller form
+   for people who arrived on their own and are happy to say what they build.
+
+   Reading searchParams makes this route render per request rather than being
+   prerendered at build. That is the price of deciding on the server, and it
+   buys the right thing: the correct form is in the first paint. Choosing in
+   the browser instead would show the full form and then collapse it, and the
+   flash lands exactly on the audience with the least patience. */
 
 const DESCRIPTION =
 	"One email a week on what AI actually does with construction paperwork: what we see working on real jobs, what it still gets wrong, and what changed in the tools. No drip sequence, no sales cadence.";
@@ -55,7 +67,20 @@ const WHAT_YOU_GET = [
 	},
 ];
 
-export default function NewsletterPage() {
+/* Accepted spellings of the one-field mode. Hand-typed into messages as often
+   as copied, so the separator and the casing are not worth being strict about
+   — getting it wrong should not silently serve the wrong form. */
+const EMAIL_ONLY = new Set(["emailonly", "email-only", "email_only"]);
+
+export default async function NewsletterPage({
+	searchParams,
+}: {
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+	const params = await searchParams;
+	const type = Array.isArray(params.type) ? params.type[0] : params.type;
+	const emailOnly = EMAIL_ONLY.has((type ?? "").trim().toLowerCase());
+
 	return (
 		<main className="min-h-screen bg-do-bg">
 			<JsonLd
@@ -83,7 +108,11 @@ export default function NewsletterPage() {
 						<p className="mt-5 text-base md:text-lg text-do-text-secondary leading-relaxed">
 							One email a week, written by the team building it. What we see working
 							on real jobs, what still doesn&apos;t, and what changed in the tools.
-							No pitch, and one click to leave.
+							{emailOnly ? (
+								<> Your email is all we need.</>
+							) : (
+								<> No pitch, and one click to leave.</>
+							)}
 						</p>
 					</div>
 				</section>
@@ -93,8 +122,25 @@ export default function NewsletterPage() {
 				<section id="subscribe" className="relative pb-16 scroll-mt-24">
 					<div className="relative z-10 max-w-3xl mx-auto px-6">
 						<div className="rounded-3xl border border-do-orange/20 bg-do-bg-card/80 backdrop-blur-xl p-7 md:p-10">
-							<NewsletterSignup variant="card" location="newsletter_page" />
+							{/* Separate `location` values, so the DM link's conversion rate can
+							    be read on its own rather than averaged with organic visits. */}
+							<NewsletterSignup
+								variant={emailOnly ? "minimal" : "card"}
+								location={emailOnly ? "newsletter_page_email_only" : "newsletter_page"}
+							/>
 						</div>
+
+						{/* An escape hatch, not a nudge: someone who wants to tell us what
+						    they build can, and everyone else never has to look at it. */}
+						{emailOnly && (
+							<p className="mt-5 text-center text-sm text-do-text-secondary">
+								Want the issues aimed at what you build?{" "}
+								<a href="/newsletter" className="text-do-orange hover:underline">
+									Tell us a bit more
+								</a>
+								.
+							</p>
+						)}
 					</div>
 				</section>
 			</div>
