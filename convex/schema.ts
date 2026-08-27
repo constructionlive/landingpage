@@ -108,10 +108,26 @@ export default defineSchema({
        it came back rather than when it first arrived. */
     resubscribedAt: v.optional(v.number()),
     unsubscribedAt: v.optional(v.number()),
+    /* Touched on EVERY write to this row, whatever changed.
+
+       This is what makes the register syncable: an external sender asks for
+       everything that changed since its last pull, rather than re-reading the
+       whole list and diffing it. createdAt can't do that job — an address that
+       subscribed in January and opted out today still has a January createdAt,
+       so a sender syncing on createdAt would never learn it has to stop mailing
+       them. That is the one update that must never be missed.
+
+       Required, not optional. An optional field would sort as `undefined` in
+       the index below, ahead of every real timestamp, so rows missing it would
+       fall outside every `since` range and sync as though they didn't exist. */
+    updatedAt: v.number(),
   })
     .index("by_normalizedEmail", ["normalizedEmail"])
     .index("by_unsubscribeToken", ["unsubscribeToken"])
-    .index("by_createdAt", ["createdAt"]),
+    .index("by_createdAt", ["createdAt"])
+    /* Ascending scan from a caller's watermark. Any write moves a row to the
+       end of this order, so a sync that walks it forward can't skip one. */
+    .index("by_updatedAt", ["updatedAt"]),
   quoteRequests: defineTable({
     // Step 1: who they are and what we're quoting
     role: v.string(),

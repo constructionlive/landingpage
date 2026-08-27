@@ -3,12 +3,15 @@ import { ConvexHttpClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
 import { absoluteUrl } from "@/lib/site";
 
-/* The list, for whatever is actually sending the newsletter.
+/* The register, as a feed the sending app can keep a local copy from.
 
-   This exists so an external sender can mail-merge a DIFFERENT unsubscribe link
-   into each recipient's copy. That is the part a Bcc from an inbox cannot do,
-   and it is the part that makes the send lawful: one shared link can't tell us
-   who to remove.
+   Ask with no `since` for a full sync; ask with the `nextSince` from the last
+   answer for everything that changed after it. Both subscribes AND unsubscribes
+   come back, because a sender that only hears about subscribes can add people
+   but never remove them, and keeps mailing everyone who ever opted out.
+
+   `since` accepts epoch milliseconds or any date string Date can parse, so a
+   caller can hand back the value we gave it or a plain ISO timestamp.
 
    Authenticated with a bearer secret shared with the sending app, not an admin
    session — the caller is a program, and there is no user to sign in as. The
@@ -43,11 +46,29 @@ export async function GET(request: Request) {
 	const numItemsParam = Number(searchParams.get("limit"));
 	const numItems = Number.isFinite(numItemsParam) && numItemsParam > 0 ? numItemsParam : undefined;
 
+	/* A `since` we can't read is rejected rather than quietly treated as "from
+	   the beginning". Silently widening it would answer a delta request with the
+	   entire list, which looks like it worked and is the kind of thing a caller
+	   only notices at the point it has re-sent the newsletter to everyone. */
+	const sinceParam = searchParams.get("since");
+	let since: number | undefined;
+	if (sinceParam !== null && sinceParam.trim() !== "") {
+		const raw = sinceParam.trim();
+		/* Epoch milliseconds, as handed back from a previous nextSince, or any
+		   date string Date can parse. */
+		const parsed = /^\d+$/.test(raw) ? Number(raw) : Date.parse(raw);
+		if (!Number.isFinite(parsed)) {
+			return NextResponse.json({ error: "invalid_since" }, { status: 400 });
+		}
+		since = parsed;
+	}
+
 	let result;
 	try {
 		const convex = new ConvexHttpClient(convexUrl);
 		result = await convex.query(api.newsletter.subscribersForSending, {
 			apiKey,
+			since,
 			cursor,
 			numItems,
 		});
@@ -82,8 +103,12 @@ export async function GET(request: Request) {
 			name?: string;
 			company?: string;
 			interest?: string;
+			status: string;
 			unsubscribeToken: string;
 			createdAt: number;
+			resubscribedAt?: number;
+			unsubscribedAt?: number;
+			updatedAt: number;
 		}) => {
 			const token = encodeURIComponent(subscriber.unsubscribeToken);
 			return {
@@ -91,7 +116,17 @@ export async function GET(request: Request) {
 				name: subscriber.name ?? null,
 				company: subscriber.company ?? null,
 				interest: subscriber.interest ?? null,
+				/* "subscribed" or "unsubscribed". The field the caller acts on:
+				   anything not subscribed must come out of its local list. */
+				status: subscriber.status,
 				createdAt: subscriber.createdAt,
+				resubscribedAt: subscriber.resubscribedAt ?? null,
+				unsubscribedAt: subscriber.unsubscribedAt ?? null,
+				/* When this row last changed. Ordering is ascending on this field. */
+				updatedAt: subscriber.updatedAt,
+				/* Ready-made links, for a caller that would rather not derive them.
+				   The signed scheme in lib/newsletterToken.ts produces equivalent
+				   links from the address alone — either works. */
 				unsubscribeUrl: absoluteUrl(`/newsletter/unsubscribe?token=${token}`),
 				oneClickUrl: absoluteUrl(`/api/newsletter/unsubscribe?token=${token}`),
 			};
@@ -99,7 +134,15 @@ export async function GET(request: Request) {
 	);
 
 	return NextResponse.json(
-		{ subscribers, isDone: result.isDone, cursor: result.cursor },
+		{
+			subscribers,
+			/* Follow `cursor` while isDone is false to finish this sync. Only
+			   store `nextSince` once isDone is true — storing it halfway would
+			   move the watermark past rows the remaining pages still hold. */
+			isDone: result.isDone,
+			cursor: result.cursor,
+			nextSince: result.nextSince,
+		},
 		/* Opt-out tokens must not sit in a CDN or a proxy cache. */
 		{ headers: { "Cache-Control": "no-store, private" } },
 	);

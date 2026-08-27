@@ -81,6 +81,7 @@ export const subscribe = mutation({
         status: "subscribed" as const,
         ...(returning && { resubscribedAt: now, unsubscribedAt: undefined }),
         ...(args.attribution && { attribution: args.attribution }),
+        updatedAt: now,
       });
 
       /* Welcome mail on the way back in, but not for someone who was already
@@ -107,6 +108,7 @@ export const subscribe = mutation({
       unsubscribeToken: args.unsubscribeToken,
       attribution: args.attribution,
       createdAt: now,
+      updatedAt: now,
     });
 
     /* Scheduled rather than awaited: a Resend outage should not cost us the
@@ -147,9 +149,11 @@ export const unsubscribe = mutation({
       return { status: "already" as const, email: subscriber.email };
     }
 
+    const now = Date.now();
     await ctx.db.patch(subscriber._id, {
       status: "unsubscribed",
-      unsubscribedAt: Date.now(),
+      unsubscribedAt: now,
+      updatedAt: now,
     });
 
     return { status: "unsubscribed" as const, email: subscriber.email };
@@ -185,10 +189,15 @@ function secretMatches(provided: string, expected: string) {
 export const subscribersForSending = query({
   args: {
     apiKey: v.string(),
-    /* Convex's own cursor, passed straight back from the previous page. Real
-       pagination rather than a "first 1000" cap: a silent ceiling on a mailing
-       list reads as "that's everyone" right up until it isn't, and the people
-       past it never get the issue. */
+    /* The caller's watermark: return every row changed at or after this, in the
+       order it changed. Absent means a full sync from the beginning.
+
+       Inclusive (gte), not exclusive. A row landing on the boundary is handed
+       over twice rather than risking a row that changed in the same
+       millisecond as the last sync being handed over never. The caller keys on
+       the address, so a repeat is a no-op write and a miss is a person who
+       keeps getting mail after opting out. */
+    since: v.optional(v.number()),
     cursor: v.optional(v.union(v.string(), v.null())),
     numItems: v.optional(v.number()),
   },
@@ -204,29 +213,50 @@ export const subscribersForSending = query({
     }
 
     const numItems = Math.max(1, Math.min(args.numItems ?? 200, 500));
+    const since = args.since ?? 0;
 
+    /* Ascending, so the walk goes forward through time and a cursor can be
+       resumed. Any write moves a row to the end of this order, which is what
+       makes the scan complete: a row updated mid-sync is ahead of the walk,
+       not behind it. */
     const results = await ctx.db
       .query("newsletterSubscribers")
-      .withIndex("by_createdAt")
-      .order("desc")
+      .withIndex("by_updatedAt", (q) => q.gte("updatedAt", since))
+      .order("asc")
       .paginate({ cursor: args.cursor ?? null, numItems });
 
-    /* Filtered after the page is taken, so `isDone` and the cursor still
-       describe the whole table. Pages therefore vary in size — the caller
-       follows the cursor until isDone rather than counting rows. */
+    /* Unsubscribed rows are returned too, and that is the point of the feed
+       rather than an oversight. A sender that only ever hears about
+       subscriptions can add people but never remove them, and keeps mailing
+       everyone who ever opted out. `status` is what the caller acts on. */
+    const subscribers = results.page.map((subscriber: any) => ({
+      email: subscriber.email,
+      name: subscriber.name,
+      company: subscriber.company,
+      interest: subscriber.interest,
+      status: subscriber.status,
+      unsubscribeToken: subscriber.unsubscribeToken,
+      createdAt: subscriber.createdAt,
+      resubscribedAt: subscriber.resubscribedAt,
+      unsubscribedAt: subscriber.unsubscribedAt,
+      updatedAt: subscriber.updatedAt,
+    }));
+
+    /* The next watermark is the newest row actually handed over, never the
+       server's clock. Using "now" would silently skip anything written between
+       the last page being read and the caller storing the value. An empty page
+       changes nothing, so the caller keeps the watermark it came in with. */
+    const latest = subscribers.reduce(
+      (newest: number, subscriber: { updatedAt: number }) =>
+        subscriber.updatedAt > newest ? subscriber.updatedAt : newest,
+      since,
+    );
+
     return {
-      subscribers: results.page
-        .filter((subscriber: any) => subscriber.status === "subscribed")
-        .map((subscriber: any) => ({
-          email: subscriber.email,
-          name: subscriber.name,
-          company: subscriber.company,
-          interest: subscriber.interest,
-          unsubscribeToken: subscriber.unsubscribeToken,
-          createdAt: subscriber.createdAt,
-        })),
+      subscribers,
       isDone: results.isDone,
       cursor: results.continueCursor,
+      nextSince: latest,
     };
   },
 });
@@ -273,9 +303,11 @@ export const unsubscribeByEmail = mutation({
       return { status: "already" as const, email: subscriber.email };
     }
 
+    const now = Date.now();
     await ctx.db.patch(subscriber._id, {
       status: "unsubscribed",
-      unsubscribedAt: Date.now(),
+      unsubscribedAt: now,
+      updatedAt: now,
     });
 
     return { status: "unsubscribed" as const, email: subscriber.email };
