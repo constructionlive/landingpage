@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ArrowRight, Check, ChevronDown, Cpu } from "lucide-react";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
-import { contactHref, demoHref, securityHref } from "@/components/home/nav-data";
+import { contactHref, demoHref, privateCloud, securityHref } from "@/components/home/nav-data";
 import {
 	ALSO_RUNS,
 	ASSURANCES,
@@ -53,10 +53,17 @@ export default function HardwarePage() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6 }}
 					>
-						<span className="do-section-label text-do-orange inline-flex items-center gap-2">
+						{/* Doubles as a breadcrumb: this page is the machine behind the
+						    Private Cloud section on /solutions, and anyone who arrived from
+						    there should be able to get back to the argument. */}
+						<a
+							href={privateCloud.href}
+							className="do-section-label text-do-orange inline-flex items-center gap-2 hover:text-do-orange-dark transition-colors"
+						>
 							<Cpu className="h-3.5 w-3.5" />
-							construction.live Hardware
-						</span>
+							Private Cloud
+							<span className="text-do-text-muted">/ Hardware</span>
+						</a>
 						<h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-do-text mt-5 tracking-tight leading-[1.05]">
 							Your project&apos;s AI, running on your own floor.
 						</h1>

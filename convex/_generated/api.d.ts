@@ -14,6 +14,7 @@ import type * as earlyAccess from "../earlyAccess.js";
 import type * as emails from "../emails.js";
 import type * as functions from "../functions.js";
 import type * as http from "../http.js";
+import type * as newsletter from "../newsletter.js";
 import type * as posts from "../posts.js";
 import type * as quotes from "../quotes.js";
 import type * as users from "../users.js";
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   emails: typeof emails;
   functions: typeof functions;
   http: typeof http;
+  newsletter: typeof newsletter;
   posts: typeof posts;
   quotes: typeof quotes;
   users: typeof users;

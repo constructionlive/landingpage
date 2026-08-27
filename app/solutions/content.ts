@@ -167,3 +167,33 @@ export const SOLUTION_DETAILS: Record<string, SolutionDetail> = {
 		},
 	},
 };
+
+/* ── Private Cloud ───────────────────────────────────────────────────────────
+
+   Not a fifth pillar and not a separate product: the four above, run inside
+   somebody else's perimeter. It reads last on /solutions because it only means
+   anything once you know what "everything" refers to. The machine, the tiers
+   and the spec table live on /hardware, so this section makes the argument and
+   hands off rather than repeating numbers that will drift. */
+
+export const PRIVATE_CLOUD = {
+	kicker: "Some owners cannot send a drawing set anywhere at all.",
+	body: "Public agencies, defence programs and anyone working under a data-residency clause get the same platform, running on hardware inside their own perimeter. Capture, inbound, outbound and the linked record are identical — the only thing that changes is where the model runs. Nothing goes to a model vendor, because there is no model vendor in the path.",
+	points: [
+		{
+			title: "Air-gapped for government",
+			detail:
+				"Installed inside your facility with no route to the public internet — not a restricted one, none. Updates arrive on media you inspect first, and every prompt, retrieval and generation is logged.",
+		},
+		{
+			title: "Unlimited use, flat cost",
+			detail:
+				"One machine and one purchase order instead of a per-seat meter nobody can forecast. Procurement gets a capital line it recognises, and nobody in the office rations what they ask it.",
+		},
+		{
+			title: "Delivered as one system",
+			detail:
+				"The machine, the tuned models and the construction.live harness arrive together. Power, network, pair, and your projects are indexing the same afternoon.",
+		},
+	],
+} as const;

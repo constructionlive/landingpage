@@ -11,7 +11,7 @@ import {
 	resourceLinks,
 	companyLinks,
 	pricingHref,
-	hardwareHref,
+	privateCloud,
 	contactHref,
 	demoHref,
 } from "./nav-data";
@@ -102,13 +102,6 @@ export default function SiteNav() {
 
 					<div className="hidden lg:flex items-center gap-1">
 						{trigger("solutions", "Solutions")}
-						<a
-							href={hardwareHref}
-							className="px-3.5 py-2 text-sm text-do-text-secondary hover:text-do-text transition-colors rounded-lg hover:bg-do-bg-light"
-							onMouseEnter={() => setOpenMenu(null)}
-						>
-							Hardware
-						</a>
 						<a
 							href={pricingHref}
 							className="px-3.5 py-2 text-sm text-do-text-secondary hover:text-do-text transition-colors rounded-lg hover:bg-do-bg-light"
@@ -230,6 +223,25 @@ export default function SiteNav() {
 											</div>
 										))}
 								</div>
+
+								{/* Deployment reads under the four pillars rather than beside
+								    them: it is the same product, run somewhere else. */}
+								<a
+									href={privateCloud.href}
+									className="group mt-7 pt-5 border-t border-do-border flex items-center gap-3"
+									onClick={() => setOpenMenu(null)}
+								>
+									<span className="h-8 w-8 rounded-lg bg-do-orange/[0.08] border border-do-orange/15 flex items-center justify-center shrink-0">
+										<privateCloud.icon className="h-4 w-4 text-do-orange" />
+									</span>
+									<span className="text-sm font-medium text-do-text group-hover:text-do-orange transition-colors">
+										{privateCloud.label}
+									</span>
+									<span className="text-[13px] text-do-text-secondary">
+										{privateCloud.blurb}
+									</span>
+									<ArrowRight className="h-3.5 w-3.5 text-do-orange group-hover:translate-x-0.5 transition-transform" />
+								</a>
 							</div>
 						</motion.div>
 					)}
@@ -280,16 +292,17 @@ export default function SiteNav() {
 										</div>
 									</div>
 								))}
+
+								<a
+									href={privateCloud.href}
+									className="flex items-center gap-2.5 mt-1 pt-4 border-t border-do-border text-sm text-do-text"
+									onClick={() => setMobileOpen(false)}
+								>
+									<privateCloud.icon className="h-4 w-4 text-do-orange shrink-0" />
+									<span className="font-medium">{privateCloud.label}</span>
+								</a>
 							</div>
 						</MobileSection>
-
-						<a
-							href={hardwareHref}
-							className="block py-3.5 text-lg text-do-text border-b border-do-border"
-							onClick={() => setMobileOpen(false)}
-						>
-							Hardware
-						</a>
 
 						<a
 							href={pricingHref}
