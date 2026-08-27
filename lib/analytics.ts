@@ -29,6 +29,20 @@ export const EVENTS = {
 	CONTACT_SUBMITTED: "contact_submitted",
 	CONTACT_FAILED: "contact_failed",
 
+	/* The newsletter register. Always carries a `location`, for the same reason
+	   CTA_CLICKED does: the form appears in the footer of every page and again
+	   on /newsletter, and one number covering both can't tell you whether the
+	   LinkedIn link is working.
+
+	   `already` is reported as its own event rather than as a subscribe. Someone
+	   re-submitting an address that is already on the list is not a new
+	   subscriber, and counting it as one inflates the only number here that
+	   anyone makes decisions on. */
+	NEWSLETTER_SUBSCRIBED: "newsletter_subscribed",
+	NEWSLETTER_ALREADY_SUBSCRIBED: "newsletter_already_subscribed",
+	NEWSLETTER_FAILED: "newsletter_failed",
+	NEWSLETTER_UNSUBSCRIBED: "newsletter_unsubscribed",
+
 	/* Named for what it is. The booking itself happens on Google Calendar,
 	   which never calls back, so this is the click and not the booking. Calling
 	   it `demo_booked` would put a number in a dashboard that quietly means

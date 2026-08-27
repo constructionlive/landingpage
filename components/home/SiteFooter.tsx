@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import BrandMark from "@components/BrandMark";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { OPEN_PREFERENCES_EVENT } from "@/lib/consent";
 import {
 	solutionGroups,
@@ -9,6 +10,7 @@ import {
 	companyLinks,
 	pricingHref,
 	privateCloud,
+	newsletterHref,
 	demoHref,
 } from "./nav-data";
 
@@ -93,8 +95,35 @@ export default function SiteFooter() {
 					</div>
 				</div>
 
+				{/* Subscribe strip.
+
+				    The form itself rather than a link to /newsletter: the footer is
+				    on every page, and the whole point of an address field is that it
+				    catches someone at the moment they decide, not one navigation
+				    later. /newsletter still exists for the link we send people
+				    directly, and the heading here points at it for anyone who wants
+				    to read what they're signing up for first. */}
+				<div className="mt-12 pt-8 border-t border-do-border grid lg:grid-cols-[1fr_auto] gap-6 lg:gap-12 items-center">
+					<div className="max-w-md">
+						<a
+							href={newsletterHref}
+							className="group inline-flex items-center gap-1.5 text-sm font-semibold text-do-text hover:text-do-orange transition-colors"
+						>
+							Get the newsletter
+							<ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+						</a>
+						<p className="mt-1.5 text-sm text-do-text-secondary leading-relaxed">
+							One email a month on what AI is actually doing to construction
+							paperwork. No pitch, one click to leave.
+						</p>
+					</div>
+					<div className="w-full lg:w-[26rem]">
+						<NewsletterSignup variant="inline" location="site_footer" />
+					</div>
+				</div>
+
 				{/* Resources + Company + legal */}
-				<div className="mt-12 pt-8 border-t border-do-border grid md:grid-cols-3 gap-8">
+				<div className="mt-10 pt-8 border-t border-do-border grid md:grid-cols-3 gap-8">
 					<div>
 						<p className="do-section-label text-do-text-muted mb-3">Resources</p>
 						<div className="flex flex-wrap gap-x-5 gap-y-2">

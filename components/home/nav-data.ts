@@ -185,6 +185,7 @@ export const privateCloud: NavItem & { blurb: string } = {
 
 export const resourceLinks = [
 	{ label: "Blog", href: "/blog" },
+	{ label: "Newsletter", href: "/newsletter" },
 	{ label: "FAQs", href: "/faqs" },
 ];
 
@@ -208,4 +209,11 @@ export const securityHref = "/security";
 /* A form, not a mailto: a message we can answer, file and reply to from one
    place, rather than one that dies in whichever client the browser opens. */
 export const contactHref = "/contact";
+/* The subscribe page. Listed in resourceLinks so the nav and footer pick it up;
+   this constant is for the pages and components that link to it directly.
+
+   It gets its own page rather than only a footer box because the link is meant
+   to be pasted into a LinkedIn message, where it has to stand on its own and
+   explain what someone is signing up for. */
+export const newsletterHref = "/newsletter";
 export const demoHref = "/book";

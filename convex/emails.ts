@@ -37,6 +37,12 @@ export const sendInvitationAddedEmail = action({
 
 const CALENDAR_URL = "https://calendar.app.google/Eb7GFYUJNLDof5oz6";
 
+/* Same bundle-boundary reasoning as CALENDAR_URL above: Convex functions bundle
+   separately from the Next app, so this mirrors SITE_URL in lib/site.ts rather
+   than importing it. Change one, change both. Emails carry absolute links or
+   they carry broken ones. */
+const SITE_ORIGIN = "https://www.construction.live";
+
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -439,5 +445,95 @@ export const sendContactMessageEmails = internalAction({
     }
 
     return { sent: true as const, autoReply: true as const };
+  },
+});
+
+/* ── Newsletter ─────────────────────────────────────────────────────────── */
+
+/* Two opt-out URLs for the same token, and they are not interchangeable.
+
+   The page is what a person clicks: it names the address and asks once, because
+   inbox security scanners fetch every link in a message and a GET that
+   unsubscribes on sight would opt people out who never clicked anything.
+
+   The API route is what the mail provider calls. RFC 8058 one-click POSTs the
+   header URL directly, so it has to be an endpoint rather than a page. */
+function unsubscribePageUrl(token: string) {
+  return `${SITE_ORIGIN}/newsletter/unsubscribe?token=${encodeURIComponent(token)}`;
+}
+
+function unsubscribeOneClickUrl(token: string) {
+  return `${SITE_ORIGIN}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`;
+}
+
+function newsletterWelcomeHtml(args: { firstName?: string; unsubscribeUrl: string }) {
+  const greeting = args.firstName
+    ? `You&rsquo;re on the list, ${escapeHtml(args.firstName)}.`
+    : "You&rsquo;re on the list.";
+
+  return brandedReplyHtml({
+    documentTitle: "You're subscribed to the construction.live newsletter",
+    preheader: "One email a month on what AI actually does with project paperwork. No pitch.",
+    eyebrow: "Newsletter",
+    heading: greeting,
+    paragraphs: [
+      `About <strong style="color:${INK}; font-weight:600;">once a month</strong> you&rsquo;ll get one email: what we&rsquo;re seeing on real jobs, what AI is genuinely good at in construction paperwork, and what it still gets wrong.`,
+      "No drip sequence, no sales cadence. Reply to any of them and it reaches a person.",
+    ],
+    cta: { label: "Read what we&rsquo;ve written &rarr;", href: `${SITE_ORIGIN}/blog` },
+    recapLabel: "",
+    rows: [],
+    closingNote: "Wrong address, or changed your mind? Just reply and tell us.",
+    /* The opt-out has to be in the mail itself, not only in a header. CASL
+       wants it plainly visible and working for 60 days after the send; the
+       token in the link is what makes it work without a login. */
+    footerReason: `You&rsquo;re getting this because you subscribed at construction.live. <a href="${args.unsubscribeUrl}" style="color:${MUTED}; text-decoration:underline;">Unsubscribe</a> any time.`,
+  });
+}
+
+/* Internal: only convex/newsletter.ts schedules this, so the endpoint can't be
+   used from outside to make us send mail. */
+export const sendNewsletterWelcomeEmail = internalAction({
+  args: {
+    email: v.string(),
+    name: v.optional(v.string()),
+    unsubscribeToken: v.string(),
+  },
+  handler: async (_ctx, args) => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.warn("RESEND_API_KEY is missing; skipping newsletter welcome email.");
+      return { sent: false as const, reason: "missing_api_key" as const };
+    }
+
+    const resend = new Resend(resendApiKey);
+    const NEWSLETTER_EMAIL = process.env.NEWSLETTER_EMAIL ?? "newsletter@ai.construction.live";
+    const replyTo = process.env.NEWSLETTER_REPLY_TO ?? "rahul@construction.live";
+    const optOutUrl = unsubscribePageUrl(args.unsubscribeToken);
+    const oneClickUrl = unsubscribeOneClickUrl(args.unsubscribeToken);
+    const firstName = args.name?.trim().split(/\s+/)[0] || undefined;
+    const greeting = firstName ? `Hi ${firstName},` : "Hi,";
+
+    try {
+      await resend.emails.send({
+        from: `construction.live <${NEWSLETTER_EMAIL}>`,
+        to: [args.email],
+        replyTo,
+        subject: "You're subscribed",
+        /* One-click unsubscribe. Gmail and Yahoo require this on bulk mail, and
+           without it their "unsubscribe" button reports us as spam instead. */
+        headers: {
+          "List-Unsubscribe": `<${oneClickUrl}>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
+        text: `${greeting}\n\nYou're on the list. About once a month you'll get one email: what we're seeing on real jobs, what AI is genuinely good at in construction paperwork, and what it still gets wrong.\n\nNo drip sequence, no sales cadence. Reply to any of them and it reaches a person.\n\nRead what we've written: ${SITE_ORIGIN}/blog\n\nUnsubscribe any time: ${optOutUrl}\n\nconstruction.live\n${HERO_LINE}`,
+        html: newsletterWelcomeHtml({ firstName, unsubscribeUrl: optOutUrl }),
+      });
+
+      return { sent: true as const };
+    } catch (error) {
+      console.error("Failed to send newsletter welcome email", { email: args.email, error });
+      return { sent: false as const, reason: "send_failed" as const };
+    }
   },
 });

@@ -80,6 +80,38 @@ export default defineSchema({
     normalizedEmail: v.string(),
     createdAt: v.number(),
   }).index("by_normalizedEmail", ["normalizedEmail"]),
+  /* The newsletter register. This is the list we actually mail, so it is kept
+     separate from earlyAccessEmails: that table is "wants the product", this
+     one is "agreed to hear from us", and the two are not the same consent.
+
+     A row is never deleted on unsubscribe, only flagged. Deleting it would let
+     the same address be re-added by the next form fill and silently start
+     mailing someone who already opted out — CASL calls that a fresh violation.
+     `status` is the single source of truth for who gets a send. */
+  newsletterSubscribers: defineTable({
+    email: v.string(),
+    normalizedEmail: v.string(),
+    name: v.optional(v.string()),
+    company: v.optional(v.string()),
+    /* What they said they build. Free text from a chip list, so it stays a
+       plain string rather than a union — same reasoning as `channel` above. */
+    interest: v.optional(v.string()),
+    status: v.union(v.literal("subscribed"), v.literal("unsubscribed")),
+    /* The secret in every unsubscribe link. Generated in the API route rather
+       than here, so opting out never needs a login or a lookup by email — an
+       unsubscribe endpoint that takes a raw address is an endpoint anyone can
+       use to unsubscribe anyone. */
+    unsubscribeToken: v.string(),
+    attribution: v.optional(attributionValidator),
+    createdAt: v.number(),
+    /* Set on the most recent (re)subscribe, so a returning address shows when
+       it came back rather than when it first arrived. */
+    resubscribedAt: v.optional(v.number()),
+    unsubscribedAt: v.optional(v.number()),
+  })
+    .index("by_normalizedEmail", ["normalizedEmail"])
+    .index("by_unsubscribeToken", ["unsubscribeToken"])
+    .index("by_createdAt", ["createdAt"]),
   quoteRequests: defineTable({
     // Step 1: who they are and what we're quoting
     role: v.string(),
