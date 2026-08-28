@@ -179,7 +179,7 @@ export default function Hero() {
 					{/* One capture, already filed. Small on purpose: the hero sells the
 					    idea, the platform section shows the mechanism. */}
 					<motion.div
-						className="absolute -bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[330px] rounded-2xl border border-do-border bg-do-bg-card/95 backdrop-blur-md shadow-xl px-4 py-3.5"
+						className="absolute -bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[330px] rounded-2xl border border-do-border bg-do-bg-card shadow-xl px-4 py-3.5"
 						initial={{ opacity: 0, y: 16 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 1.05, duration: 0.5 }}
@@ -192,7 +192,7 @@ export default function Hero() {
 								<p className="text-[13px] font-medium text-do-text truncate">
 									Voice note, 28 seconds
 								</p>
-								<p className="text-[11px] text-do-text-muted font-mono truncate">
+								<p className="text-[11px] text-do-text-secondary font-mono leading-snug">
 									Filed to Tower B, linked to drawing rev 6
 								</p>
 							</div>
