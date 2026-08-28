@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { trackCta } from "@/lib/analytics";
+import heroImage from "@/public/images/hero-field-engineer.jpg";
 import {
 	HardHat,
 	Mic,
@@ -75,8 +77,9 @@ export default function Hero() {
 			</div>
 
 			{/* Hero content */}
-			<div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 pb-20">
-				<div className="text-center">
+			<div className="relative z-10 w-full max-w-6xl mx-auto px-6 pt-28 pb-24 lg:pt-24">
+				<div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-12 items-center">
+				<div className="text-center lg:text-left">
 					<motion.div
 						className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-do-orange/10 border border-do-orange/20 mb-8"
 						initial={{ opacity: 0, y: 20 }}
@@ -104,7 +107,7 @@ export default function Hero() {
 					</motion.h1>
 
 					<motion.p
-						className="text-lg sm:text-xl text-do-text-secondary max-w-2xl mx-auto mb-4 text-balance leading-relaxed"
+						className="text-lg sm:text-xl text-do-text-secondary max-w-2xl mx-auto lg:mx-0 mb-4 text-balance leading-relaxed"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.55 }}
@@ -113,7 +116,7 @@ export default function Hero() {
 					</motion.p>
 
 					<motion.p
-						className="text-sm sm:text-base text-do-text-muted max-w-xl mx-auto mb-10 text-balance"
+						className="text-sm sm:text-base text-do-text-muted max-w-xl mx-auto lg:mx-0 mb-10 text-balance"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.65 }}
@@ -122,7 +125,7 @@ export default function Hero() {
 					</motion.p>
 
 					<motion.div
-						className="flex flex-col items-center justify-center gap-5"
+						className="flex flex-col items-center lg:items-start justify-center gap-5"
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.7 }}
@@ -143,6 +146,64 @@ export default function Hero() {
 					</motion.div>
 
 					{/* Removed until attributable: "Helping contractors protect $50M+ in annual billings" */}
+				</div>
+
+				{/* Field photo. The one image on the page that has to load before
+				    anything else, so it is `priority` with a blur placeholder;
+				    everything below the fold lazy-loads on its own. The crop is
+				    centred because the source is a 2.33:1 frame with the subject
+				    in the middle, so object-cover keeps her full height in every
+				    aspect ratio we ask for here. */}
+				<motion.div
+					className="relative mx-auto w-full max-w-lg lg:max-w-none"
+					initial={{ opacity: 0, scale: 0.96, y: 24 }}
+					animate={{ opacity: 1, scale: 1, y: 0 }}
+					transition={{ delay: 0.45, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+				>
+					<div className="absolute -inset-6 rounded-[2.5rem] bg-do-orange/[0.10] blur-[70px] pointer-events-none" />
+
+					<div className="relative aspect-[16/11] sm:aspect-[16/9] lg:aspect-[4/5] rounded-3xl overflow-hidden border border-do-border bg-do-bg-card shadow-2xl">
+						<Image
+							src={heroImage}
+							alt="Site engineer reviewing the day's work on a tablet inside a building under construction"
+							fill
+							priority
+							placeholder="blur"
+							sizes="(max-width: 1024px) 92vw, 46vw"
+							className="object-cover object-center"
+						/>
+						<div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+						<div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-3xl" />
+					</div>
+
+					{/* One capture, already filed. Small on purpose: the hero sells the
+					    idea, the platform section shows the mechanism. */}
+					<motion.div
+						className="absolute -bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:w-[330px] rounded-2xl border border-do-border bg-do-bg-card/95 backdrop-blur-md shadow-xl px-4 py-3.5"
+						initial={{ opacity: 0, y: 16 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 1.05, duration: 0.5 }}
+					>
+						<div className="flex items-center gap-3">
+							<div className="h-9 w-9 rounded-xl bg-do-orange/10 flex items-center justify-center shrink-0">
+								<Mic className="h-4 w-4 text-do-orange" />
+							</div>
+							<div className="min-w-0 flex-1">
+								<p className="text-[13px] font-medium text-do-text truncate">
+									Voice note, 28 seconds
+								</p>
+								<p className="text-[11px] text-do-text-muted font-mono truncate">
+									Filed to Tower B, linked to drawing rev 6
+								</p>
+							</div>
+							<motion.span
+								className="h-2 w-2 rounded-full bg-emerald-500 shrink-0"
+								animate={{ opacity: [0.35, 1, 0.35] }}
+								transition={{ duration: 2, repeat: Infinity }}
+							/>
+						</div>
+					</motion.div>
+				</motion.div>
 				</div>
 
 				{/* Unified field intelligence showcase */}

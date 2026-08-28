@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import superImage from "@/public/images/super-tablet-site.jpg";
 import { HardHat, Building2, ClipboardList, Users, CheckCircle2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -94,21 +96,48 @@ export default function Personas() {
 			<div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-do-orange/[0.03] rounded-full blur-[100px]" />
 
 			<div className="relative z-10 max-w-6xl mx-auto px-6" ref={ref}>
-				<motion.div
-					className="text-center mb-12"
-					initial={{ opacity: 0, y: 30 }}
-					animate={inView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.6 }}
-				>
-					<span className="do-section-label text-do-orange">Who is it for</span>
-					<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-do-text mt-4 mb-5 tracking-tight">
-						Commercial GCs & Subcontractors
-					</h2>
-					<p className="text-lg text-do-text-secondary max-w-2xl mx-auto text-balance">
-						construction.live provides unified field intelligence for the $2M-50M commercial GC and the electrical, mechanical, and specialty subcontractors.
-						
-					</p>
-				</motion.div>
+				<div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center mb-12">
+					<motion.div
+						className="text-center lg:text-left"
+						initial={{ opacity: 0, y: 30 }}
+						animate={inView ? { opacity: 1, y: 0 } : {}}
+						transition={{ duration: 0.6 }}
+					>
+						<span className="do-section-label text-do-orange">Who is it for</span>
+						<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-do-text mt-4 mb-5 tracking-tight">
+							Commercial GCs & Subcontractors
+						</h2>
+						<p className="text-lg text-do-text-secondary max-w-2xl mx-auto lg:mx-0 text-balance">
+							construction.live provides unified field intelligence for the $2M-50M commercial GC and the electrical, mechanical, and specialty subcontractors.
+						</p>
+					</motion.div>
+
+					{/* The people this section is about, on the job the platform runs on.
+					    Cropped off-centre because the subject sits in the right third of
+					    the source frame. */}
+					<motion.div
+						className="relative"
+						initial={{ opacity: 0, x: 30 }}
+						animate={inView ? { opacity: 1, x: 0 } : {}}
+						transition={{ duration: 0.6, delay: 0.15 }}
+					>
+						<div className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-do-border bg-do-bg shadow-xl">
+							<Image
+								src={superImage}
+								alt="Site superintendent logging the day's progress on a tablet in front of a steel frame"
+								fill
+								placeholder="blur"
+								sizes="(max-width: 1024px) 92vw, 46vw"
+								className="object-cover"
+								style={{ objectPosition: "58% center" }}
+							/>
+							<div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+							<p className="absolute bottom-4 left-5 right-5 text-[13px] font-medium text-white/95 drop-shadow">
+								No forms. Talk, photograph, carry on working.
+							</p>
+						</div>
+					</motion.div>
+				</div>
 
 				{/* Role tabs */}
 				<motion.div

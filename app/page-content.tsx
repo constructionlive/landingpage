@@ -20,6 +20,9 @@ import FAQ from "@components/home/FAQ";
 import DemoCTA from "@components/home/DemoCTA";
 import SiteFooter from "@components/home/SiteFooter";
 import BlogCarouselSection from "@components/BlogCarouselSection";
+import PhotoBand from "@components/home/PhotoBand";
+import foundationImage from "@/public/images/foundation-dawn.jpg";
+import deckImage from "@/public/images/concrete-deck.jpg";
 
 export default function HomeContent() {
 	const posts = useQuery(api.posts.listPublished) ?? [];
@@ -29,12 +32,28 @@ export default function HomeContent() {
 			<Hero />
 			{/* <TrustedTeams /> */}
 			<PlatformOverview />
+			{/* Photo breaks between sections. Two, deliberately: enough to stop the
+			    page reading as an unbroken wall of cards, few enough that neither
+			    one is scrolled past as decoration. */}
+			<PhotoBand
+				image={foundationImage}
+				alt="Rebar and formwork laid out on a building foundation at first light, with a concrete core wall behind it"
+				label="From day one"
+				headline="The record starts with the first pour, not the first dispute."
+				focus="center 55%"
+			/>
 			<Personas />
 			<FeatureGrid />
 			<TrustStrip />
 			<SuccessStories />
 			{posts.length > 0 && <BlogCarouselSection posts={posts} />}
 			<FAQ />
+			<PhotoBand
+				image={deckImage}
+				alt="A finished concrete floor plate in a high-rise under construction, columns running to the open edge"
+				label="What you are left with"
+				headline="A finished floor, and the paper trail that proves every hour of it."
+			/>
 			<DemoCTA />
 			<SiteFooter />
 		</main>
