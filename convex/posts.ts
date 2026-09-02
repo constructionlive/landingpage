@@ -328,6 +328,8 @@ export const agentCreate = mutation({
     slug: v.optional(v.string()),
     excerpt: v.optional(v.string()),
     coverImageUrl: v.optional(v.string()),
+    featured: v.optional(v.boolean()),
+    featuredOrder: v.optional(v.number()),
     metaTitle: v.optional(v.string()),
     metaDescription: v.optional(v.string()),
     metaKeywords: v.optional(v.string()),
@@ -369,6 +371,10 @@ export const agentCreate = mutation({
       authorId,
       publishedAt: args.publishedAt ?? now,
       updatedAt: now,
+      featured: args.featured ?? undefined,
+      /* An order without the flag would sort a post that isn't featured, so it
+         only sticks when the post is actually featured. */
+      featuredOrder: args.featured ? (args.featuredOrder ?? undefined) : undefined,
       metaTitle: optStr(args.metaTitle),
       metaDescription: optStr(args.metaDescription),
       metaKeywords: optStr(args.metaKeywords),
@@ -404,6 +410,10 @@ export const agentUpdate = mutation({
     content: v.optional(v.string()),
     excerpt: v.optional(v.string()),
     coverImageUrl: v.optional(v.string()),
+    featured: v.optional(v.boolean()),
+    /* null clears the order while leaving the post featured. Omitting the key
+       leaves whatever is stored, like every other field here. */
+    featuredOrder: v.optional(v.union(v.number(), v.null())),
     metaTitle: v.optional(v.string()),
     metaDescription: v.optional(v.string()),
     metaKeywords: v.optional(v.string()),
@@ -477,6 +487,16 @@ export const agentUpdate = mutation({
     if (args.noIndex !== undefined) patch.noIndex = args.noIndex;
     if (args.twitterCard !== undefined) patch.twitterCard = args.twitterCard;
     if (args.publishedAt !== undefined) patch.publishedAt = args.publishedAt;
+
+    if (args.featuredOrder !== undefined) {
+      patch.featuredOrder = args.featuredOrder ?? undefined;
+    }
+    if (args.featured !== undefined) {
+      patch.featured = args.featured || undefined;
+      /* Unfeaturing drops the order too, so re-featuring later doesn't silently
+         inherit a rank set months ago against a different set of posts. */
+      if (!args.featured) patch.featuredOrder = undefined;
+    }
     if (args.authorEmail !== undefined) {
       patch.authorId = await resolveAgentAuthor(ctx, args.authorEmail);
     }
@@ -518,6 +538,8 @@ export const agentList = query({
       title: p.title,
       excerpt: p.excerpt ?? null,
       coverImageUrl: p.coverImageUrl ?? null,
+      featured: p.featured ?? false,
+      featuredOrder: p.featuredOrder ?? null,
       publishedAt: p.publishedAt,
       updatedAt: p.updatedAt,
     }));

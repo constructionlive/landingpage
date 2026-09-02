@@ -39,9 +39,24 @@ function formatPublishDate(timestamp: number) {
   });
 }
 
+/* Featured posts sort ahead of everything else, by featuredOrder when it is set
+   (lower first) and newest-first among the rest, which is how a pinned post
+   survives a week of new publishing. Posts that aren't featured keep the
+   chronological order Convex returned. With nothing pinned this is exactly the
+   old behaviour: the newest post leads. */
+function byFeatureRank(a: { featuredOrder?: number; publishedAt: number },
+                       b: { featuredOrder?: number; publishedAt: number }) {
+  const aOrder = a.featuredOrder ?? Number.MAX_SAFE_INTEGER;
+  const bOrder = b.featuredOrder ?? Number.MAX_SAFE_INTEGER;
+  if (aOrder !== bOrder) return aOrder - bOrder;
+  return b.publishedAt - a.publishedAt;
+}
+
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
-  const [featuredPost, ...remainingPosts] = posts;
+  const pinned = posts.filter((post) => post.featured).sort(byFeatureRank);
+  const unpinned = posts.filter((post) => !post.featured);
+  const [featuredPost, ...remainingPosts] = [...pinned, ...unpinned];
 
   return (
     <main className="min-h-screen bg-do-bg">
@@ -174,8 +189,15 @@ export default async function BlogPage() {
                         </div>
                       ) : null}
                       <div className="flex flex-1 flex-col p-6">
-                        <p className="text-[10px] font-mono uppercase tracking-widest text-do-text-secondary">
-                          {formatPublishDate(post.publishedAt)} · {post.authorName}
+                        <p className="flex flex-wrap items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-do-text-secondary">
+                          {post.featured ? (
+                            <span className="rounded-full border border-do-orange/35 bg-do-orange/10 px-2 py-0.5 text-do-orange">
+                              Featured
+                            </span>
+                          ) : null}
+                          <span>
+                            {formatPublishDate(post.publishedAt)} · {post.authorName}
+                          </span>
                         </p>
                         <Link
                           className="mt-2 block text-xl font-semibold leading-tight text-do-text transition line-clamp-2 group-hover:text-do-orange"
