@@ -59,6 +59,13 @@ export default defineSchema({
     authorId: v.id("users"),
     publishedAt: v.number(),
     updatedAt: v.number(),
+    /* Pins a post to the top of /blog instead of letting recency decide. Both
+       are absent on everything written before this existed, which reads as
+       "not featured" — no backfill needed. `featuredOrder` only breaks ties
+       between featured posts (lower first); without it they fall back to
+       newest-first, so nothing has to pick a number to be featured. */
+    featured: v.optional(v.boolean()),
+    featuredOrder: v.optional(v.number()),
     metaTitle: v.optional(v.string()),
     metaDescription: v.optional(v.string()),
     metaKeywords: v.optional(v.string()),

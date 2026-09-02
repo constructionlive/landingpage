@@ -51,7 +51,7 @@ Every request needs `Authorization: Bearer <BLOG_AGENT_API_KEY>`.
 
 | Method   | Path                | Purpose                                             |
 | -------- | ------------------- | --------------------------------------------------- |
-| `GET`    | `/api/blog`         | List posts (id, slug, title, excerpt, timestamps).  |
+| `GET`    | `/api/blog`         | List posts (id, slug, title, excerpt, featured, timestamps). |
 | `POST`   | `/api/blog`         | Create a post. Body below.                          |
 | `GET`    | `/api/blog/<slug>`  | Read one post, including its full HTML `content`.    |
 | `PUT`    | `/api/blog/<slug>`  | Partial update — only the fields sent are written.   |
@@ -71,6 +71,10 @@ All fields optional except `title` and `content` on create. `content` is
   "excerpt": "A short summary for the card and meta description.",
   "coverImageUrl": "https://…",             // card + article hero
   "authorEmail": "someone@construction.live", // optional attribution override
+
+  // Pinning (see "Featuring a post")
+  "featured": true,
+  "featuredOrder": 1,                       // optional tie-break, lower goes first
 
   // SEO / social (all optional)
   "metaTitle": "…",
@@ -93,13 +97,46 @@ Update-only extras:
 - `newSlug` — rename the post (changes its URL). The slug is **not** auto-changed
   from an edited `title`; a live URL only moves when you pass `newSlug`.
 - An empty string `""` on an optional field clears it; omitting the key leaves it
-  untouched.
+  untouched. `featuredOrder` is a number, so it takes `null` to clear instead.
 
 Responses: create/update return `{ id, slug, url }`; delete returns
 `{ deleted, slug }`. Errors are JSON with a stable `error` code —
 `unauthorized` (401), `not_configured` (503, secret missing on Convex),
 `not_found` (404), `slug_conflict` (409), `invalid_request` / `missing_fields`
 (400).
+
+## Featuring a post
+
+By default `/blog` leads with the newest post, so publishing anything pushes the
+last piece down. Featuring pins a post there instead: featured posts sort ahead
+of everything else no matter what gets published after them.
+
+- `"featured": true` pins it. The top featured post takes the big hero slot at
+  the top of `/blog`; any others sort to the front of the grid with a "Featured"
+  tag.
+- `"featuredOrder": 1` decides which one is the hero when several are pinned —
+  lower wins. Leave it out and the newest featured post leads, which is usually
+  what you want.
+- `"featured": false` unpins it, and clears its order so re-pinning later doesn't
+  inherit a stale number.
+- Nothing pinned = the old behaviour, newest post in the hero.
+
+`GET /api/blog` reports `featured` and `featuredOrder` for every post, so check
+there before pinning rather than assuming what's currently on top.
+
+```bash
+# pin a post as the hero
+curl -X PUT "$BASE/api/blog/agentic-ai-project-paperwork" \
+  -H "Authorization: Bearer $BLOG_AGENT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"featured": true, "featuredOrder": 1}'
+
+# unpin it
+curl -X PUT "$BASE/api/blog/agentic-ai-project-paperwork" \
+  -H "Authorization: Bearer $BLOG_AGENT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"featured": false}'
+```
 
 ## Content (HTML) conventions
 
