@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { bearerFrom } from "@/lib/newsletterAuth";
-import { convexClient, mapConvexError } from "@/lib/agentBlog";
+import { convexClient, mapConvexError } from "@/lib/agentApi";
 
 /* Host an image for an agent-written post and hand back a public URL to embed
    in the post's cover field or inline <img>.

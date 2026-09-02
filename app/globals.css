@@ -109,64 +109,79 @@ body {
 	animation: float 6s ease-in-out infinite;
 }
 
-/* ── Blog content styles ─────────────────────────────────────────────── */
-.blog-content {
+/* ── Rich text (blog post bodies and landing page bodies) ────────────── */
+.blog-content,
+.page-content {
 	@apply text-base leading-8 text-do-text;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	white-space: pre-wrap;
 }
 
-.blog-content p {
+.blog-content p,
+.page-content p {
 	@apply mb-4;
 }
 
-.blog-content h2 {
+.blog-content h2,
+.page-content h2 {
 	@apply text-xl font-semibold mt-6 mb-3 text-do-text;
 }
 
-.blog-content h3 {
+.blog-content h3,
+.page-content h3 {
 	@apply text-lg font-medium mt-5 mb-2 text-do-text;
 }
 
 .blog-content ul,
-.blog-content ol {
+.page-content ul,
+.blog-content ol,
+.page-content ol {
 	@apply mb-4 pl-6;
 }
 
-.blog-content li {
+.blog-content li,
+.page-content li {
 	@apply mb-2;
 }
 
-.blog-content ul li {
+.blog-content ul li,
+.page-content ul li {
 	list-style-type: disc;
 }
 
-.blog-content ol li {
+.blog-content ol li,
+.page-content ol li {
 	list-style-type: decimal;
 }
 
-.blog-content blockquote {
+.blog-content blockquote,
+.page-content blockquote {
 	@apply border-l-4 border-do-orange pl-4 my-4 italic text-do-text-secondary;
 }
 
-.blog-content a {
+.blog-content a,
+.page-content a {
 	@apply text-do-orange underline hover:opacity-80;
 }
 
-.blog-content img {
+.blog-content img,
+.page-content img {
 	@apply rounded-lg max-w-full h-auto my-4;
 }
 
-.blog-content hr {
+.blog-content hr,
+.page-content hr {
 	@apply border-do-border my-6;
 }
 
-.blog-content strong {
+.blog-content strong,
+.page-content strong {
 	@apply font-semibold;
 }
 
-.blog-content em {
+.blog-content em,
+.page-content em {
 	@apply italic;
 }
 

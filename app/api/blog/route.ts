@@ -3,7 +3,8 @@ import type { FunctionArgs } from "convex/server";
 import { api } from "@/convex/_generated/api";
 import { bearerFrom } from "@/lib/newsletterAuth";
 import { absoluteUrl } from "@/lib/site";
-import { convexClient, mapConvexError, pickFields, CREATE_FIELDS } from "@/lib/agentBlog";
+import { convexClient, mapConvexError, pickFields } from "@/lib/agentApi";
+import { CREATE_FIELDS } from "@/lib/agentBlog";
 
 /* The editorial agent's blog collection endpoint.
 

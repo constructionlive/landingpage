@@ -60,6 +60,13 @@ export const EVENTS = {
 	BLOG_POST_VIEWED: "blog_post_viewed",
 	BLOG_SCROLL_DEPTH: "blog_scroll_depth",
 
+	/* Agent-authored landing pages at /for/<slug>. PostHog already captures a
+	   $pageview for these, but a pageview can't be filtered to "the persona
+	   pages" without matching on URL strings in every query. This carries the
+	   slug as a property, so one funnel covers all of them and comparing two
+	   audiences is a breakdown rather than a rewrite. */
+	LANDING_PAGE_VIEWED: "landing_page_viewed",
+
 	OUTBOUND_LINK_CLICKED: "outbound_link_clicked",
 } as const;
 
