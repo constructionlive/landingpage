@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/site";
-import { getPublishedPosts } from "@/lib/convexServer";
+import { getPublishedPosts, getLandingPages } from "@/lib/convexServer";
 
 /* Static routes. Deliberately excludes /signin, /admin, /blog/new and the post
    editors: those are internal, and robots.ts disallows them.
@@ -46,5 +46,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		console.error("sitemap: could not load blog posts", error);
 	}
 
-	return [...staticRoutes, ...postRoutes];
+	/* Agent-authored landing pages, so a page created through the API is
+	   discoverable without anyone remembering to edit this file. Same two
+	   exclusions as posts: a page that opted out of indexing, and one pointing
+	   its canonical elsewhere. */
+	let landingRoutes: MetadataRoute.Sitemap = [];
+	try {
+		const pages = await getLandingPages();
+		landingRoutes = pages
+			.filter((page) => !page.noIndex)
+			.filter((page) => !page.canonicalUrl)
+			.map((page) => ({
+				url: absoluteUrl(`/for/${page.slug}`),
+				lastModified: new Date(page.updatedAt),
+				changeFrequency: "monthly" as const,
+				priority: 0.8,
+			}));
+	} catch (error) {
+		console.error("sitemap: could not load landing pages", error);
+	}
+
+	return [...staticRoutes, ...postRoutes, ...landingRoutes];
 }

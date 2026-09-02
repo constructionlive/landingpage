@@ -1,22 +1,21 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import type { FunctionArgs } from "convex/server";
 import { api } from "@/convex/_generated/api";
 import { bearerFrom } from "@/lib/newsletterAuth";
 import { absoluteUrl } from "@/lib/site";
 import { convexClient, mapConvexError, pickFields } from "@/lib/agentApi";
-import { UPDATE_FIELDS } from "@/lib/agentBlog";
+import { PAGE_UPDATE_FIELDS } from "@/lib/agentPages";
 
-/* A single agent-managed post, addressed by its current slug.
+/* A single agent-managed landing page, addressed by its current slug.
 
-   GET    — read the full post (including content) so the agent can edit from
-            what's actually stored rather than guessing.
-   PUT    — partial update from a JSON body: only the fields present are written,
-            so fixing a typo doesn't mean resending the whole post. Pass
-            `newSlug` to rename; the URL otherwise stays put.
-   DELETE — remove the post.
+   GET    — read the page back, including its HTML `content`.
+   PUT    — partial update; only the fields present are written. Pass `newSlug`
+            to move it, which purges the old URL as well as the new one.
+   DELETE — remove it, and drop the rendered page from the cache.
 
-   Same bearer-secret auth as the collection route; the secret is re-checked
-   inside Convex. */
+   Same bearer secret as /api/blog, re-checked inside Convex. See the note in
+   ../route.ts on why every write revalidates. */
 
 export const dynamic = "force-dynamic";
 
@@ -35,12 +34,12 @@ export async function GET(request: Request, { params }: Ctx) {
 
 	const { slug } = await params;
 	try {
-		const post = await convex.query(api.posts.agentGet, { apiKey, slug });
-		if (!post) {
+		const page = await convex.query(api.landingPages.agentGet, { apiKey, slug });
+		if (!page) {
 			return NextResponse.json({ error: "not_found" }, { status: 404 });
 		}
 		return NextResponse.json(
-			{ post },
+			{ page },
 			{ headers: { "Cache-Control": "no-store, private" } },
 		);
 	} catch (error) {
@@ -71,11 +70,20 @@ export async function PUT(request: Request, { params }: Ctx) {
 		const args = {
 			apiKey,
 			slug,
-			...pickFields(body, UPDATE_FIELDS),
-		} as unknown as FunctionArgs<typeof api.posts.agentUpdate>;
-		const result = await convex.mutation(api.posts.agentUpdate, args);
+			...pickFields(body, PAGE_UPDATE_FIELDS),
+		} as unknown as FunctionArgs<typeof api.landingPages.agentUpdate>;
+		const result = await convex.mutation(api.landingPages.agentUpdate, args);
+
+		revalidatePath(`/for/${result.slug}`);
+		/* A rename leaves the old URL cached and still serving the page it no
+		   longer owns, so that one is purged too. */
+		if (result.previousSlug !== result.slug) {
+			revalidatePath(`/for/${result.previousSlug}`);
+		}
+		revalidatePath("/sitemap.xml");
+
 		return NextResponse.json(
-			{ id: result.id, slug: result.slug, url: absoluteUrl(`/blog/${result.slug}`) },
+			{ id: result.id, slug: result.slug, url: absoluteUrl(`/for/${result.slug}`) },
 			{ headers: { "Cache-Control": "no-store, private" } },
 		);
 	} catch (error) {
@@ -96,7 +104,11 @@ export async function DELETE(request: Request, { params }: Ctx) {
 
 	const { slug } = await params;
 	try {
-		const result = await convex.mutation(api.posts.agentDelete, { apiKey, slug });
+		const result = await convex.mutation(api.landingPages.agentDelete, { apiKey, slug });
+
+		revalidatePath(`/for/${result.slug}`);
+		revalidatePath("/sitemap.xml");
+
 		return NextResponse.json(
 			{ deleted: result.deleted, slug: result.slug },
 			{ headers: { "Cache-Control": "no-store, private" } },

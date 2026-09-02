@@ -1,6 +1,7 @@
 import { ConvexError, v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation, query } from "./functions";
+import { requireAgentKey } from "./agentAuth";
 
 function toSlug(title: string) {
   return title
@@ -242,31 +243,9 @@ export const update = mutation({
    bearer secret (BLOG_AGENT_API_KEY on the Convex deployment) shared with the
    caller, exactly like the newsletter sending API. The secret is verified here
    inside every function, not only at the HTTP edge, so a public Convex function
-   URL is not itself a write path. Posts land in the same `posts` table the
-   authenticated editor writes to, so they share the /blog list, URLs and SEO. */
-
-function secretMatches(provided: string, expected: string) {
-  /* Length-first, then a constant-time compare that does not short-circuit on
-     the first differing byte — the same shape as the newsletter check. */
-  if (provided.length !== expected.length) return false;
-  let diff = 0;
-  for (let i = 0; i < provided.length; i++) {
-    diff |= provided.charCodeAt(i) ^ expected.charCodeAt(i);
-  }
-  return diff === 0;
-}
-
-function requireAgentKey(apiKey: string) {
-  const expected = process.env.BLOG_AGENT_API_KEY;
-  if (!expected) {
-    /* An unset secret must refuse, never fall open — otherwise a missing env
-       var quietly turns this into an unauthenticated write endpoint. */
-    throw new ConvexError("Blog agent API is not configured.");
-  }
-  if (!secretMatches(apiKey, expected)) {
-    throw new ConvexError("Invalid API key.");
-  }
-}
+   URL is not itself a write path (see convex/agentAuth.ts). Posts land in the
+   same `posts` table the authenticated editor writes to, so they share the
+   /blog list, URLs and SEO. */
 
 /* Who an agent-written post is attributed to, since the caller is not a signed-in
    user. In order of preference: an explicit author email, then a configured

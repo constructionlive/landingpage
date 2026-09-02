@@ -19,3 +19,15 @@ export async function getPostBySlug(slug: string) {
   const client = getConvexServerClient()
   return await client.query(api.posts.getBySlug, { slug })
 }
+
+/* Landing pages. Read at build and on revalidation rather than per request —
+   see app/for/[slug]/page.tsx. */
+export async function getLandingPages() {
+  const client = getConvexServerClient()
+  return await client.query(api.landingPages.listAll, {})
+}
+
+export async function getLandingPageBySlug(slug: string) {
+  const client = getConvexServerClient()
+  return await client.query(api.landingPages.getBySlug, { slug })
+}

@@ -82,6 +82,41 @@ export default defineSchema({
     .index("by_slug", ["slug"])
     .index("by_authorId", ["authorId"])
     .index("by_publishedAt", ["publishedAt"]),
+  /* Agent-authored landing pages served at /for/<slug>. Separate from `posts`
+     because they answer a different question: a post is dated editorial that
+     belongs in a reverse-chronological list, a landing page is undated, stands
+     alone, and exists to convert one audience. Sharing a table would mean every
+     blog query filtering out pages and every page query filtering out posts.
+
+     The hero is structured rather than part of `content` so every page is
+     guaranteed the h1 and the call-to-action that decide whether it ranks and
+     whether it converts — the two things free-form HTML most often forgets. */
+  landingPages: defineTable({
+    slug: v.string(),
+    eyebrow: v.optional(v.string()),
+    headline: v.string(),
+    subheadline: v.optional(v.string()),
+    ctaLabel: v.optional(v.string()),
+    ctaHref: v.optional(v.string()),
+    secondaryCtaLabel: v.optional(v.string()),
+    secondaryCtaHref: v.optional(v.string()),
+    /* The middle of the page, as HTML, in the same dialect as post bodies. */
+    content: v.string(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+    metaTitle: v.optional(v.string()),
+    metaDescription: v.optional(v.string()),
+    metaKeywords: v.optional(v.string()),
+    canonicalUrl: v.optional(v.string()),
+    noIndex: v.optional(v.boolean()),
+    ogTitle: v.optional(v.string()),
+    ogDescription: v.optional(v.string()),
+    ogImageUrl: v.optional(v.string()),
+    twitterCard: v.optional(v.union(v.literal("summary"), v.literal("summary_large_image"))),
+    twitterTitle: v.optional(v.string()),
+    twitterDescription: v.optional(v.string()),
+    twitterImageUrl: v.optional(v.string()),
+  }).index("by_slug", ["slug"]),
   earlyAccessEmails: defineTable({
     email: v.string(),
     normalizedEmail: v.string(),
