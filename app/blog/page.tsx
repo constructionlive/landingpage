@@ -4,6 +4,8 @@ import { getPublishedPosts } from "@/lib/convexServer";
 import EditPostLink from "@components/blog/EditPostLink";
 import WritePostLink from "@components/blog/WritePostLink";
 import RemoteImage from "@/components/RemoteImage";
+import NewsletterSignup from "@/components/NewsletterSignup";
+import SiteFooter from "@/components/home/SiteFooter";
 import { SITE_URL as siteUrl } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
@@ -42,8 +44,8 @@ export default async function BlogPage() {
   const [featuredPost, ...remainingPosts] = posts;
 
   return (
-    <main className="min-h-screen px-6 py-12 md:px-8 md:py-14 bg-do-bg">
-      <section className="relative overflow-hidden rounded-3xl border border-do-border/70 bg-do-bg-card do-blueprint-grid">
+    <main className="min-h-screen bg-do-bg">
+      <section className="relative mx-6 my-12 overflow-hidden rounded-3xl border border-do-border/70 bg-do-bg-card do-blueprint-grid md:mx-8 md:my-14">
         <div className="relative mx-auto w-full max-w-7xl p-6 sm:p-8">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -71,7 +73,7 @@ export default async function BlogPage() {
               <p className="text-sm text-do-text-secondary">No posts yet.</p>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-8 sm:space-y-10">
               {featuredPost ? (
                 <article className="overflow-hidden rounded-2xl border border-do-border bg-do-bg-card/90">
                   <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
@@ -109,15 +111,16 @@ export default async function BlogPage() {
                         /* The featured cover is the LCP element on this page,
                            so it loads eagerly with a high fetch priority
                            rather than lazily like the ones below the fold. */
-                        <RemoteImage
-                          src={featuredPost.coverImageUrl}
-                          alt={featuredPost.title}
-                          width={1200}
-                          height={800}
-                          sizes="(max-width: 1024px) 100vw, 50vw"
-                          priority
-                          className="h-full min-h-64 w-full object-cover"
-                        />
+                        <div className="relative aspect-[3/2] w-full overflow-hidden bg-white lg:aspect-auto lg:h-full lg:min-h-64">
+                          <RemoteImage
+                            src={featuredPost.coverImageUrl}
+                            alt={featuredPost.title}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            priority
+                            className="object-contain"
+                          />
+                        </div>
                       ) : (
                         <div className="flex h-full min-h-64 items-center justify-center bg-do-bg-light/30 text-xs text-do-text-secondary">
                           No cover image
@@ -128,37 +131,64 @@ export default async function BlogPage() {
                 </article>
               ) : null}
 
+              <section className="rounded-2xl border border-do-orange/20 bg-do-bg-card/90 p-6 sm:p-8">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="lg:max-w-xl">
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-do-orange">
+                      Subscribe to updates
+                    </p>
+                    <h2 className="mt-2 text-2xl font-bold leading-tight text-do-text">
+                      New posts, once a week
+                    </h2>
+                    <p className="mt-2 text-sm leading-relaxed text-do-text-secondary">
+                      What AI is actually doing to construction paperwork. No pitch, and
+                      one click to leave.
+                    </p>
+                  </div>
+                  <div className="w-full lg:w-[26rem] lg:shrink-0">
+                    <NewsletterSignup variant="inline" location="blog_index" />
+                  </div>
+                </div>
+              </section>
+
               {remainingPosts.length > 0 ? (
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
                   {remainingPosts.map((post) => (
                     <article
-                      className="group overflow-hidden rounded-xl border border-do-border bg-do-bg-card/90 transition-all duration-300 hover:-translate-y-0.5 hover:border-do-orange/40"
+                      className="group flex h-full flex-col overflow-hidden rounded-xl border border-do-border bg-do-bg-card/90 transition-all duration-300 hover:-translate-y-0.5 hover:border-do-orange/40"
                       key={post._id}
                     >
                       {post.coverImageUrl ? (
-                        <RemoteImage
-                          src={post.coverImageUrl}
-                          alt={post.title}
-                          width={800}
-                          height={480}
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                          className="h-48 w-full object-cover"
-                        />
+                        /* Covers are mostly 3:2 illustrated banners with words
+                           baked into them, so they get a fixed 3:2 frame and
+                           `contain` — cropping to fill lopped the headline off
+                           the top of half of them. */
+                        <div className="relative aspect-[3/2] w-full overflow-hidden border-b border-do-border bg-white">
+                          <RemoteImage
+                            src={post.coverImageUrl}
+                            alt={post.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-contain"
+                          />
+                        </div>
                       ) : null}
-                      <div className="p-5">
+                      <div className="flex flex-1 flex-col p-6">
                         <p className="text-[10px] font-mono uppercase tracking-widest text-do-text-secondary">
                           {formatPublishDate(post.publishedAt)} · {post.authorName}
                         </p>
                         <Link
-                          className="mt-2 block text-xl font-semibold leading-tight text-do-text transition group-hover:text-do-orange"
+                          className="mt-2 block text-xl font-semibold leading-tight text-do-text transition line-clamp-2 group-hover:text-do-orange"
                           href={`/blog/${post.slug}`}
                         >
                           {post.title}
                         </Link>
                         {post.excerpt ? (
-                          <p className="mt-3 text-sm leading-relaxed text-do-text-secondary">{post.excerpt}</p>
+                          <p className="mt-3 text-sm leading-relaxed text-do-text-secondary line-clamp-3">
+                            {post.excerpt}
+                          </p>
                         ) : null}
-                        <div className="mt-4 flex items-center gap-3">
+                        <div className="mt-auto flex items-center gap-3 pt-5">
                           <Link
                             className="inline-block text-sm text-do-orange transition hover:underline"
                             href={`/blog/${post.slug}`}
@@ -180,6 +210,7 @@ export default async function BlogPage() {
           )}
         </div>
       </section>
+      <SiteFooter />
     </main>
   );
 }

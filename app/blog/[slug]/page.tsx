@@ -5,6 +5,8 @@ import { getPostBySlug } from "@/lib/convexServer";
 import EditPostLink from "@components/blog/EditPostLink";
 import JsonLd from "@/components/JsonLd";
 import RemoteImage from "@/components/RemoteImage";
+import NewsletterSignup from "@/components/NewsletterSignup";
+import SiteFooter from "@/components/home/SiteFooter";
 import { SITE_URL as siteUrl, absoluteUrl } from "@/lib/site";
 import {
   ORGANIZATION_ID,
@@ -116,8 +118,8 @@ export default async function BlogPostPage({
   ]);
 
   return (
-    <main className="min-h-screen px-6 py-12 md:px-8 md:py-14 bg-do-bg">
-      <section className="relative overflow-hidden rounded-3xl border border-do-border/70 bg-do-bg-card do-blueprint-grid">
+    <main className="min-h-screen bg-do-bg">
+      <section className="relative mx-6 my-12 overflow-hidden rounded-3xl border border-do-border/70 bg-do-bg-card do-blueprint-grid md:mx-8 md:my-14">
         <article className="relative mx-auto w-full max-w-4xl p-6 sm:p-8">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
@@ -205,6 +207,32 @@ export default async function BlogPostPage({
             </div>
           </section>
 
+          {/* Someone who reached the end of an article is the most likely
+              subscriber on the site, so this asks the full set of questions
+              rather than the footer's one-liner. autoFocus is off: the card on
+              /newsletter takes focus because that page exists to be filled in,
+              but doing that here would scroll the reader past the article they
+              just opened. */}
+          <section className="mt-10 rounded-2xl border border-do-orange/20 bg-do-bg-card/90 p-6 sm:p-8">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-do-orange">
+              Get the next one
+            </p>
+            <h2 className="mt-3 text-2xl font-bold leading-tight text-do-text sm:text-3xl">
+              One email a week on what AI is actually doing to construction paperwork
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-do-text-secondary">
+              What works on real jobs, what still doesn&apos;t, and what changed in the
+              tools. No pitch, and one click to leave.
+            </p>
+            <div className="mt-7">
+              <NewsletterSignup
+                variant="card"
+                location="blog_post_footer"
+                autoFocus={false}
+              />
+            </div>
+          </section>
+
           <div className="mt-8">
             <Link
               className="inline-flex rounded-md border border-do-orange/35 bg-do-orange/10 px-4 py-2 text-sm text-do-orange transition hover:border-do-orange/60 hover:bg-do-orange/15"
@@ -216,6 +244,7 @@ export default async function BlogPostPage({
         </article>
       </section>
       <JsonLd schema={graph(articleSchema, breadcrumbs)} />
+      <SiteFooter />
     </main>
   );
 }

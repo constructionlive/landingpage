@@ -45,11 +45,16 @@ const INPUT_CLASS =
 export default function NewsletterSignup({
 	variant = "card",
 	location,
+	/* The card on /newsletter is the reason that page exists, so it takes focus
+	   on load. The same card at the end of a blog post must not: grabbing focus
+	   would scroll a reader who just opened the article straight past it. */
+	autoFocus = variant !== "inline",
 }: {
 	variant?: "inline" | "card" | "minimal";
 	/* Which copy of the form this is, for the event. See EVENTS in
 	   lib/analytics.ts: without it, the footer and the page share one number. */
 	location: string;
+	autoFocus?: boolean;
 }) {
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
@@ -202,7 +207,7 @@ export default function NewsletterSignup({
 							required
 							/* Focused only on the page built around this field. Stealing
 							   focus from the footer would yank the page down on load. */
-							autoFocus={minimal}
+							autoFocus={autoFocus && minimal}
 							className={`${INPUT_CLASS} ${minimal ? "sm:py-4 sm:text-base" : ""}`}
 						/>
 					</label>
@@ -241,7 +246,7 @@ export default function NewsletterSignup({
 						onChange={(e) => setEmail(e.target.value)}
 						placeholder="you@company.com"
 						required
-						autoFocus
+						autoFocus={autoFocus}
 						className={INPUT_CLASS}
 					/>
 				</label>
