@@ -4,6 +4,8 @@ import { getPublishedPosts } from "@/lib/convexServer";
 import EditPostLink from "@components/blog/EditPostLink";
 import WritePostLink from "@components/blog/WritePostLink";
 import RemoteImage from "@/components/RemoteImage";
+import NewsletterSignup from "@/components/NewsletterSignup";
+import SiteFooter from "@/components/home/SiteFooter";
 import { SITE_URL as siteUrl } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
@@ -42,8 +44,8 @@ export default async function BlogPage() {
   const [featuredPost, ...remainingPosts] = posts;
 
   return (
-    <main className="min-h-screen px-6 py-12 md:px-8 md:py-14 bg-do-bg">
-      <section className="relative overflow-hidden rounded-3xl border border-do-border/70 bg-do-bg-card do-blueprint-grid">
+    <main className="min-h-screen bg-do-bg">
+      <section className="relative mx-6 my-12 overflow-hidden rounded-3xl border border-do-border/70 bg-do-bg-card do-blueprint-grid md:mx-8 md:my-14">
         <div className="relative mx-auto w-full max-w-7xl p-6 sm:p-8">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -129,6 +131,26 @@ export default async function BlogPage() {
                 </article>
               ) : null}
 
+              <section className="rounded-2xl border border-do-orange/20 bg-do-bg-card/90 p-6 sm:p-8">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="lg:max-w-xl">
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-do-orange">
+                      Subscribe to updates
+                    </p>
+                    <h2 className="mt-2 text-2xl font-bold leading-tight text-do-text">
+                      New posts, once a week
+                    </h2>
+                    <p className="mt-2 text-sm leading-relaxed text-do-text-secondary">
+                      What AI is actually doing to construction paperwork. No pitch, and
+                      one click to leave.
+                    </p>
+                  </div>
+                  <div className="w-full lg:w-[26rem] lg:shrink-0">
+                    <NewsletterSignup variant="inline" location="blog_index" />
+                  </div>
+                </div>
+              </section>
+
               {remainingPosts.length > 0 ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
                   {remainingPosts.map((post) => (
@@ -188,6 +210,7 @@ export default async function BlogPage() {
           )}
         </div>
       </section>
+      <SiteFooter />
     </main>
   );
 }
