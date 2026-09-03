@@ -20,6 +20,12 @@ const nextConfig: NextConfig = {
 			"./docs/newsletter-agent-spec.md",
 			"./docs/product-newsletter-optin.md",
 		],
+		/* Same reason: app/api/blog/spec/route.ts serves these to the authoring
+		   agent, reading them by a path built at runtime. */
+		"/api/blog/spec": [
+			"./docs/agentic-blog-authoring.md",
+			"./docs/agentic-landing-pages.md",
+		],
 	},
 	/* /solutions replaced these. A 308 keeps whatever ranking and inbound links
 	   the old URLs earned, and redirects run before filesystem routing, so
