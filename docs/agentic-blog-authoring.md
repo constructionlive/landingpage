@@ -57,6 +57,25 @@ Every request needs `Authorization: Bearer <BLOG_AGENT_API_KEY>`.
 | `PUT`    | `/api/blog/<slug>`  | Partial update — only the fields sent are written.   |
 | `DELETE` | `/api/blog/<slug>`  | Delete the post.                                    |
 | `POST`   | `/api/blog/images`  | Host an image, get back a public URL to embed.       |
+| `GET`    | `/api/blog/spec`    | What this key can do: every endpoint, as JSON.       |
+
+### Ask the API what it can do
+
+`GET /api/blog/spec` returns a JSON manifest of every endpoint this key
+unlocks — blog posts, landing pages and image hosting — with the exact field
+names each write accepts. It is generated from the same whitelists the routes
+enforce, so it cannot drift from the real contract the way a list pasted into a
+prompt does.
+
+```bash
+curl -H "Authorization: Bearer $BLOG_AGENT_API_KEY" "$BASE/api/blog/spec"
+
+# the prose guides, served by the same endpoint
+curl -H "Authorization: Bearer $BLOG_AGENT_API_KEY" "$BASE/api/blog/spec?doc=blog"
+curl -H "Authorization: Bearer $BLOG_AGENT_API_KEY" "$BASE/api/blog/spec?doc=pages"
+```
+
+Start here if you're an agent with a key and no other context.
 
 ### Create / update body
 

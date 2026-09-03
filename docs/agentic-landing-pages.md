@@ -46,6 +46,7 @@ Base: `https://www.construction.live` (or `http://localhost:3000`).
 | `GET`    | `/api/pages/<slug>` | Read one page, including its HTML `content`.     |
 | `PUT`    | `/api/pages/<slug>` | Partial update — only the fields sent are written. |
 | `DELETE` | `/api/pages/<slug>` | Delete the page.                                 |
+| `GET`    | `/api/blog/spec`    | What this key can do, as JSON. Shared with the blog. |
 
 Images: reuse `POST /api/blog/images`. It hosts bytes on the same Convex storage
 host and returns a URL usable anywhere, landing pages included.
