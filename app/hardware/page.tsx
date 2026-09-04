@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, Check, ChevronDown, Cpu } from "lucide-react";
@@ -132,6 +133,52 @@ export default function HardwarePage() {
 								</p>
 							</motion.div>
 						))}
+					</div>
+				</div>
+			</section>
+
+			{/* ── In the field ───────────────────────────────────────────────── */}
+			{/* An actual deployment, not a product render. Everything above this
+			    point on the page is a claim about a machine nobody has seen; this
+			    is the machine, on a site office floor, hard hat beside it. It is
+			    deliberately not retouched — the point is that it is unremarkable. */}
+			<section className="relative py-20 md:py-28 overflow-hidden">
+				<div className="absolute inset-0 do-blueprint-grid pointer-events-none opacity-60" />
+
+				<div className="relative z-10 max-w-6xl mx-auto px-6">
+					<div className="grid items-center gap-10 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:gap-14">
+						<motion.figure {...rise} className="m-0">
+							<Image
+								src="/images/resources/why-self-hosted-server.webp"
+								alt="A construction.live server running on the floor of a site office, network switch and UPS beside it and a hard hat on the ground"
+								width={1100}
+								height={1467}
+								sizes="(max-width: 768px) 100vw, 352px"
+								className="w-full rounded-2xl border border-do-border object-cover"
+							/>
+						</motion.figure>
+
+						<motion.div {...rise} transition={{ duration: 0.5, delay: 0.1 }}>
+							<span className="do-section-label text-do-orange">In the field</span>
+							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-do-text mt-4 tracking-tight leading-[1.1]">
+								It looks like this on the floor.
+							</h2>
+							<p className="text-lg text-do-text-secondary leading-relaxed mt-5 max-w-xl">
+								A box, a switch and a UPS, in the corner of a site office. No rack,
+								no server room, no cooling plant, no site visit from us to stand it
+								up. Every drawing, contract, daily log and voice note on that job is
+								read on that machine, and the answer comes back over the same
+								network the printer is on.
+							</p>
+							<div className="flex flex-wrap items-center gap-3 mt-8">
+								<a
+									href="#specs"
+									className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-medium text-do-text-secondary hover:text-do-text border border-do-border hover:border-do-border-accent rounded-lg transition-all"
+								>
+									What is inside it
+								</a>
+							</div>
+						</motion.div>
 					</div>
 				</div>
 			</section>

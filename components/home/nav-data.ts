@@ -183,10 +183,28 @@ export const privateCloud: NavItem & { blurb: string } = {
 	blurb: "The whole platform on hardware in your building. Air-gapped for government.",
 };
 
-export const resourceLinks = [
+/* The standing resources, as opposed to the two article hubs below. Kept as
+   its own list because /resources renders exactly these — it is the hub, so
+   listing itself and /compare inside its own "also here" strip would be two
+   links back to the page you are on. */
+export const otherResourceLinks = [
 	{ label: "Blog", href: "/blog" },
 	{ label: "Newsletter", href: "/newsletter" },
 	{ label: "FAQs", href: "/faqs" },
+];
+
+/* Long-form articles. */
+export const resourcesHref = "/resources";
+/* Head-to-head comparisons against other tools, one page per product. Its own
+   namespace rather than a section of /resources: each comparison is written to
+   answer a different "X vs" search, and the index is what should rank for the
+   category as more products are added. */
+export const compareHref = "/compare";
+
+export const resourceLinks = [
+	{ label: "Articles", href: resourcesHref },
+	{ label: "Compare Tools", href: compareHref },
+	...otherResourceLinks,
 ];
 
 export const companyLinks = [

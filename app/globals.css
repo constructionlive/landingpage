@@ -199,3 +199,529 @@ body {
 ::-webkit-scrollbar-thumb:hover {
 	background: var(--do-border-accent);
 }
+
+/* ── Long-form landing pages (/resources and /compare) ───────────────
+   The two long pages ship as HTML from a document tool, carrying its own
+   semantic class names (.section, .section-grid, .lead, .plain-point,
+   .comparison, .two-up …). Rather than rewrite that markup into components,
+   the class names are treated as the contract and restyled here.
+
+   These are laid out as landing pages, not articles. Each top-level <section>
+   is a full-bleed band that paints its own background and constrains its own
+   contents, so the page reads as a stack of blocks you can scan. The body is
+   therefore rendered outside any max-width container — see ArticleShell.
+
+   Every colour goes through var(--do-*), never a literal, because the site
+   ships a light and a dark theme and the source CSS was light-only.
+
+   Distinct from .blog-content above: that styles editor output, which is
+   paragraphs and headings. This styles a designed page with figures,
+   comparison tables and card grids. */
+.article-body {
+	--band: var(--do-bg);
+	/* What a card sitting *on* the current band should use, so cards stay
+	   legible whichever background their band painted. Every card, table and
+	   callout below reads this instead of naming a colour. */
+	--band-raised: var(--do-bg-card);
+	color: var(--do-text-secondary);
+	font-size: 1.0625rem;
+	line-height: 1.75;
+}
+
+/* ── Bands ──────────────────────────────────────────────────────────── */
+.article-body > .section,
+.article-body > .quick-nav,
+.article-body > .sources {
+	/* Centre track holds the content, the 1fr rails absorb the rest. Doing this
+	   on the band rather than with max-width + margin-inline on each child means
+	   a child that sets its own `margin: 0` or `max-width: none` — several below
+	   legitimately do — cannot fall out of alignment. */
+	display: grid;
+	grid-template-columns: 1fr min(64rem, 100%) 1fr;
+	padding: 4.5rem 1.5rem;
+	scroll-margin-top: 5rem;
+}
+.article-body > .section > *,
+.article-body > .quick-nav > *,
+.article-body > .sources > * {
+	grid-column: 2;
+}
+
+/* Alternating, so consecutive sections separate without needing a rule
+   between them. nth-of-type rather than nth-child: the quick-nav is a sibling
+   on one of the two pages and would otherwise flip the whole sequence. */
+.article-body > .section:nth-of-type(even) {
+	background: var(--do-bg-card);
+	border-block: 1px solid var(--do-border);
+	--band: var(--do-bg-card);
+	--band-raised: var(--do-bg);
+}
+
+@media (max-width: 640px) {
+	.article-body > .section,
+	.article-body > .quick-nav,
+	.article-body > .sources {
+		padding: 3rem 1.25rem;
+	}
+}
+
+/* ── Section header ─────────────────────────────────────────────────── */
+/* The number sits above the heading as a chip rather than in a left rail.
+   A 4.5rem rail beside a 64rem band left the headings floating in the middle
+   of the page with a column of dead space down the side. */
+.article-body .section-grid {
+	display: block;
+}
+
+.article-body .section-number {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.625rem;
+	margin-bottom: 1rem;
+	font-family: "JetBrains Mono", monospace;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	color: var(--do-orange, #f97316);
+}
+.article-body .section-number::after {
+	content: "";
+	width: 2.5rem;
+	height: 1px;
+	background: currentColor;
+	opacity: 0.45;
+}
+
+.article-body h2 {
+	margin: 0 0 1.25rem;
+	font-size: clamp(1.875rem, 1.35rem + 1.7vw, 2.75rem);
+	font-weight: 700;
+	line-height: 1.1;
+	letter-spacing: -0.025em;
+	color: var(--do-text);
+	max-width: 22ch;
+	text-wrap: balance;
+}
+.article-body h3 {
+	margin: 2rem 0 0.75rem;
+	font-size: 1.25rem;
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--do-text);
+}
+.article-body .card h3,
+.article-body .checklist h3 {
+	margin-top: 0;
+	font-size: 1.125rem;
+}
+
+.article-body p {
+	margin: 0 0 1.125rem;
+	max-width: 65ch;
+}
+.article-body .lead {
+	margin-bottom: 1.75rem;
+	font-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.4375rem);
+	line-height: 1.45;
+	letter-spacing: -0.01em;
+	color: var(--do-text);
+	max-width: 46ch;
+	text-wrap: balance;
+}
+/* The source wraps most leads in <b><i>, which at this size reads as shouting. */
+.article-body .lead b,
+.article-body .lead i,
+.article-body .lead em,
+.article-body .lead strong {
+	font-weight: 500;
+	font-style: normal;
+}
+
+.article-body strong,
+.article-body b {
+	font-weight: 600;
+	color: var(--do-text);
+}
+
+.article-body ul,
+.article-body ol {
+	margin: 0 0 1.25rem;
+	padding-left: 1.25rem;
+	max-width: 65ch;
+}
+.article-body li {
+	margin-bottom: 0.5rem;
+}
+.article-body ul li {
+	list-style-type: disc;
+}
+.article-body ol li {
+	list-style-type: decimal;
+}
+.article-body li::marker {
+	color: var(--do-text-muted);
+}
+
+.article-body a {
+	color: var(--do-orange, #f97316);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+	word-break: break-word;
+}
+.article-body a:hover {
+	opacity: 0.8;
+}
+
+/* ── Label-led bullets, promoted to a card grid ─────────────────────── */
+/* These lists are all "<strong>Label:</strong> one sentence", which is a
+   feature grid wearing a <ul>. As bullets they were the densest thing on the
+   page; as cards they are the most scannable. */
+.article-body .simple-points {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+	margin: 2rem 0;
+	padding: 0;
+	max-width: none;
+	list-style: none;
+}
+.article-body .simple-points li {
+	margin: 0;
+	padding: 1.25rem 1.375rem;
+	list-style: none;
+	border: 1px solid var(--do-border);
+	border-radius: 1rem;
+	background: var(--band-raised);
+	font-size: 1rem;
+	line-height: 1.6;
+}
+.article-body .simple-points li strong {
+	display: block;
+	margin-bottom: 0.375rem;
+	color: var(--do-orange, #f97316);
+	font-weight: 600;
+}
+@media (max-width: 720px) {
+	.article-body .simple-points {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+/* ── Pull quotes and standalone assertions ──────────────────────────── */
+/* The one-line arguments the page is built on. Given real weight: centred,
+   wide and large, they act as the beat between two blocks of explanation. */
+.article-body .plain-point {
+	margin: 2.5rem auto;
+	padding: 2rem 2.25rem;
+	max-width: 48rem;
+	border: 1px solid var(--do-orange, #f97316);
+	border-radius: 1.25rem;
+	background: color-mix(in srgb, var(--do-orange, #f97316) 6%, var(--band));
+	color: var(--do-text);
+	font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+	font-weight: 500;
+	line-height: 1.45;
+	text-align: center;
+	text-wrap: balance;
+}
+
+.article-body .callout {
+	margin: 2rem 0;
+	padding: 1.25rem 1.5rem;
+	max-width: 60ch;
+	border-left: 3px solid var(--do-orange, #f97316);
+	border-radius: 0 1rem 1rem 0;
+	background: var(--band-raised);
+	color: var(--do-text);
+	font-size: 1.0625rem;
+	line-height: 1.6;
+}
+
+.article-body blockquote {
+	margin: 2.5rem auto;
+	padding: 2rem 2.25rem;
+	max-width: 48rem;
+	border: 1px solid var(--do-border);
+	border-radius: 1.25rem;
+	background: var(--band-raised);
+	color: var(--do-text);
+	font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+	line-height: 1.5;
+}
+.article-body .quote-credit {
+	display: block;
+	margin-top: 1rem;
+	font-size: 0.8125rem;
+	font-style: normal;
+	color: var(--do-text-secondary);
+}
+
+.article-body .price-note {
+	font-size: 0.875rem;
+	color: var(--do-text-muted);
+}
+
+/* ── Figures ────────────────────────────────────────────────────────── */
+.article-body figure {
+	margin: 2rem 0;
+	max-width: 100%;
+}
+.article-body img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border: 1px solid var(--do-border);
+	border-radius: 1rem;
+	background: var(--band-raised);
+}
+.article-body figcaption {
+	margin-top: 0.75rem;
+	max-width: 60ch;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	color: var(--do-text-muted);
+}
+
+/* Photographs, as opposed to UI screenshots: cropped to a consistent band so a
+   run of sections doesn't lurch between aspect ratios. */
+.article-body .field-visual img,
+.article-body .training-visual img,
+.article-body .hero-image img,
+.article-body .visual img {
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+}
+
+.article-body .portrait-visual {
+	max-width: 26rem;
+}
+.article-body .portrait-visual img {
+	aspect-ratio: 3 / 4;
+	object-fit: cover;
+}
+
+.article-body .phone-visual {
+	max-width: 19rem;
+}
+.article-body .phone-visual img {
+	border-radius: 1.5rem;
+}
+
+/* Three phone screenshots side by side, one per capture type. */
+.article-body .mobile-gallery {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.25rem;
+	align-items: start;
+	max-width: 46rem;
+	padding: 1.5rem;
+	border: 1px solid var(--do-border);
+	border-radius: 1.25rem;
+	background: var(--band-raised);
+}
+.article-body .mobile-gallery img {
+	border-radius: 1rem;
+	background: var(--band);
+}
+.article-body .mobile-gallery figcaption {
+	grid-column: 1 / -1;
+	margin-top: 0;
+}
+@media (max-width: 560px) {
+	.article-body .mobile-gallery {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.25rem;
+	}
+}
+
+/* ── Comparison table ───────────────────────────────────────────────── */
+/* Four columns of prose cannot reflow on a phone, so it scrolls sideways
+   inside .table-scroll rather than shredding. */
+.article-body .table-scroll {
+	margin: 2rem 0;
+	overflow-x: auto;
+	border: 1px solid var(--do-border);
+	border-radius: 1.25rem;
+	background: var(--band-raised);
+}
+.article-body .comparison {
+	width: 100%;
+	min-width: 44rem;
+	border-collapse: collapse;
+	font-size: 0.9375rem;
+	line-height: 1.55;
+}
+.article-body .comparison th,
+.article-body .comparison td {
+	padding: 1rem 1.125rem;
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 1px solid var(--do-border);
+}
+.article-body .comparison th {
+	font-family: "JetBrains Mono", monospace;
+	font-size: 0.6875rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--do-text-secondary);
+	background: var(--band);
+	white-space: nowrap;
+}
+.article-body .comparison tbody tr:last-child td {
+	border-bottom: 0;
+}
+.article-body .comparison td:first-child {
+	font-weight: 500;
+	color: var(--do-text);
+}
+/* The "practical edge" verdict, the column a skimmer actually reads. */
+.article-body .comparison td.winner {
+	font-weight: 600;
+	color: var(--do-orange, #f97316);
+}
+
+/* ── Card grids ─────────────────────────────────────────────────────── */
+.article-body .two-up,
+.article-body .decision {
+	display: grid;
+	gap: 1.25rem;
+	margin: 2rem 0;
+}
+.article-body .two-up {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.article-body .decision {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	/* Not stretched: these three cards hold 4, 4 and 6 bullets, and equal
+	   heights left the short two with a third of a screen of empty card
+	   under the last line. */
+	align-items: start;
+}
+@media (max-width: 900px) {
+	.article-body .decision {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+@media (max-width: 720px) {
+	.article-body .two-up,
+	.article-body .decision {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+.article-body .card,
+.article-body .checklist {
+	padding: 1.75rem;
+	border: 1px solid var(--do-border);
+	border-radius: 1.25rem;
+	background: var(--band-raised);
+}
+.article-body .checklist {
+	margin: 2rem 0;
+	max-width: 36rem;
+}
+.article-body .card p:last-child,
+.article-body .card ul:last-child,
+.article-body .checklist ul:last-child {
+	margin-bottom: 0;
+}
+.article-body .card ul,
+.article-body .checklist ul,
+.article-body .card p {
+	max-width: none;
+}
+
+/* Vendor cards carry a top rule in each vendor's colour so the two positions
+   stay visually separate when a reader is scanning rather than reading. */
+.article-body .card.copilot {
+	border-top: 2px solid #2563eb;
+}
+.article-body .card.claude {
+	border-top: 2px solid #c96442;
+}
+.article-body .card .label {
+	display: block;
+	margin-bottom: 0.625rem;
+	font-family: "JetBrains Mono", monospace;
+	font-size: 0.6875rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--do-text-muted);
+}
+
+/* ── In-page contents ───────────────────────────────────────────────── */
+.article-body > .quick-nav {
+	background: var(--do-bg-card);
+	border-bottom: 1px solid var(--do-border);
+	--band: var(--do-bg-card);
+	--band-raised: var(--do-bg);
+}
+.article-body .quick-nav h2 {
+	margin-bottom: 1.25rem;
+	max-width: none;
+	font-size: 0.6875rem;
+	font-family: "JetBrains Mono", monospace;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--do-text-secondary);
+}
+.article-body .quick-nav ol {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	max-width: 64rem;
+	list-style: none;
+	counter-reset: qn;
+}
+.article-body .quick-nav li {
+	margin-bottom: 0;
+	list-style: none;
+	counter-increment: qn;
+}
+.article-body .quick-nav a {
+	display: flex;
+	align-items: baseline;
+	gap: 0.625rem;
+	padding: 0.75rem 1rem;
+	border: 1px solid var(--do-border);
+	border-radius: 0.75rem;
+	background: var(--band-raised);
+	color: var(--do-text-secondary);
+	height: 100%;
+	font-size: 0.9375rem;
+	text-decoration: none;
+	transition: border-color 0.2s, color 0.2s;
+}
+.article-body .quick-nav a::before {
+	content: counter(qn, decimal-leading-zero);
+	flex: none;
+	font-family: "JetBrains Mono", monospace;
+	font-size: 0.6875rem;
+	color: var(--do-orange, #f97316);
+}
+.article-body .quick-nav a:hover {
+	border-color: color-mix(in srgb, var(--do-orange, #f97316) 45%, transparent);
+	color: var(--do-text);
+	opacity: 1;
+}
+
+/* ── Source list ────────────────────────────────────────────────────── */
+.article-body > .sources {
+	border-top: 1px solid var(--do-border);
+	font-size: 0.875rem;
+	color: var(--do-text-muted);
+}
+.article-body .sources h2 {
+	max-width: none;
+	font-size: 1.25rem;
+	margin-bottom: 1rem;
+}
+.article-body .sources li {
+	margin-bottom: 0.5rem;
+}

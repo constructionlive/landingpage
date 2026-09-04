@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/site";
 import { getPublishedPosts, getLandingPages } from "@/lib/convexServer";
+import { ALL_ARTICLES } from "@/lib/articles";
 
 /* Static routes. Deliberately excludes /signin, /admin, /blog/new and the post
    editors: those are internal, and robots.ts disallows them.
@@ -19,10 +20,25 @@ const staticRoutes: MetadataRoute.Sitemap = [
 	{ url: absoluteUrl("/faqs"), changeFrequency: "monthly", priority: 0.8 },
 	{ url: absoluteUrl("/security"), changeFrequency: "monthly", priority: 0.7 },
 	{ url: absoluteUrl("/blog"), changeFrequency: "weekly", priority: 0.7 },
+	{ url: absoluteUrl("/resources"), changeFrequency: "monthly", priority: 0.8 },
+	/* The index a "construction AI comparison" search should land on, so it
+	   outranks the individual comparisons rather than competing with them. */
+	{ url: absoluteUrl("/compare"), changeFrequency: "monthly", priority: 0.8 },
 	{ url: absoluteUrl("/newsletter"), changeFrequency: "monthly", priority: 0.7 },
 	{ url: absoluteUrl("/contact"), changeFrequency: "monthly", priority: 0.7 },
 	{ url: absoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.4 },
 ];
+
+/* The long-form articles under /resources and /compare. Read from the same
+   list the pages render, so publishing one is a single edit rather than a file
+   here that someone remembers to update. These carry a real lastModified,
+   because unlike the static routes above there is a date that means something. */
+const articleRoutes: MetadataRoute.Sitemap = ALL_ARTICLES.map((article) => ({
+	url: absoluteUrl(article.href),
+	lastModified: new Date(article.updated),
+	changeFrequency: "monthly" as const,
+	priority: 0.8,
+}));
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	let postRoutes: MetadataRoute.Sitemap = [];
@@ -66,5 +82,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		console.error("sitemap: could not load landing pages", error);
 	}
 
-	return [...staticRoutes, ...postRoutes, ...landingRoutes];
+	return [...staticRoutes, ...articleRoutes, ...postRoutes, ...landingRoutes];
 }

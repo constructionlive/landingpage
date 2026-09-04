@@ -5,8 +5,11 @@ import { api } from "../convex/_generated/api";
 
 /* Homepage, section order follows the homepage wireframe:
    nav, hero, logo strip, meet the platform, personas, features, hardware, trust,
-   success stories, blog teaser, FAQs, book a demo, footer.
-   The previous homepage is preserved at /home. */
+   success stories, blog teaser, FAQs, tool comparisons, book a demo, footer.
+
+   Comparisons sit between the FAQs and the demo CTA: by that point the visitor
+   has stopped asking what this is and started asking what else they could buy
+   instead, which is exactly the question that section answers. */
 
 import SiteNav from "@components/home/SiteNav";
 import Hero from "@components/Hero";
@@ -20,6 +23,7 @@ import FAQ from "@components/home/FAQ";
 import DemoCTA from "@components/home/DemoCTA";
 import SiteFooter from "@components/home/SiteFooter";
 import BlogCarouselSection from "@components/BlogCarouselSection";
+import CompareTools from "@components/home/CompareTools";
 import PhotoBand from "@components/home/PhotoBand";
 import foundationImage from "@/public/images/foundation-dawn.jpg";
 import deckImage from "@/public/images/concrete-deck.jpg";
@@ -48,6 +52,7 @@ export default function HomeContent() {
 			<SuccessStories />
 			{posts.length > 0 && <BlogCarouselSection posts={posts} />}
 			<FAQ />
+			<CompareTools />
 			<PhotoBand
 				image={deckImage}
 				alt="A finished concrete floor plate in a high-rise under construction, columns running to the open edge"

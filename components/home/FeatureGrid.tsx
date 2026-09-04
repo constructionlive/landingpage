@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 import {
 	Layers,
 	GitBranch,
@@ -12,6 +13,7 @@ import {
 	Mail,
 	BarChart3,
 	Search,
+	ArrowRight,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -75,6 +77,25 @@ const features: FeatureCard[] = [
 	},
 ];
 
+/* The eight tests from /resources/8-things-construction-ai-must-do, in the
+   article's order, each linking to its own section.
+
+   The grid above says what we built. This says why it had to be built that way
+   — which is the question a buyer comparing us to a chat subscription is
+   actually asking, and the one the homepage otherwise never answered. */
+const MUST_DO = [
+	{ label: "Understand the drawings", hash: "drawings" },
+	{ label: "Work where the work is", hash: "field" },
+	{ label: "Carry the authorization", hash: "authorization" },
+	{ label: "Come with real support", hash: "support" },
+	{ label: "Bend to your company", hash: "extensibility" },
+	{ label: "Stay model-independent", hash: "models" },
+	{ label: "Keep your knowledge yours", hash: "knowledge" },
+	{ label: "Get itself adopted", hash: "adoption" },
+];
+
+const MUST_DO_HREF = "/resources/8-things-construction-ai-must-do";
+
 export default function FeatureGrid() {
 	const ref = useRef(null);
 	const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -120,6 +141,55 @@ export default function FeatureGrid() {
 						</motion.div>
 					))}
 				</div>
+
+				{/* Why it is one system, rather than another nine features. */}
+				<motion.div
+					className="mt-6 rounded-2xl border border-do-border bg-do-bg-card/60 p-6 backdrop-blur-sm sm:p-8"
+					initial={{ opacity: 0, y: 25 }}
+					animate={inView ? { opacity: 1, y: 0 } : {}}
+					transition={{ delay: 0.35, duration: 0.5 }}
+				>
+					<div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-12">
+						<div>
+							<span className="do-section-label text-do-orange">Why it is built this way</span>
+							<h3 className="mt-3 text-2xl font-bold tracking-tight text-do-text sm:text-[1.75rem] sm:leading-tight">
+								8 things construction AI must do
+							</h3>
+							<p className="mt-3 text-[15px] leading-relaxed text-do-text-secondary">
+								A chat subscription can draft an email about your project. It cannot
+								measure a plan set, collect the daily record on site, route a
+								submittal through the people who have to sign it, or remember what
+								your company learned last job. Those are the eight tests we built
+								against.
+							</p>
+							<Link
+								href={MUST_DO_HREF}
+								className="group mt-5 inline-flex items-center gap-2 text-sm font-medium text-do-orange hover:opacity-80"
+							>
+								Read the full argument
+								<ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+							</Link>
+						</div>
+
+						<ol className="grid gap-x-6 gap-y-px self-start overflow-hidden rounded-xl border border-do-border bg-do-border sm:grid-cols-2 sm:gap-x-px">
+							{MUST_DO.map((item, i) => (
+								<li key={item.hash}>
+									<Link
+										href={`${MUST_DO_HREF}#${item.hash}`}
+										className="group flex h-full items-center gap-3 bg-do-bg px-4 py-3 transition-colors hover:bg-do-orange/[0.05]"
+									>
+										<span className="font-mono text-[11px] text-do-orange">
+											{String(i + 1).padStart(2, "0")}
+										</span>
+										<span className="text-[13px] leading-snug text-do-text-secondary transition-colors group-hover:text-do-text">
+											{item.label}
+										</span>
+									</Link>
+								</li>
+							))}
+						</ol>
+					</div>
+				</motion.div>
 			</div>
 		</section>
 	);
