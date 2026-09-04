@@ -195,6 +195,11 @@ export const otherResourceLinks = [
 
 /* Long-form articles. */
 export const resourcesHref = "/resources";
+/* Training and implementation. Listed in the Resources menu as well as being
+   an article on /resources, because it answers a pre-sales question — "who
+   trains my crew" — that someone asks before they would think to browse a
+   reading list. */
+export const trainingHref = "/resources/training";
 /* Head-to-head comparisons against other tools, one page per product. Its own
    namespace rather than a section of /resources: each comparison is written to
    answer a different "X vs" search, and the index is what should rank for the
@@ -203,6 +208,7 @@ export const compareHref = "/compare";
 
 export const resourceLinks = [
 	{ label: "Articles", href: resourcesHref },
+	{ label: "Training", href: trainingHref },
 	{ label: "Compare Tools", href: compareHref },
 	...otherResourceLinks,
 ];

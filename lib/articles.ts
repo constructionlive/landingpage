@@ -35,6 +35,18 @@ export const RESOURCE_ARTICLES: ArticleCard[] = [
 		readingTime: "8 min read",
 		updated: "2026-09-04",
 	},
+	{
+		href: "/resources/training",
+		eyebrow: "Training & implementation",
+		title: "We train your team on your job, not on a demo account",
+		blurb:
+			"How the rollout actually runs: on site or online, on your drawings and your RFIs, starting with the people who create the record — and forward-deployed engineers who stay past week three.",
+		image: "/images/resources/why-ai-training-jobsite.webp",
+		imageAlt:
+			"A crew in hard hats gathered around a laptop on a cart, being shown the app on an active jobsite",
+		readingTime: "5 min read",
+		updated: "2026-09-04",
+	},
 ];
 
 /* Comparisons get their own namespace rather than sitting in with the

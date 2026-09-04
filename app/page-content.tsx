@@ -5,11 +5,16 @@ import { api } from "../convex/_generated/api";
 
 /* Homepage, section order follows the homepage wireframe:
    nav, hero, logo strip, meet the platform, personas, features, hardware, trust,
-   success stories, blog teaser, FAQs, tool comparisons, book a demo, footer.
+   success stories, blog teaser, FAQs, tool comparisons, book a demo, training,
+   footer.
 
    Comparisons sit between the FAQs and the demo CTA: by that point the visitor
    has stopped asking what this is and started asking what else they could buy
-   instead, which is exactly the question that section answers. */
+   instead, which is exactly the question that section answers.
+
+   Training sits after the demo CTA rather than before it, because it answers
+   the question booking a demo raises — whether the crew will actually use this
+   — and putting that answer ahead of the ask would invite the doubt early. */
 
 import SiteNav from "@components/home/SiteNav";
 import Hero from "@components/Hero";
@@ -24,6 +29,7 @@ import DemoCTA from "@components/home/DemoCTA";
 import SiteFooter from "@components/home/SiteFooter";
 import BlogCarouselSection from "@components/BlogCarouselSection";
 import CompareTools from "@components/home/CompareTools";
+import TrainingBand from "@components/home/TrainingBand";
 import PhotoBand from "@components/home/PhotoBand";
 import foundationImage from "@/public/images/foundation-dawn.jpg";
 import deckImage from "@/public/images/concrete-deck.jpg";
@@ -60,6 +66,7 @@ export default function HomeContent() {
 				headline="A finished floor, and the paper trail that proves every hour of it."
 			/>
 			<DemoCTA />
+			<TrainingBand />
 			<SiteFooter />
 		</main>
 	);
