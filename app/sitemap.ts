@@ -14,6 +14,9 @@ const staticRoutes: MetadataRoute.Sitemap = [
 	{ url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
 	{ url: absoluteUrl("/solutions"), changeFrequency: "weekly", priority: 0.9 },
 	{ url: absoluteUrl("/hardware"), changeFrequency: "monthly", priority: 0.9 },
+	/* The free desktop app. High priority because it is the lowest-friction way
+	   into the product and the only page with a download on it. */
+	{ url: absoluteUrl("/local"), changeFrequency: "weekly", priority: 0.9 },
 	{ url: absoluteUrl("/pricing"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/book"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.8 },

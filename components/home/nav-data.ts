@@ -193,6 +193,11 @@ export const otherResourceLinks = [
 	{ label: "FAQs", href: "/faqs" },
 ];
 
+/* The free desktop app: the platform running against a model on your own
+   machine. A product surface rather than a resource, so it gets its own
+   constant beside /hardware rather than living in the reading list. */
+export const localHref = "/local";
+
 /* Long-form articles. */
 export const resourcesHref = "/resources";
 /* Training and implementation. Listed in the Resources menu as well as being
