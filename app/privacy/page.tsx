@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { ShieldCheck, Lock, Ban, KeyRound } from "lucide-react";
 import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
@@ -7,140 +8,303 @@ import { absoluteUrl } from "@/lib/site";
 export const metadata: Metadata = {
 	title: "Privacy Policy | construction.live",
 	description:
-		"How construction.live (operated by Neuratwin Inc., Toronto, Canada) collects, uses, and protects your data. We do not use your data for AI training without your explicit consent, and every AI model we use runs under a zero-retention policy.",
+		"How construction.live (operated by Neuratwin Inc., Toronto, Canada) collects, uses, shares, and protects personal information across our website, web app, and iOS and Android apps. We do not train AI models on your data, and we do not sell it.",
 	alternates: {
 		canonical: absoluteUrl("/privacy"),
 	},
 };
 
-const LAST_UPDATED = "August 15, 2026";
+const EFFECTIVE_DATE = "September 14, 2026";
+const PRIVACY_EMAIL = "rahul@construction.live";
 
-/* ── Headline commitments ─────────────────────────────────────────────── */
+/* ── Headline commitments (Section 1) ─────────────────────────────────── */
 
 const commitments = [
 	{
 		icon: Ban,
-		title: "No training on your data without consent",
-		body: "We do not store or use your data to train AI models unless you give us specific, explicit consent. Your jobsite records, voice notes, and photos are yours.",
+		title: "No training on your data",
+		body: "We do not use your project content to train AI models, and we do not allow our AI providers to do so.",
 	},
 	{
 		icon: ShieldCheck,
-		title: "Zero data retention on every AI model",
-		body: "Every large language model and AI provider we use operates under a zero-retention agreement. They do not store, log, or train on the content we send for processing.",
+		title: "No selling or advertising",
+		body: "We do not sell personal information, share it for cross-context behavioral advertising, or track you across other companies' apps and websites.",
 	},
 	{
 		icon: Lock,
 		title: "Encrypted in transit and at rest",
-		body: "Project documentation is commercially sensitive. We protect it with enterprise-grade encryption, role-based access, and audit logging.",
+		body: "Your information is encrypted while it travels and while it is stored.",
 	},
 	{
 		icon: KeyRound,
 		title: "You control your data",
-		body: "Access, export, or delete your data at any time. When you close your account, we delete your project data on request.",
+		body: "You can access, export, or delete it. See “Your rights and choices” below.",
 	},
 ];
 
 /* ── Policy sections ──────────────────────────────────────────────────── */
 
-const sections = [
+/* Body copy is plain strings with two inline marks, **bold** and
+   [label](href), so the policy text stays readable in this file. */
+type Block =
+	| { p: string }
+	| { ul: string[] }
+	| { h3: string }
+	| { table: { head: [string, string]; rows: [string, string][] } };
+
+type Section = { heading: string; blocks: Block[] };
+
+const sections: Section[] = [
 	{
-		heading: "Who we are",
-		paragraphs: [
-			"construction.live is operated by Neuratwin Inc., a company headquartered in Toronto, Canada. In this policy, “construction.live,” “we,” “us,” and “our” refer to Neuratwin Inc.",
-			"This policy explains what information we collect, how we use it, and the choices you have. It applies to our website, mobile apps, and services.",
+		heading: "Our commitments",
+		blocks: [
+			{
+				ul: [
+					"**No training on your data.** We do not use your project content to train AI models, and we do not allow our AI providers to do so.",
+					"**No selling or advertising.** We do not sell personal information, share it for cross-context behavioral advertising, or track you across other companies' apps and websites.",
+					"**Encrypted in transit and at rest.**",
+					"**You control your data.** You can access, export, or delete it (see Section 9).",
+				],
+			},
+		],
+	},
+	{
+		heading: "Who this policy applies to",
+		blocks: [
+			{
+				p: "Most people use construction.live because their employer or a project team invited them. In that case your organization is usually the **controller** of project content (drawings, reports, recordings, messages), and we process it on the organization's behalf under our agreement with them. We act as the controller for account, device, and usage information we need to run the Service. If you have a question about project content, you can contact your organization or us.",
+			},
 		],
 	},
 	{
 		heading: "Information we collect",
-		paragraphs: [
-			"Account information you provide, such as your name, email address, phone number, and company details.",
-			"Project content you create or upload, including voice notes, photos, daily logs, and call recordings and transcripts.",
-			"Usage and device information, such as log data, app version, and general location where required for timestamping and geotagging field records.",
-			"Website analytics information collected when you browse construction.live, described in “Analytics on our website” below.",
-			"Newsletter subscription details, if you choose to subscribe: your email address, and the name, company and type of work you optionally tell us. We also record which link or campaign brought you to the subscription form.",
+		blocks: [
+			{ h3: "3.1 Information you provide" },
+			{
+				ul: [
+					"**Account information:** name, email address, password (stored only as a salted hash), phone number (if you enable SMS features or phone verification), company, role, and profile photo.",
+					"**Project content:** daily logs, reports, time-and-material sheets, schedules, inspections and markups, drawings, documents and files you upload, messages and chats with the AI assistant, meeting recordings, transcripts, and minutes.",
+					"**Communications:** support requests, feedback, and emails you send to or through the Service.",
+					"**Billing information:** if you purchase a subscription, payment is processed by Stripe; we receive the billing name, email, and limited card details (such as brand and last four digits), never the full card number.",
+				],
+			},
+			{ h3: "3.2 Information from the mobile app's device features" },
+			{
+				p: "The app only uses these features when you choose to, and asks for iOS/Android permission first. You can turn permissions off at any time in your phone's settings.",
+			},
+			{
+				table: {
+					head: ["Permission", "What we use it for"],
+					rows: [
+						[
+							"**Microphone**",
+							"Recording site meetings and voice notes that you start. Recording can continue while the screen is locked or the app is in the background until you stop it; iOS shows a recording indicator the whole time.",
+						],
+						[
+							"**Camera**",
+							"Taking photos of site conditions for daily logs, inspections, and messages to the AI assistant.",
+						],
+						["**Photo library**", "Attaching photos you pick. We only receive the photos you select."],
+						["**Files**", "Attaching documents you pick from the Files app or cloud drives."],
+					],
+				},
+			},
+			{
+				ul: [
+					"**Photo metadata:** photos can contain embedded metadata (EXIF), such as the time taken and, if location tagging is on for your camera, GPS coordinates. We use the capture time to put photos in the right place in a report. The original file, including its metadata, is stored with your project. The app does **not** request access to your device's location.",
+					"**On-device storage:** the app keeps your sign-in token in the device's secure keychain, and caches project data, pending recordings, and photos locally so field capture works offline. This data is removed when you delete the app.",
+					"**Home-screen widget:** the recording widget stores only the name of the last project you recorded to.",
+				],
+			},
+			{ h3: "3.3 Information collected automatically" },
+			{
+				ul: [
+					"**Usage and device data:** IP address, device model, operating system and app version, crash and error diagnostics, and log data such as feature usage and timestamps. We use this to keep the Service secure and reliable.",
+					"**App updates:** the mobile app checks for updates through Expo's update service, which receives your IP address, platform, and app version to deliver the correct update.",
+					"**Website analytics:** on our website we use PostHog to understand how visitors use the site (see Section 8). The mobile app does not include advertising or third-party analytics SDKs.",
+				],
+			},
+			{ h3: "3.4 Information from connected services" },
+			{
+				p: "If you or your organization connect a third-party account, we access it only to provide the features you turn on:",
+			},
+			{
+				ul: [
+					"**Microsoft 365 / Outlook / OneDrive / Teams** and **Google Workspace / Gmail / Google Drive / Google Calendar:** email, calendar events, contacts, and files you authorize, used for features like email drafting and filing, meeting scheduling and notetaking, and document search.",
+					"**Procore:** project, document, and record data from the Procore projects you connect.",
+					"**Video meeting platforms (such as Microsoft Teams and Google Meet):** when you invite or schedule the construction.live notetaker, it joins the meeting and records audio, video, participant names, and the transcript.",
+					"**API connections you add:** credentials you provide are encrypted and used only to make requests you or your AI assistant initiate.",
+				],
+			},
+			{ p: "You can disconnect any integration at any time, which stops further access." },
 		],
 	},
 	{
-		heading: "How we use your information",
-		paragraphs: [
-			"To provide the service: capturing, transcribing, organizing, and unifying your field records into documentation you can use to protect payment.",
-			"To operate and improve the reliability, security, and performance of our apps.",
-			"To communicate with you about your account, support requests, and service updates.",
-			"To send you our newsletter, if you asked for it. This is described in “Newsletter and marketing emails” below, and you can stop it at any time.",
-			"We do not sell your personal information, and we do not share it with third parties for their own marketing.",
+		heading: "How we use information",
+		blocks: [
+			{
+				ul: [
+					"Provide, operate, and maintain the Service, including syncing your work across web and mobile.",
+					"Transcribe recordings, generate meeting minutes, daily reports, and summaries, and answer your requests through AI features.",
+					"Send the emails, text messages, and notifications you or your team request, and service messages (such as sign-in codes, invitations, and security alerts).",
+					"Secure the Service: authentication, two-factor verification, fraud and abuse prevention, and audit logging.",
+					"Troubleshoot, measure performance, and improve reliability.",
+					"Process payments and manage subscriptions.",
+					"Send product news and newsletters **only with your consent**; you can unsubscribe at any time.",
+					"Comply with legal obligations and enforce our terms.",
+				],
+			},
+			{
+				p: "We do **not** use your project content for advertising, and we do not make decisions with legal or similarly significant effects about you based solely on automated processing.",
+			},
 		],
 	},
 	{
-		heading: "Newsletter and marketing emails",
-		paragraphs: [
-			"If you subscribe to our newsletter, we use your email address to send you roughly one email a week about our product and about AI in construction documentation. We send it only to people who asked for it, whether that was through the form on our website or a link we sent you directly.",
-			"Every issue carries an unsubscribe link that works without a password or an account, and your mail app's own unsubscribe button works too. Unsubscribing takes effect immediately and we do not need a reason.",
-			"When you unsubscribe, we keep a record that your address opted out. We keep it precisely so that we do not mail you again if the same address is later added by another form; it is not used for any other purpose.",
-			"Your subscription is separate from your account. Unsubscribing from the newsletter does not affect emails about your account, your support requests, or a quote or message you sent us, and it does not close your account.",
-			"We use Resend to deliver these emails. They process your address on our instructions in order to send the message, and they do not use it for anything else. We do not sell, rent or share our subscriber list.",
+		heading: "AI features",
+		blocks: [
+			{
+				p: "AI features send the relevant part of your content (for example, a voice note, photo, document excerpt, or chat message) to AI model providers through our model gateway to produce a result. We use providers and settings that do **not** retain your content after the request is processed and do **not** use it to train models. AI output can be inaccurate. Review generated reports, minutes, and emails before relying on them.",
+			},
 		],
 	},
 	{
-		heading: "Analytics on our website",
-		paragraphs: [
-			"We use PostHog, a product analytics service, to understand how visitors use the construction.live website. This applies to our public website only. It is separate from the project content you create in our apps, which is never sent to our analytics provider.",
-			"PostHog automatically records events such as the pages you view, the links and buttons you click, and how long you stay on a page. Along with each event it records technical information sent by your browser: your browser and operating system, device type and screen size, referring website, and the page address. It also derives an approximate location (typically city or region level) from your IP address.",
-			"To recognize a returning browser across visits, PostHog stores a randomly generated identifier in a cookie and in your browser's local storage. This identifier is not linked to your name or email unless you choose to identify yourself to us, for example by submitting a form or signing in.",
-			"We use this information only to measure traffic, understand which pages and features are useful, diagnose problems, and improve the site. We do not use it for advertising, we do not sell it, and we do not combine it with data brokers or third-party ad networks.",
-			"Where the GDPR or UK GDPR applies to you, our legal basis for analytics is your consent, which we request through the cookie banner described below and which you may withdraw at any time. Elsewhere, we rely on our legitimate interest in understanding and improving our own website, subject to the opt-out described below.",
-			"PostHog acts as our data processor and handles this information on our instructions. Analytics data is processed and stored on PostHog's United States cloud infrastructure, which means it may be transferred outside Canada and the European Economic Area. Where required, we rely on appropriate safeguards such as standard contractual clauses for these transfers.",
-			"We retain website analytics data for up to 12 months, after which it is deleted or aggregated so that it can no longer be tied to an individual browser.",
+		heading: "How we share information",
+		blocks: [
+			{ p: "We share personal information only as described here:" },
+			{
+				ul: [
+					"**Your organization and project team:** content you add to a shared project is visible to the members of that project, according to the permissions your organization sets.",
+					"**People you choose to contact:** for example, when you send an email, share a report, or share a link.",
+					"**Service providers (sub-processors)** who process data on our behalf under contracts that require confidentiality and security:",
+				],
+			},
+			{
+				table: {
+					head: ["Provider", "Purpose"],
+					rows: [
+						["Convex", "Application database, file storage, and backend hosting"],
+						["Vercel", "Web application hosting"],
+						[
+							"OpenRouter and the AI model providers it routes to (such as Google, OpenAI, and xAI)",
+							"AI processing, transcription, and generation, with zero data retention",
+						],
+						["E2B", "Secure, isolated sandboxes for AI file and code tasks"],
+						["Browser Use", "Browser automation performed at your request"],
+						["Recall.ai", "Meeting notetaker bots, recordings, and transcripts"],
+						["Resend", "Transactional email delivery"],
+						["Twilio", "SMS messages and phone verification"],
+						["Vapi", "AI voice calls, if you use them"],
+						["Stripe", "Payment processing"],
+						["PostHog", "Website analytics"],
+						["Expo (650 Industries)", "Mobile app builds and over-the-air updates"],
+						["Apple and Google", "App distribution and, where enabled, push notifications"],
+					],
+				},
+			},
+			{
+				ul: [
+					"**Legal and safety:** when required by law, subpoena, or court order, or to protect the rights, property, or safety of our users, the public, or us.",
+					"**Business transfers:** in connection with a merger, acquisition, or sale of assets, subject to this policy.",
+				],
+			},
+			{ p: "We do not sell personal information or share it for cross-context behavioral advertising." },
 		],
 	},
 	{
-		heading: "Cookies and similar technologies",
-		paragraphs: [
-			"We use a small number of cookies and equivalent browser storage. Strictly necessary cookies keep the site working, for example by maintaining your session and remembering your cookie choice. Analytics cookies, described above, are set by PostHog to distinguish one browser from another and measure usage.",
-			"If you visit from the European Economic Area or the United Kingdom, we ask for your consent before any analytics cookie is set. Until you accept, our analytics provider captures no events and writes no identifier to your browser. If you decline, none are ever set, and the website works exactly as it would otherwise.",
-			"You can change your mind at any time using the “Cookie preferences” link in the footer of every page, which reopens the consent banner and lets you withdraw consent as easily as you gave it.",
-			"Outside the EEA and the UK, analytics cookies are set by default. You can turn them off at any time through the same “Cookie preferences” link, your browser settings, or a Do Not Track or global privacy control setting, which we honour automatically.",
-			"Blocking analytics cookies will not affect your ability to use the website. Our website does not serve advertising cookies or tracking pixels for third-party ad networks.",
+		heading: "Google user data",
+		blocks: [
+			{
+				p: "construction.live's use and transfer of information received from Google APIs adheres to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements. Specifically, Google user data is used only to provide the features you enabled, is not used for advertising, is not sold, is not used to train generalized AI models, and is not read by humans except with your consent, for security purposes, or as required by law.",
+			},
 		],
 	},
 	{
-		heading: "AI processing and model providers",
-		paragraphs: [
-			"We use large language models and other AI services to transcribe voice notes, summarize calls, and structure your field records. When we send content to these providers for processing, we do so under agreements that require zero data retention. The providers do not store your content beyond the moment of processing, and they do not use it to train their models.",
-			"We do not use your data to train or fine-tune AI models without your specific, explicit consent. If we ever offer a feature that would benefit from training on your data, it will be opt-in, clearly described, and revocable.",
-		],
-	},
-	{
-		heading: "Data retention",
-		paragraphs: [
-			"We retain your project content for as long as your account is active or as needed to provide the service. You can delete individual records at any time.",
-			"When you close your account, we delete your project data on request, subject to any limited retention required by law (for example, billing records).",
-		],
-	},
-	{
-		heading: "Data security",
-		paragraphs: [
-			"We use enterprise-grade encryption in transit and at rest, role-based access controls, and audit logging. No system is perfectly secure, but we work to protect your data with industry-standard safeguards appropriate to the sensitivity of construction documentation.",
+		heading: "Cookies and analytics",
+		blocks: [
+			{
+				ul: [
+					"**Strictly necessary cookies** keep you signed in and secure the Service. They are always active.",
+					"**Analytics cookies** (PostHog) help us understand website usage and are retained for up to 12 months. In the EEA, UK, and Switzerland we set them only with your consent; elsewhere they are set by default and you can opt out through your browser controls or by contacting us.",
+					"The mobile app does not use advertising identifiers and does not track you across other companies' apps or websites.",
+				],
+			},
 		],
 	},
 	{
 		heading: "Your rights and choices",
-		paragraphs: [
-			"You can access, correct, export, or delete your personal information. Depending on where you live, you may have additional rights under applicable privacy laws, including Canada’s PIPEDA and, where relevant, the GDPR and CCPA.",
-			"You can opt out of website analytics at any time by enabling your browser's “Do Not Track” or global privacy control setting, by blocking cookies for construction.live in your browser settings, or by using a browser extension that blocks analytics scripts. You can also email us and we will suppress collection for you and delete the analytics records associated with your visits.",
-			"To exercise any of these rights, contact us using the details below.",
+		blocks: [
+			{
+				p: "Depending on where you live (including under Canada's PIPEDA and provincial laws, the EU/UK GDPR, and US state laws such as the California Consumer Privacy Act), you may have the right to:",
+			},
+			{
+				ul: [
+					"**Access** the personal information we hold about you and receive a copy (**portability**).",
+					"**Correct** inaccurate information.",
+					"**Delete** your account and personal information.",
+					"**Object to or restrict** certain processing, and **withdraw consent** where processing is based on consent.",
+					"**Opt out** of marketing emails (use the unsubscribe link) and SMS (reply STOP).",
+					"**Not be discriminated against** for exercising these rights.",
+				],
+			},
+			{
+				p: `**Deleting your account.** In the mobile app, go to **Settings → Delete account**, or email **${PRIVACY_EMAIL}** from the address on your account. We will verify the request, delete or de-identify your account and personal information within 30 days, and confirm when it's done. If your account belongs to an organization, project content you contributed to shared projects may remain available to that organization as part of its project records. We will tell you if that applies.`,
+			},
+			{
+				p: `To exercise any other right, email **${PRIVACY_EMAIL}**. We respond within 30 days. You may also complain to your local data protection authority, including the Office of the Privacy Commissioner of Canada.`,
+			},
+		],
+	},
+	{
+		heading: "Data retention",
+		blocks: [
+			{
+				ul: [
+					"**Account and project content:** kept while your account or your organization's subscription is active, and deleted or de-identified within 30 days after closure, unless we must keep it longer to meet legal, tax, or accounting obligations or resolve disputes.",
+					"**Recordings and transcripts:** kept with the project they belong to and deleted along with it, or earlier if you remove them.",
+					"**Security and diagnostic logs:** kept for a limited period, typically no longer than 12 months.",
+					"**Backups:** deleted data may persist in encrypted backups for a limited period until they are overwritten.",
+				],
+			},
+		],
+	},
+	{
+		heading: "Security",
+		blocks: [
+			{
+				p: "We use encryption in transit (TLS) and at rest, role-based access controls, two-factor authentication, encrypted storage of integration credentials, isolated sandboxes for AI tasks, and audit logging. No method of transmission or storage is completely secure, but we work to protect your information and will notify you and the appropriate authorities of a data breach as required by law.",
+			},
+		],
+	},
+	{
+		heading: "International transfers",
+		blocks: [
+			{
+				p: "We are based in Canada, and our service providers process data in the United States and other countries. When we transfer personal information across borders, we protect it with contractual safeguards, including Standard Contractual Clauses where required. Information processed in another country may be accessible to that country's authorities under its laws.",
+			},
+		],
+	},
+	{
+		heading: "Children",
+		blocks: [
+			{
+				p: "The Service is intended for professional use and is not directed to children under 16. We do not knowingly collect personal information from children. If you believe a child has provided us information, contact us and we will delete it.",
+			},
 		],
 	},
 	{
 		heading: "Changes to this policy",
-		paragraphs: [
-			"We may update this policy from time to time. When we make material changes, we will update the date at the top of this page and, where appropriate, notify you directly.",
+		blocks: [
+			{
+				p: "We may update this policy from time to time. We will post the updated version here with a new effective date and, for material changes, notify you by email or in the Service before the changes take effect.",
+			},
 		],
 	},
 	{
 		heading: "Contact us",
-		paragraphs: [
-			"If you have questions about this policy or how we handle your data, contact Neuratwin Inc. at rahul@construction.live.",
-			"Neuratwin Inc., Toronto, Canada.",
+		blocks: [
+			{ p: "Neuratwin Inc. (construction.live)" },
+			{ p: "Toronto, Ontario, Canada" },
+			{ p: `**Privacy Officer:** ${PRIVACY_EMAIL}` },
 		],
 	},
 ];
@@ -152,6 +316,87 @@ const slug = (heading: string) =>
 		.toLowerCase()
 		.replace(/[^a-z0-9]+/g, "-")
 		.replace(/^-|-$/g, "");
+
+/* Renders the two inline marks used in the policy copy. */
+function rich(text: string): ReactNode[] {
+	return text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
+		const bold = part.match(/^\*\*([^*]+)\*\*$/);
+		if (bold) {
+			return (
+				<strong key={i} className="font-semibold text-do-text">
+					{bold[1]}
+				</strong>
+			);
+		}
+		const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+		if (link) {
+			return (
+				<a
+					key={i}
+					href={link[2]}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-do-orange hover:underline"
+				>
+					{link[1]}
+				</a>
+			);
+		}
+		return part;
+	});
+}
+
+function renderBlock(block: Block, i: number) {
+	if ("h3" in block) {
+		return (
+			<h3 key={i} className="text-lg font-semibold text-do-text pt-2">
+				{block.h3}
+			</h3>
+		);
+	}
+	if ("ul" in block) {
+		return (
+			<ul
+				key={i}
+				className="list-disc pl-5 space-y-2 text-base text-do-text-secondary leading-relaxed marker:text-do-orange"
+			>
+				{block.ul.map((item, j) => (
+					<li key={j}>{rich(item)}</li>
+				))}
+			</ul>
+		);
+	}
+	if ("table" in block) {
+		return (
+			<div key={i} className="overflow-x-auto rounded-xl border border-do-border">
+				<table className="w-full text-left text-sm">
+					<thead className="bg-do-bg-card/80">
+						<tr>
+							{block.table.head.map((h) => (
+								<th key={h} className="px-4 py-3 font-semibold text-do-text">
+									{h}
+								</th>
+							))}
+						</tr>
+					</thead>
+					<tbody>
+						{block.table.rows.map(([a, b], j) => (
+							<tr key={j} className="border-t border-do-border align-top">
+								<td className="px-4 py-3 text-do-text-secondary sm:w-1/3">{rich(a)}</td>
+								<td className="px-4 py-3 text-do-text-secondary leading-relaxed">{rich(b)}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		);
+	}
+	return (
+		<p key={i} className="text-base text-do-text-secondary leading-relaxed">
+			{rich(block.p)}
+		</p>
+	);
+}
 
 /* ── Page ─────────────────────────────────────────────────────────────── */
 
@@ -170,8 +415,26 @@ export default function PrivacyPage() {
 					<h1 className="text-4xl md:text-5xl font-bold text-do-text mt-4 mb-4">
 						Privacy Policy
 					</h1>
-					<p className="text-base text-do-text-secondary">
-						Last updated: {LAST_UPDATED}
+					<div className="space-y-1 text-base text-do-text-secondary">
+						<p>
+							<strong className="font-semibold text-do-text">Effective date:</strong> {EFFECTIVE_DATE}
+						</p>
+						<p>
+							<strong className="font-semibold text-do-text">Operator:</strong> Neuratwin Inc.
+							(“construction.live”, “we”, “us”), Toronto, Ontario, Canada
+						</p>
+						<p>
+							<strong className="font-semibold text-do-text">Contact / Privacy Officer:</strong>{" "}
+							<a href={`mailto:${PRIVACY_EMAIL}`} className="text-do-orange hover:underline">
+								{PRIVACY_EMAIL}
+							</a>
+						</p>
+					</div>
+					<p className="mt-6 text-base text-do-text-secondary leading-relaxed">
+						This policy explains what personal information we collect when you use the
+						construction.live website, web application, and the construction.live mobile app for
+						iOS and Android (together, the “Service”), how we use and share it, and the choices
+						you have.
 					</p>
 				</div>
 			</section>
@@ -204,21 +467,12 @@ export default function PrivacyPage() {
 
 				<div className="relative z-10 max-w-3xl mx-auto px-6">
 					<div className="space-y-12">
-						{sections.map((section) => (
+						{sections.map((section, n) => (
 							<div key={section.heading} id={slug(section.heading)} className="scroll-mt-32">
 								<h2 className="text-2xl font-bold text-do-text mb-4">
-									{section.heading}
+									{n + 1}. {section.heading}
 								</h2>
-								<div className="space-y-4">
-									{section.paragraphs.map((p, i) => (
-										<p
-											key={i}
-											className="text-base text-do-text-secondary leading-relaxed"
-										>
-											{p}
-										</p>
-									))}
-								</div>
+								<div className="space-y-4">{section.blocks.map(renderBlock)}</div>
 							</div>
 						))}
 					</div>

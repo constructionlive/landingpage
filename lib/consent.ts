@@ -11,8 +11,9 @@ export const REGION_COOKIE = "cl_region";
 export type Region = "eu" | "row";
 
 /** EU27 + the three non-EU EEA states + the UK, which retained UK GDPR/PECR
-    after leaving. These are the visitors who must opt in before we may set an
-    analytics cookie. */
+    after leaving, + Switzerland (revFADP), which the privacy policy names.
+    These are the visitors who must opt in before we may set an analytics
+    cookie. */
 const CONSENT_REQUIRED_COUNTRIES = new Set([
 	// EU27
 	"AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR",
@@ -22,6 +23,8 @@ const CONSENT_REQUIRED_COUNTRIES = new Set([
 	"IS", "LI", "NO",
 	// United Kingdom
 	"GB",
+	// Switzerland
+	"CH",
 ]);
 
 /* Vercel and Cloudflare expose the visitor's country under different header

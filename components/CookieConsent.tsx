@@ -113,7 +113,7 @@ export default function CookieConsent() {
 									Privacy Policy
 								</a>
 								<a
-									href="/privacy#cookies-and-similar-technologies"
+									href="/privacy#cookies-and-analytics"
 									className="text-sm font-medium text-do-orange hover:underline underline-offset-2"
 								>
 									More information
