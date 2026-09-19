@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 	},
 };
 
-const EFFECTIVE_DATE = "September 14, 2026";
+const EFFECTIVE_DATE = "September 19, 2026";
 const PRIVACY_EMAIL = "rahul@construction.live";
 
 /* ── Headline commitments (Section 1) ─────────────────────────────────── */
@@ -50,7 +50,7 @@ type Block =
 	| { p: string }
 	| { ul: string[] }
 	| { h3: string }
-	| { table: { head: [string, string]; rows: [string, string][] } };
+	| { table: { head: string[]; rows: string[][] } };
 
 type Section = { heading: string; blocks: Block[] };
 
@@ -160,10 +160,73 @@ const sections: Section[] = [
 		],
 	},
 	{
-		heading: "AI features",
+		heading: "AI features and third-party AI services",
 		blocks: [
 			{
-				p: "AI features send the relevant part of your content (for example, a voice note, photo, document excerpt, or chat message) to AI model providers through our model gateway to produce a result. We use providers and settings that do **not** retain your content after the request is processed and do **not** use it to train models. AI output can be inaccurate. Review generated reports, minutes, and emails before relying on them.",
+				p: "construction.live uses third-party AI services to power its AI features. This section explains exactly what is sent, who receives it, why, and the choice you have.",
+			},
+			{ h3: "5.1 What data is sent, and why" },
+			{
+				p: "Data is sent only when you, or a colleague on your project, use a feature that needs it, and only the material that feature needs:",
+			},
+			{
+				table: {
+					head: ["Data", "When it is sent", "Why"],
+					rows: [
+						[
+							"Voice memos and meeting recordings",
+							"When you add a voice memo to a daily log or inspection, or process a meeting",
+							"To transcribe speech into text",
+						],
+						[
+							"Photos",
+							"When a photo is added to a daily log or inspection and the report or the AI agent reads it",
+							"To describe site conditions in reports",
+						],
+						[
+							"Notes, daily-log entries and inspection findings",
+							"When a daily report or meeting minutes are written",
+							"To write daily reports, minutes and summaries",
+						],
+						[
+							"Messages to the AI agent, files you attach, and project documents the agent opens",
+							"When you use the AI agent",
+							"To answer your question or carry out the task you asked for",
+						],
+					],
+				},
+			},
+			{ p: "We do not send your password, payment details or device identifiers to AI services." },
+			{ h3: "5.2 Who receives it" },
+			{
+				ul: [
+					"**OpenRouter, Inc.** (United States), an AI gateway that routes each request to a model provider.",
+					"**The model provider for that request:** Google (Gemini models), xAI (Grok models), OpenAI, or, in the AI agent, the provider of the model you choose in the model picker.",
+				],
+			},
+			{ h3: "5.3 How it is protected" },
+			{
+				ul: [
+					"**Zero data retention.** Our OpenRouter account only routes requests to providers with a zero data retention policy. Those providers process a request to produce a result and do not keep your data afterwards.",
+					"**No training.** Your data is never used to train AI models, by us or by these providers.",
+					"**Encryption.** Requests are sent over encrypted (TLS) connections.",
+					"**What we keep.** The results (transcripts, reports, minutes, answers) are stored in your construction.live workspace under the same protections as the rest of your content, and are deleted with it.",
+					"**Equal protection.** We only use AI services whose terms protect your data at least as well as this policy does.",
+				],
+			},
+			{ h3: "5.4 Your permission and how to change it" },
+			{
+				ul: [
+					"**In the mobile app, we ask before anything is sent.** After you sign in, the app explains what is sent and to whom, and asks whether you allow AI data sharing. Nothing is sent to an AI service on your behalf until you answer.",
+					"**You can change your answer at any time** in the app under **Settings > AI data sharing**. The change takes effect immediately.",
+					"**If you don't allow it (or turn it off),** your voice memos, photos, notes and recordings are still saved to your project, but they are not transcribed, summarised or included in AI-written reports, and the AI agent is unavailable to you.",
+					"On the web, AI features run only when you use them, for example when you send a message to the AI agent or process a meeting.",
+					"Your choice covers AI features you use and your entries in AI-written reports. Content you add to a **shared project** can still be read by the AI agent when a colleague who has AI data sharing turned on asks it about that project, because that content belongs to the project your organization controls.",
+				],
+			},
+			{ h3: "5.5 Accuracy" },
+			{
+				p: "AI output can be inaccurate. Review generated reports, minutes and emails before relying on them.",
 			},
 		],
 	},
@@ -242,6 +305,7 @@ const sections: Section[] = [
 					"**Correct** inaccurate information.",
 					"**Delete** your account and personal information.",
 					"**Object to or restrict** certain processing, and **withdraw consent** where processing is based on consent.",
+					"**Turn off AI data sharing** at any time in the mobile app under Settings > AI data sharing (see Section 5.4).",
 					"**Opt out** of marketing emails (use the unsubscribe link) and SMS (reply STOP).",
 					"**Not be discriminated against** for exercising these rights.",
 				],
@@ -380,10 +444,18 @@ function renderBlock(block: Block, i: number) {
 						</tr>
 					</thead>
 					<tbody>
-						{block.table.rows.map(([a, b], j) => (
+						{block.table.rows.map((cells, j) => (
 							<tr key={j} className="border-t border-do-border align-top">
-								<td className="px-4 py-3 text-do-text-secondary sm:w-1/3">{rich(a)}</td>
-								<td className="px-4 py-3 text-do-text-secondary leading-relaxed">{rich(b)}</td>
+								{cells.map((cell, k) => (
+									<td
+										key={k}
+										className={`px-4 py-3 text-do-text-secondary leading-relaxed${
+											k === 0 && cells.length === 2 ? " sm:w-1/3" : ""
+										}`}
+									>
+										{rich(cell)}
+									</td>
+								))}
 							</tr>
 						))}
 					</tbody>
