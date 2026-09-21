@@ -32,11 +32,24 @@ const nextConfig: NextConfig = {
 	   app/features/ is now unreachable. /how-it-works and /use-cases never had
 	   pages at all: they were 404ing while still listed in the sitemap. */
 	async redirects() {
-		return ["/features", "/how-it-works", "/use-cases"].map((source) => ({
-			source,
-			destination: "/solutions",
-			permanent: true,
-		}));
+		return [
+			...["/features", "/how-it-works", "/use-cases"].map((source) => ({
+				source,
+				destination: "/solutions",
+				permanent: true,
+			})),
+			/* www is the canonical host. This used to be a Vercel domain-level
+			   redirect, but that fires before the app and can't make exceptions,
+			   and Microsoft's publisher domain check needs
+			   /.well-known/microsoft-identity-association.json served directly on
+			   the bare domain, with no redirect. */
+			{
+				source: "/:path((?!\\.well-known/).*)",
+				has: [{ type: "host" as const, value: "construction.live" }],
+				destination: "https://www.construction.live/:path",
+				permanent: true,
+			},
+		];
 	},
 };
 
