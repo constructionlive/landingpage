@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 	},
 };
 
-const EFFECTIVE_DATE = "September 19, 2026";
+const EFFECTIVE_DATE = "September 23, 2026";
 const PRIVACY_EMAIL = "rahul@construction.live";
 
 /* ── Headline commitments (Section 1) ─────────────────────────────────── */
@@ -311,7 +311,13 @@ const sections: Section[] = [
 				],
 			},
 			{
-				p: `**Deleting your account.** In the mobile app, go to **Settings → Delete account**, or email **${PRIVACY_EMAIL}** from the address on your account. We will verify the request, delete or de-identify your account and personal information within 30 days, and confirm when it's done. If your account belongs to an organization, project content you contributed to shared projects may remain available to that organization as part of its project records. We will tell you if that applies.`,
+				p: "**Deleting your account.** In the mobile app, go to **Settings → Delete account**, type DELETE to confirm, and your account is deleted immediately — there is nothing to email and nothing else to complete. Deleted at once: your sign-in credentials and every active session, two-factor enrolment, profile and settings, AI data sharing choice, personal workspace and files, any email or calendar accounts you connected, notifications, and your access to every project and organization. The account cannot be recovered or reactivated, and that email can no longer sign in.",
+			},
+			{
+				p: `If you use construction.live only on the web, email **${PRIVACY_EMAIL}** from the address on your account and we will delete it within 30 days, and confirm when it's done.`,
+			},
+			{
+				p: "**What remains after deletion.** If your account belongs to an organization, the material you filed into its shared projects — daily reports, photos, meeting recordings, inspections and time records — stays with those projects as the organization's construction records, which it is required to keep. Those records are de-identified: your name and contact details are removed, and nothing in them identifies you. We also keep a single dated record that the account was deleted.",
 			},
 			{
 				p: `To exercise any other right, email **${PRIVACY_EMAIL}**. We respond within 30 days. You may also complain to your local data protection authority, including the Office of the Privacy Commissioner of Canada.`,
