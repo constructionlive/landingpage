@@ -40,12 +40,9 @@ export default function TryShell({
 					{children}
 				</div>
 
+				{/* No "book a demo" here. The flow ends with a login arriving by
+				    mail, and a calendar link beside it reads as a step they missed. */}
 				<p className="mt-6 text-center text-xs text-do-text-muted">
-					Prefer to talk first?{" "}
-					<a href="/book" className="text-do-text-secondary underline underline-offset-2 hover:text-do-text">
-						Book a demo
-					</a>
-					{" · "}
 					<a href="/privacy" className="text-do-text-secondary underline underline-offset-2 hover:text-do-text">
 						Privacy
 					</a>

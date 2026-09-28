@@ -3,8 +3,7 @@
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Check, CheckCircle2, MailCheck } from "lucide-react";
-import BookingLink from "@/components/BookingLink";
+import { ArrowRight, Check, CheckCircle2, MailCheck } from "lucide-react";
 import TryShell from "../shell";
 import { EVENTS, track } from "@/lib/analytics";
 import { attributionForSubmit } from "@/lib/attribution";
@@ -240,23 +239,18 @@ function VerifyCard() {
 						: `That's everything${first ? `, ${first}` : ""}.`}
 				</h1>
 				{/* The promise here has to match the confirmation mail in
-				    convex/emails.ts word for word in substance: the founder reviews,
-				    then reaches out. Not "your account is ready". */}
-				<p className="text-sm text-do-text-secondary leading-relaxed mb-6">
-					Your answers are with the founder. He reviews every signup himself and
-					reaches out personally once he&apos;s verified the details — usually
-					within one business day. A copy of what you told us is on its way to
-					your inbox.
+				    convex/emails.ts in substance: the founder reviews, then the login
+				    arrives. No booking link — there is nothing left for them to do,
+				    and a button here would suggest otherwise. */}
+				<p className="text-sm text-do-text-secondary leading-relaxed">
+					The founder is reviewing your details now. Your login details will be
+					sent to your email shortly after verification — usually within one
+					business day. Nothing more for you to do.
 				</p>
-				<BookingLink
-					location="try_success"
-					className={PRIMARY_BUTTON}
-				>
-					<Calendar className="h-4 w-4" />
-					Or book 15 minutes now
-					<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-				</BookingLink>
-				<p className="mt-4 text-xs text-do-text-muted">Opens Google Calendar in a new tab.</p>
+				<p className="mt-4 text-xs text-do-text-muted leading-relaxed">
+					A copy of what you told us is on its way to your inbox. Reply to it if
+					anything changes.
+				</p>
 			</motion.div>
 		);
 	}

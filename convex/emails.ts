@@ -698,17 +698,16 @@ export const sendTrialAlreadyAppliedEmail = internalAction({
         to: [args.email],
         replyTo,
         subject: "You're already on the list",
-        text: `Hi ${firstName},\n\nYou've already answered the questions and your details are with the founder. Nothing more to do — you'll hear from him directly.\n\nIf you'd rather not wait, book a 15-minute call here: ${CALENDAR_URL}\n\nReply to this email if anything has changed.\n\nconstruction.live\n${HERO_LINE}`,
+        text: `Hi ${firstName},\n\nYou've already answered the questions and your details are with the founder. Your login details will be sent to this address shortly after verification — nothing more for you to do.\n\nReply to this email if anything has changed.\n\nconstruction.live\n${HERO_LINE}`,
         html: brandedReplyHtml({
           documentTitle: "You're already on the list",
           preheader: "Your details are already with the founder. Nothing more to do.",
           eyebrow: "Already on the list",
           heading: `You&rsquo;re already in, ${escapeHtml(firstName)}.`,
           paragraphs: [
-            "You&rsquo;ve already answered the questions and your details are with the founder. Nothing more to do — you&rsquo;ll hear from him directly.",
-            "If you&rsquo;d rather not wait, grab a slot now:",
+            "You&rsquo;ve already answered the questions and your details are with the founder.",
+            `Your <strong style="color:${INK}; font-weight:600;">login details will be sent to this address</strong> shortly after verification — nothing more for you to do.`,
           ],
-          cta: { label: "Book a 15-minute call &rarr;", href: CALENDAR_URL },
           recapLabel: "",
           rows: [],
           closingNote: "Something changed since you signed up? Just reply to this email.",
@@ -729,15 +728,13 @@ function trialCompletionReplyHtml(args: { firstName: string; rows: [string, stri
   return brandedReplyHtml({
     documentTitle: "Thanks — the founder will reach out",
     preheader:
-      "Your answers are in. The founder reviews each one himself and reaches out after that.",
+      "Your answers are in. The founder is reviewing them; your login details follow shortly after.",
     eyebrow: "All done",
     heading: `That&rsquo;s everything, ${escapeHtml(args.firstName)}.`,
     paragraphs: [
-      `Your answers went straight to the founder. He reads every one himself, and <strong style="color:${INK}; font-weight:600;">reaches out personally once he&rsquo;s reviewed your details</strong> — usually within one business day.`,
-      "We set accounts up by hand rather than handing out logins automatically. It is slower, and it is why the people who get in get a system already pointed at the problem they told us about.",
-      "If you&rsquo;d rather not wait for the email, grab a slot directly:",
+      `Your answers went straight to the founder, who is reviewing them now. <strong style="color:${INK}; font-weight:600;">Your login details will be sent to this address shortly after verification</strong> — usually within one business day.`,
+      "Nothing more for you to do. We set accounts up by hand rather than handing out logins automatically, so the system you log in to is already pointed at the problem you told us about.",
     ],
-    cta: { label: "Book a 15-minute call &rarr;", href: CALENDAR_URL },
     recapLabel: "What you told us",
     rows: args.rows,
     closingNote: "Got something wrong? Just reply to this email — it reaches a person.",
@@ -829,7 +826,7 @@ export const sendTrialCompletionEmails = internalAction({
         to: [args.email],
         replyTo: notifyTo,
         subject: "Thanks — the founder will reach out",
-        text: `Hi ${firstName},\n\nYour answers went straight to the founder. He reads every one himself and reaches out personally once he's reviewed your details, usually within one business day.\n\nWe set accounts up by hand rather than handing out logins automatically. It is slower, and it is why the people who get in get a system already pointed at the problem they told us about.\n\nIf you'd rather not wait, book a 15-minute call here: ${CALENDAR_URL}\n\nWhat you told us\n${recap
+        text: `Hi ${firstName},\n\nYour answers went straight to the founder, who is reviewing them now. Your login details will be sent to this address shortly after verification, usually within one business day.\n\nNothing more for you to do. We set accounts up by hand rather than handing out logins automatically, so the system you log in to is already pointed at the problem you told us about.\n\nWhat you told us\n${recap
           .map(([label, value]) => `${label}: ${value}`)
           .join("\n")}\n\nGot something wrong? Just reply to this email.\n\nconstruction.live\n${HERO_LINE}`,
         html: trialCompletionReplyHtml({ firstName, rows: recap }),
