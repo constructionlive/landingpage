@@ -14,9 +14,9 @@ import { attributionValidator } from "./schema";
    Every other form on this site mails us the moment it is submitted. This one
    can't: it is the door to a hand-built account, so a scripted signup costs
    real model spend rather than one ignored email. Splitting "someone typed an
-   address" from "that address received something" is what makes the difference,
-   and it is why the founder notification is scheduled from step 3 and nowhere
-   else.
+   address" from "that address received something" is what makes the difference.
+   The founder gets a thin heads-up at step 1 so a profile is visible the moment
+   it begins; the full details and the reply wait for step 3.
 
    Adding a field means touching this file, the trialSignups table in
    convex/schema.ts, the matching route under app/api/try/, the form in app/try/
@@ -205,6 +205,10 @@ export const startTrial = mutation({
       return { status: "pending" as const };
     }
 
+    /* The founder hears about an address once, when it first appears. A
+       re-send of the link is the same person, not a second signup. */
+    const notifyFounder = !existing;
+
     if (existing) {
       /* A fresh token on every send, which invalidates the previous link. If
          old links kept working, "I didn't get it, send it again" would quietly
@@ -245,8 +249,10 @@ export const startTrial = mutation({
     await ctx.scheduler.runAfter(0, internal.emails.sendTrialVerificationEmail, {
       email,
       name,
+      company,
       token: args.token,
       expiresInHours: VERIFY_TTL_HOURS,
+      notifyFounder,
     });
 
     return { status: "pending" as const };

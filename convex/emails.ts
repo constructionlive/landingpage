@@ -543,9 +543,10 @@ export const sendNewsletterWelcomeEmail = internalAction({
 /* Four mails, and the order matters: nothing reaches the founder until the
    address has proved it can receive the first one.
 
-   1. sendTrialVerificationEmail  — the link. The only thing a fresh signup gets.
+   1. sendTrialVerificationEmail  — the link, plus a thin "someone started"
+                                    heads-up to the founder on the first send.
    2. sendTrialAlreadyAppliedEmail — for a repeat signup we already have.
-   3. sendTrialCompletionEmails   — the founder notification and the reply.
+   3. sendTrialCompletionEmails   — the full founder notification and the reply.
 
    The verification link is the whole anti-bot argument, so its mail is kept
    plain: one sentence, one button, no marketing. A message that looks like a
@@ -586,6 +587,11 @@ export const sendTrialVerificationEmail = internalAction({
     /* How long the link lasts, in hours. Passed in rather than repeated here,
        so the mail can't promise a window the mutation doesn't honour. */
     expiresInHours: v.number(),
+    /* Whether to tell the founder someone has started. True on the first link
+       to an address only: a "send it again" must not produce a second
+       heads-up, and a repeat signup from a verified row is not news. */
+    notifyFounder: v.optional(v.boolean()),
+    company: v.optional(v.string()),
   },
   handler: async (_ctx, args) => {
     const resendApiKey = process.env.RESEND_API_KEY;
@@ -596,9 +602,49 @@ export const sendTrialVerificationEmail = internalAction({
 
     const resend = new Resend(resendApiKey);
     const TRIAL_EMAIL = process.env.TRIAL_EMAIL ?? "hello@ai.construction.live";
-    const replyTo = process.env.TRIAL_NOTIFICATION_EMAIL ?? "rahul@construction.live";
+    const notifyTo = process.env.TRIAL_NOTIFICATION_EMAIL ?? "rahul@construction.live";
+    const replyTo = notifyTo;
     const firstName = args.name.trim().split(/\s+/)[0] || args.name;
     const verifyUrl = trialVerifyUrl(args.token);
+
+    /* The early heads-up. Sent first and independently of the link, so a
+       bounce on the applicant's side never costs the founder the signal.
+
+       Deliberately thin: the full picture arrives with the completion mail
+       once the address is confirmed. This one exists so the founder can see a
+       profile beginning in real time — and, because it goes out before any
+       verification, so bot traffic is visible the moment it starts rather
+       than as an empty column on the dashboard. "Not yet verified" is in the
+       subject so the two kinds of mail never get confused. */
+    if (args.notifyFounder) {
+      const rows: [string, string][] = [
+        ["Company", args.company || "not given"],
+        ["Name", args.name],
+        ["Email", args.email],
+        ["Status", "verification link sent — not yet verified"],
+      ];
+      try {
+        await resend.emails.send({
+          from: `construction.live <${TRIAL_EMAIL}>`,
+          to: [notifyTo],
+          replyTo: args.email,
+          subject: `Try now started: ${args.company || args.email} (not yet verified)`,
+          text: `${args.name} is beginning to create a profile on construction.live.\n\n${rows
+            .map(([label, value]) => `${label}: ${value}`)
+            .join("\n")}\n\nYou'll get the full details once the email is confirmed and the questions are answered.`,
+          html: `<h2>Someone is beginning to create a profile</h2><table cellpadding="6" style="border-collapse:collapse">${rows
+            .map(
+              ([label, value]) =>
+                `<tr><td style="border:1px solid #ddd"><strong>${escapeHtml(label)}</strong></td><td style="border:1px solid #ddd">${escapeHtml(value)}</td></tr>`,
+            )
+            .join("")}</table><p style="color:#64748b">You'll get the full details once the email is confirmed and the questions are answered.</p>`,
+        });
+      } catch (error) {
+        /* Logged and carried on: the applicant's link matters more than the
+           heads-up, and the row is on the dashboard regardless. */
+        console.error("Failed to send trial started notification", { email: args.email, error });
+      }
+    }
 
     try {
       await resend.emails.send({
@@ -700,8 +746,8 @@ function trialCompletionReplyHtml(args: { firstName: string; rows: [string, stri
 }
 
 /* Internal: only convex/trial.ts schedules this, and only for a row that has
-   already been verified — so the founder's inbox never sees an address that
-   hasn't proved it exists. That is the whole reason this flow has three steps. */
+   already been verified. The founder may have had the thin heads-up at signup;
+   this is the one with the answers in it, and the only one that gets a reply. */
 export const sendTrialCompletionEmails = internalAction({
   args: {
     company: v.string(),
