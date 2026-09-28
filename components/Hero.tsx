@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { trackCta } from "@/lib/analytics";
 import heroImage from "@/public/images/hero-field-engineer.jpg";
 import {
+	ArrowRight,
 	HardHat,
 	Mic,
 	AlertTriangle,
@@ -130,13 +131,27 @@ export default function Hero() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.7 }}
 					>
-						<a
-							href="/book"
-							onClick={() => trackCta("hero", "Book a Demo", "/book")}
-							className="group px-8 py-3.5 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] flex items-center gap-2"
-						>
-							Book a Demo
-						</a>
+						{/* Two doors, side by side. Try now is the self-serve one — a
+						    confirmed email and three questions, then the founder sets up
+						    the account — so it carries the orange. The demo stays for the
+						    buyer who wants to see it before typing anything. */}
+						<div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+							<a
+								href="/try"
+								onClick={() => trackCta("hero", "Try now", "/try")}
+								className="group px-8 py-3.5 text-base font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-xl transition-all shadow-[0_0_30px_rgba(249,115,22,0.25)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] flex items-center gap-2"
+							>
+								Try now
+								<ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+							</a>
+							<a
+								href="/book"
+								onClick={() => trackCta("hero", "Book a Demo", "/book")}
+								className="px-8 py-3.5 text-base font-medium text-do-text border border-do-border hover:border-do-border-accent hover:bg-do-bg-light rounded-xl transition-all"
+							>
+								Book a Demo
+							</a>
+						</div>
 						{/* <a
 							href="#how-it-works"
 							className="text-sm text-do-text-secondary hover:text-do-text underline underline-offset-4 decoration-do-border hover:decoration-do-text-secondary transition-colors"

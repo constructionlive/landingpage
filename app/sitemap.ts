@@ -19,6 +19,8 @@ const staticRoutes: MetadataRoute.Sitemap = [
 	{ url: absoluteUrl("/local"), changeFrequency: "weekly", priority: 0.9 },
 	{ url: absoluteUrl("/pricing"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/book"), changeFrequency: "monthly", priority: 0.9 },
+	/* The self-serve signup. Same priority as /book: it is the other door in. */
+	{ url: absoluteUrl("/try"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.8 },
 	{ url: absoluteUrl("/faqs"), changeFrequency: "monthly", priority: 0.8 },
 	{ url: absoluteUrl("/security"), changeFrequency: "monthly", priority: 0.7 },

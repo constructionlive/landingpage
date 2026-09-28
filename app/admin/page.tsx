@@ -47,13 +47,14 @@ export default function AdminDashboardPage() {
   const isAdmin = me?.profile?.role === "admin";
   const dashboard = useQuery(api.earlyAccess.dashboard, isAdmin ? { limit: 200 } : "skip");
   const newsletter = useQuery(api.newsletter.dashboard, isAdmin ? { limit: 500 } : "skip");
+  const trial = useQuery(api.trial.dashboard, isAdmin ? { limit: 200 } : "skip");
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-6xl px-6 py-12 bg-do-bg">
       <div className="mb-8 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-4xl font-bold text-do-text">Admin Dashboard</h1>
-          <p className="mt-2 text-sm text-do-text-secondary">Early access waitlist and the newsletter register.</p>
+          <p className="mt-2 text-sm text-do-text-secondary">Try now signups, the early access waitlist and the newsletter register.</p>
         </div>
         <Link className="rounded-md border border-do-border px-3 py-2 text-sm text-do-text hover:bg-do-bg-light/50 transition-colors" href="/">
           Back to site
@@ -142,6 +143,89 @@ export default function AdminDashboardPage() {
             </div>
           </section>
         </>
+      ) : null}
+
+      {isAdmin && trial ? (
+        <section className="mt-12">
+          <div>
+            <h2 className="text-2xl font-bold text-do-text">Try Now Signups</h2>
+            <p className="mt-1 text-sm text-do-text-secondary">
+              Everyone who started at /try. Only a completed row reached your inbox: pending
+              means the address never confirmed the link. A jump in pending with no matching
+              rise in completed is bot traffic, and it is visible here before it costs anything.
+            </p>
+          </div>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-4">
+            <div className="rounded-lg border border-do-border p-4 bg-do-bg-card">
+              <p className="text-xs uppercase tracking-wide text-do-text-secondary">Completed</p>
+              <p className="mt-2 text-3xl font-semibold text-do-text">{trial.stats.completed}</p>
+            </div>
+            <div className="rounded-lg border border-do-border p-4 bg-do-bg-card">
+              <p className="text-xs uppercase tracking-wide text-do-text-secondary">Never Confirmed</p>
+              <p className="mt-2 text-3xl font-semibold text-do-text">{trial.stats.pending}</p>
+            </div>
+            <div className="rounded-lg border border-do-border p-4 bg-do-bg-card">
+              <p className="text-xs uppercase tracking-wide text-do-text-secondary">Last 24 Hours</p>
+              <p className="mt-2 text-3xl font-semibold text-do-text">{trial.stats.last24Hours}</p>
+            </div>
+            <div className="rounded-lg border border-do-border p-4 bg-do-bg-card">
+              <p className="text-xs uppercase tracking-wide text-do-text-secondary">Last 7 Days</p>
+              <p className="mt-2 text-3xl font-semibold text-do-text">{trial.stats.last7Days}</p>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-lg border border-do-border p-4 bg-do-bg-card">
+            <h3 className="text-lg font-semibold text-do-text">Signups</h3>
+            <p className="mt-1 text-xs text-do-text-secondary">Showing newest first.</p>
+            {trial.signups.length === 0 ? (
+              <p className="mt-4 text-sm text-do-text-secondary">No signups yet.</p>
+            ) : (
+              <div className="mt-4 overflow-auto">
+                <table className="w-full min-w-[900px] border-collapse text-sm">
+                  <thead>
+                    <tr className="border-b border-do-border text-left text-xs uppercase tracking-wide text-do-text-secondary">
+                      <th className="py-2 pr-4">Company</th>
+                      <th className="py-2 pr-4">Name</th>
+                      <th className="py-2 pr-4">Email</th>
+                      <th className="py-2 pr-4">Status</th>
+                      <th className="py-2 pr-4">Biggest problem</th>
+                      <th className="py-2 pr-4">Work</th>
+                      <th className="py-2 pr-4">Field team</th>
+                      <th className="py-2 pr-4">Started</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {trial.signups.map((signup) => (
+                      <tr className="border-b border-do-border/60" key={signup._id}>
+                        <td className="py-2 pr-4 text-do-text">{signup.company}</td>
+                        <td className="py-2 pr-4 text-do-text-secondary">{signup.name}</td>
+                        <td className="py-2 pr-4 text-do-text-secondary">{signup.email}</td>
+                        <td className="py-2 pr-4">
+                          <span
+                            className={`rounded-full border px-2 py-0.5 text-xs ${
+                              signup.status === "completed"
+                                ? "border-do-orange/40 text-do-orange"
+                                : signup.status === "verified"
+                                  ? "border-do-border-accent text-do-text-secondary"
+                                  : "border-do-border text-do-text-muted"
+                            }`}
+                          >
+                            {signup.status}
+                          </span>
+                        </td>
+                        <td className="py-2 pr-4 text-do-text-secondary">{signup.biggestProblem ?? "—"}</td>
+                        <td className="py-2 pr-4 text-do-text-secondary">{signup.workType ?? "—"}</td>
+                        <td className="py-2 pr-4 text-do-text-secondary">{signup.teamSize ?? "—"}</td>
+                        <td className="py-2 pr-4 text-do-text-secondary">{formatSignupDate(signup.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </section>
       ) : null}
 
       {isAdmin && newsletter ? (

@@ -195,6 +195,75 @@ export default defineSchema({
   })
     .index("by_normalizedEmail", ["normalizedEmail"])
     .index("by_createdAt", ["createdAt"]),
+  /* The "Try now" onboarding at /try, and the one table on this site whose
+     main job is to keep bots out.
+
+     Everything else here writes a row and mails someone. This flow gates a
+     founder conversation and, eventually, product access — so a scripted signup
+     costs us model spend rather than an unread email. The defence is that a row
+     is worthless until an address proves it can receive mail: `status` starts
+     "pending", and only the person holding the link in that inbox can move it
+     to "verified" and answer the three questions.
+
+     Adding a field means touching this table, convex/trial.ts, the validator in
+     the matching route under app/api/try/, the form in app/try/ and the emails
+     in convex/emails.ts, or the answer is collected and then silently dropped. */
+  trialSignups: defineTable({
+    company: v.string(),
+    name: v.string(),
+    email: v.string(),
+    normalizedEmail: v.string(),
+    /* "pending" until the link is clicked, "verified" after, "completed" once
+       the three questions are answered. Only a completed row is a lead: the
+       other two are an address that has not proved anything yet. */
+    status: v.union(v.literal("pending"), v.literal("verified"), v.literal("completed")),
+    /* SHA-256 of the token mailed out, never the token itself. The link lives
+       in an inbox we don't control and in browser history; storing only the
+       digest means a leaked database row can't be replayed as a valid link.
+       Minted and hashed in app/api/try/start/route.ts — see lib/trialToken.ts. */
+    tokenHash: v.string(),
+    /* Verification links expire; see TOKEN_TTL_MS in convex/trial.ts. A link
+       that works forever is a link a scraper can sit on. */
+    tokenExpiresAt: v.number(),
+    verifiedAt: v.optional(v.number()),
+    /* How many verification mails this row has been sent. A repeat signup for
+       the same address re-mails rather than writing a second row, and this is
+       what stops that from becoming a way to use us as a mail cannon. */
+    verificationsSent: v.number(),
+    /* The three answers, absent until the questions are submitted. Free-text
+       strings rather than unions for the same reason as `channel` above: a
+       reworded option must not be able to reject a real lead. */
+    biggestProblem: v.optional(v.string()),
+    workType: v.optional(v.string()),
+    teamSize: v.optional(v.string()),
+    notes: v.optional(v.string()),
+    completedAt: v.optional(v.number()),
+    attribution: v.optional(attributionValidator),
+    /* Salted hash of the submitting IP, never the address. Enough to recognise
+       one script filling the form forty times, not enough to be a location log
+       on everyone who filled it in once. See hashIp() in lib/trialToken.ts. */
+    ipHash: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_normalizedEmail", ["normalizedEmail"])
+    .index("by_tokenHash", ["tokenHash"])
+    .index("by_createdAt", ["createdAt"]),
+  /* Fixed-window counters for the /try flow. Durable rather than in-process
+     because the site runs on serverless instances that don't share memory, so
+     a counter held in a module variable resets whenever a new instance spins
+     up — which is to say, exactly when a burst of traffic arrives.
+
+     `key` encodes both the subject and the window ("ip:<hash>:h:483291"), so a
+     new window is a new row and there is nothing to reset on a schedule.
+     `expiresAt` is what the sweep in convex/trial.ts deletes by. */
+  trialRateLimits: defineTable({
+    key: v.string(),
+    count: v.number(),
+    expiresAt: v.number(),
+  })
+    .index("by_key", ["key"])
+    .index("by_expiresAt", ["expiresAt"]),
   /* The contact form on /contact. Unlike a quote request this is open-ended:
      one message, everything else optional. */
   contactMessages: defineTable({

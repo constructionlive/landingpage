@@ -20,6 +20,9 @@ export default function robots(): MetadataRoute.Robots {
 				"/blog/new",
 				"/blog/*/edit",
 				"/newsletter/unsubscribe",
+				/* Same reasoning: /try is public, the confirmation path only works
+				   with a token from the mail. */
+				"/try/verify",
 			],
 		},
 		sitemap: absoluteUrl("/sitemap.xml"),

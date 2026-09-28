@@ -20,6 +20,7 @@ import type * as landingPages from "../landingPages.js";
 import type * as newsletter from "../newsletter.js";
 import type * as posts from "../posts.js";
 import type * as quotes from "../quotes.js";
+import type * as trial from "../trial.js";
 import type * as users from "../users.js";
 
 import type {
@@ -41,6 +42,7 @@ declare const fullApi: ApiFromModules<{
   newsletter: typeof newsletter;
   posts: typeof posts;
   quotes: typeof quotes;
+  trial: typeof trial;
   users: typeof users;
 }>;
 

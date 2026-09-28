@@ -537,3 +537,262 @@ export const sendNewsletterWelcomeEmail = internalAction({
     }
   },
 });
+
+/* ── Try now: the /try onboarding ───────────────────────────────────────── */
+
+/* Four mails, and the order matters: nothing reaches the founder until the
+   address has proved it can receive the first one.
+
+   1. sendTrialVerificationEmail  — the link. The only thing a fresh signup gets.
+   2. sendTrialAlreadyAppliedEmail — for a repeat signup we already have.
+   3. sendTrialCompletionEmails   — the founder notification and the reply.
+
+   The verification link is the whole anti-bot argument, so its mail is kept
+   plain: one sentence, one button, no marketing. A message that looks like a
+   campaign is a message that lands in Promotions, and a verification link
+   nobody sees is a signup we never hear about. */
+
+function trialVerifyUrl(token: string) {
+  return `${SITE_ORIGIN}/try/verify?token=${encodeURIComponent(token)}`;
+}
+
+function trialVerificationHtml(args: { firstName: string; verifyUrl: string; hours: number }) {
+  return brandedReplyHtml({
+    documentTitle: "Confirm your email",
+    preheader: "One click and we'll ask you three quick questions. The link expires soon.",
+    eyebrow: "Confirm your email",
+    heading: `One click and you&rsquo;re in, ${escapeHtml(args.firstName)}.`,
+    paragraphs: [
+      `Confirm this address and we&rsquo;ll ask you <strong style="color:${INK}; font-weight:600;">three quick questions</strong> — about a minute — so the founder knows what to bring to the call.`,
+      `This link works for the next ${args.hours} hours and can only be used by whoever opens this inbox.`,
+    ],
+    cta: { label: "Confirm my email &rarr;", href: args.verifyUrl },
+    recapLabel: "",
+    rows: [],
+    closingNote:
+      "Didn&rsquo;t ask for this? Ignore it — nothing happens until someone presses the button, and the link expires on its own.",
+    footerReason:
+      "You&rsquo;re getting this because someone entered this address at construction.live/try.",
+  });
+}
+
+/* Internal: only convex/trial.ts schedules this, so the endpoint can't be used
+   from outside to make us send mail. */
+export const sendTrialVerificationEmail = internalAction({
+  args: {
+    email: v.string(),
+    name: v.string(),
+    token: v.string(),
+    /* How long the link lasts, in hours. Passed in rather than repeated here,
+       so the mail can't promise a window the mutation doesn't honour. */
+    expiresInHours: v.number(),
+  },
+  handler: async (_ctx, args) => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.warn("RESEND_API_KEY is missing; skipping trial verification email.");
+      return { sent: false as const, reason: "missing_api_key" as const };
+    }
+
+    const resend = new Resend(resendApiKey);
+    const TRIAL_EMAIL = process.env.TRIAL_EMAIL ?? "hello@ai.construction.live";
+    const replyTo = process.env.TRIAL_NOTIFICATION_EMAIL ?? "rahul@construction.live";
+    const firstName = args.name.trim().split(/\s+/)[0] || args.name;
+    const verifyUrl = trialVerifyUrl(args.token);
+
+    try {
+      await resend.emails.send({
+        from: `construction.live <${TRIAL_EMAIL}>`,
+        to: [args.email],
+        replyTo,
+        subject: "Confirm your email to finish",
+        text: `Hi ${firstName},\n\nConfirm this address and we'll ask you three quick questions, about a minute, so the founder knows what to bring to the call.\n\nConfirm your email: ${verifyUrl}\n\nThis link works for the next ${args.expiresInHours} hours.\n\nDidn't ask for this? Ignore it — nothing happens until someone presses the button.\n\nconstruction.live\n${HERO_LINE}`,
+        html: trialVerificationHtml({
+          firstName,
+          verifyUrl,
+          hours: args.expiresInHours,
+        }),
+      });
+
+      return { sent: true as const };
+    } catch (error) {
+      console.error("Failed to send trial verification email", { email: args.email, error });
+      return { sent: false as const, reason: "send_failed" as const };
+    }
+  },
+});
+
+/* Someone who already finished, filling the form again.
+
+   They get this instead of a second verification link, and the /try page shows
+   the same "check your inbox" screen either way. That is deliberate: if the
+   page said "you've already applied", the form would answer the question "is
+   this address registered with you?" for anyone who typed one in. The answer
+   goes to the inbox that owns the address, which is the only place it belongs. */
+export const sendTrialAlreadyAppliedEmail = internalAction({
+  args: {
+    email: v.string(),
+    name: v.string(),
+  },
+  handler: async (_ctx, args) => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.warn("RESEND_API_KEY is missing; skipping trial repeat-signup email.");
+      return { sent: false as const, reason: "missing_api_key" as const };
+    }
+
+    const resend = new Resend(resendApiKey);
+    const TRIAL_EMAIL = process.env.TRIAL_EMAIL ?? "hello@ai.construction.live";
+    const replyTo = process.env.TRIAL_NOTIFICATION_EMAIL ?? "rahul@construction.live";
+    const firstName = args.name.trim().split(/\s+/)[0] || args.name;
+
+    try {
+      await resend.emails.send({
+        from: `construction.live <${TRIAL_EMAIL}>`,
+        to: [args.email],
+        replyTo,
+        subject: "You're already on the list",
+        text: `Hi ${firstName},\n\nYou've already answered the questions and your details are with the founder. Nothing more to do — you'll hear from him directly.\n\nIf you'd rather not wait, book a 15-minute call here: ${CALENDAR_URL}\n\nReply to this email if anything has changed.\n\nconstruction.live\n${HERO_LINE}`,
+        html: brandedReplyHtml({
+          documentTitle: "You're already on the list",
+          preheader: "Your details are already with the founder. Nothing more to do.",
+          eyebrow: "Already on the list",
+          heading: `You&rsquo;re already in, ${escapeHtml(firstName)}.`,
+          paragraphs: [
+            "You&rsquo;ve already answered the questions and your details are with the founder. Nothing more to do — you&rsquo;ll hear from him directly.",
+            "If you&rsquo;d rather not wait, grab a slot now:",
+          ],
+          cta: { label: "Book a 15-minute call &rarr;", href: CALENDAR_URL },
+          recapLabel: "",
+          rows: [],
+          closingNote: "Something changed since you signed up? Just reply to this email.",
+          footerReason:
+            "You&rsquo;re getting this because someone entered this address at construction.live/try.",
+        }),
+      });
+
+      return { sent: true as const };
+    } catch (error) {
+      console.error("Failed to send trial repeat-signup email", { email: args.email, error });
+      return { sent: false as const, reason: "send_failed" as const };
+    }
+  },
+});
+
+function trialCompletionReplyHtml(args: { firstName: string; rows: [string, string][] }) {
+  return brandedReplyHtml({
+    documentTitle: "Thanks — the founder will reach out",
+    preheader:
+      "Your answers are in. The founder reviews each one himself and reaches out after that.",
+    eyebrow: "All done",
+    heading: `That&rsquo;s everything, ${escapeHtml(args.firstName)}.`,
+    paragraphs: [
+      `Your answers went straight to the founder. He reads every one himself, and <strong style="color:${INK}; font-weight:600;">reaches out personally once he&rsquo;s reviewed your details</strong> — usually within one business day.`,
+      "We set accounts up by hand rather than handing out logins automatically. It is slower, and it is why the people who get in get a system already pointed at the problem they told us about.",
+      "If you&rsquo;d rather not wait for the email, grab a slot directly:",
+    ],
+    cta: { label: "Book a 15-minute call &rarr;", href: CALENDAR_URL },
+    recapLabel: "What you told us",
+    rows: args.rows,
+    closingNote: "Got something wrong? Just reply to this email — it reaches a person.",
+    footerReason: "You&rsquo;re getting this because you signed up at construction.live/try.",
+  });
+}
+
+/* Internal: only convex/trial.ts schedules this, and only for a row that has
+   already been verified — so the founder's inbox never sees an address that
+   hasn't proved it exists. That is the whole reason this flow has three steps. */
+export const sendTrialCompletionEmails = internalAction({
+  args: {
+    company: v.string(),
+    name: v.string(),
+    email: v.string(),
+    biggestProblem: v.string(),
+    workType: v.string(),
+    teamSize: v.string(),
+    notes: v.optional(v.string()),
+    verifiedAt: v.optional(v.number()),
+    /* See the note on sendQuoteRequestEmails. */
+    sourceFirst: v.optional(v.string()),
+    sourceLast: v.optional(v.string()),
+  },
+  handler: async (_ctx, args) => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.warn("RESEND_API_KEY is missing; skipping trial completion emails.");
+      return { sent: false as const, reason: "missing_api_key" as const };
+    }
+
+    const resend = new Resend(resendApiKey);
+    const notifyTo = process.env.TRIAL_NOTIFICATION_EMAIL ?? "rahul@construction.live";
+    const TRIAL_EMAIL = process.env.TRIAL_EMAIL ?? "hello@ai.construction.live";
+
+    /* Mirrors the form in app/try/. "Email verified" is on the notification
+       rather than implied, because it is the fact that separates this from
+       every other lead in the inbox: the address answered a challenge. */
+    const rows: [string, string][] = [
+      ["Company", args.company],
+      ["Name", args.name],
+      ["Email", args.email],
+      [
+        "Email verified",
+        args.verifiedAt ? `yes — ${new Date(args.verifiedAt).toISOString()}` : "yes",
+      ],
+      ["Biggest problem", args.biggestProblem],
+      ["Kind of work", args.workType],
+      ["Field team size", args.teamSize],
+      ["Anything else", args.notes || "not given"],
+      ...sourceRows(args),
+    ];
+
+    try {
+      await resend.emails.send({
+        from: `construction.live <${TRIAL_EMAIL}>`,
+        to: [notifyTo],
+        replyTo: args.email,
+        subject: `Try now: ${args.company} — ${args.biggestProblem}`,
+        text: rows.map(([label, value]) => `${label}: ${value}`).join("\n"),
+        html: `<h2>New verified signup from /try</h2><table cellpadding="6" style="border-collapse:collapse">${rows
+          .map(
+            ([label, value]) =>
+              `<tr><td style="border:1px solid #ddd"><strong>${escapeHtml(label)}</strong></td><td style="border:1px solid #ddd">${escapeHtml(value).replace(/\n/g, "<br>")}</td></tr>`,
+          )
+          .join("")}</table>`,
+      });
+    } catch (error) {
+      console.error("Failed to send trial notification", { email: args.email, error });
+      return { sent: false as const, reason: "send_failed" as const };
+    }
+
+    /* The reply. Keep the promise here identical to the one on the final screen
+       in app/try/verify/page.tsx: the founder reaches out after reviewing. */
+    const firstName = args.name.trim().split(/\s+/)[0] || args.name;
+    const recap: [string, string][] = (
+      [
+        ["Company", args.company],
+        ["Biggest problem", args.biggestProblem],
+        ["Kind of work", args.workType],
+        ["Field team size", args.teamSize],
+        ["Anything else", args.notes ?? ""],
+      ] as [string, string][]
+    ).filter(([, value]) => value.trim() !== "");
+
+    try {
+      await resend.emails.send({
+        from: `construction.live <${TRIAL_EMAIL}>`,
+        to: [args.email],
+        replyTo: notifyTo,
+        subject: "Thanks — the founder will reach out",
+        text: `Hi ${firstName},\n\nYour answers went straight to the founder. He reads every one himself and reaches out personally once he's reviewed your details, usually within one business day.\n\nWe set accounts up by hand rather than handing out logins automatically. It is slower, and it is why the people who get in get a system already pointed at the problem they told us about.\n\nIf you'd rather not wait, book a 15-minute call here: ${CALENDAR_URL}\n\nWhat you told us\n${recap
+          .map(([label, value]) => `${label}: ${value}`)
+          .join("\n")}\n\nGot something wrong? Just reply to this email.\n\nconstruction.live\n${HERO_LINE}`,
+        html: trialCompletionReplyHtml({ firstName, rows: recap }),
+      });
+    } catch (error) {
+      console.error("Failed to send trial auto-reply", { email: args.email, error });
+      return { sent: true as const, autoReply: false as const };
+    }
+
+    return { sent: true as const, autoReply: true as const };
+  },
+});

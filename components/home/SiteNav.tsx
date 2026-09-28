@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, ChevronDown } from "lucide-react";
 import ThemeToggle from "@components/ThemeToggle";
 import BrandMark from "@components/BrandMark";
+import { trackCta } from "@/lib/analytics";
 import {
 	solutionGroups,
 	solutionsHref,
@@ -14,6 +15,7 @@ import {
 	privateCloud,
 	contactHref,
 	demoHref,
+	tryHref,
 } from "./nav-data";
 
 type MenuKey = "solutions" | "resources" | "company";
@@ -140,19 +142,30 @@ export default function SiteNav() {
 						</div>
 					</div>
 
+					{/* Three actions, three weights. Try now is the one we want, so it
+					    is the only orange thing in the bar; the demo keeps its border for
+					    the buyer who wants a conversation first; Contact steps down to a
+					    plain link because it is also in the Company menu and the footer. */}
 					<div className="hidden lg:flex items-center gap-3">
 						<ThemeToggle />
 						<a
 							href={contactHref}
-							className="px-4 py-2.5 text-sm font-medium text-do-text-secondary hover:text-do-text border border-do-border hover:border-do-border-accent rounded-lg transition-all"
+							className="px-3.5 py-2 text-sm text-do-text-secondary hover:text-do-text transition-colors rounded-lg hover:bg-do-bg-light"
 						>
 							Contact
 						</a>
 						<a
 							href={demoHref}
-							className="group px-5 py-2.5 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-lg transition-all shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] flex items-center gap-1.5"
+							className="px-4 py-2.5 text-sm font-medium text-do-text-secondary hover:text-do-text border border-do-border hover:border-do-border-accent rounded-lg transition-all"
 						>
 							Book a demo
+						</a>
+						<a
+							href={tryHref}
+							onClick={() => trackCta("nav", "Try now", tryHref)}
+							className="group px-5 py-2.5 text-sm font-medium text-white bg-do-orange hover:bg-do-orange-dark rounded-lg transition-all shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] flex items-center gap-1.5"
+						>
+							Try now
 							<ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
 						</a>
 					</div>
@@ -352,15 +365,25 @@ export default function SiteNav() {
 
 						<div className="flex flex-col gap-3 mt-8">
 							<a
-								href={demoHref}
+								href={tryHref}
 								className="px-4 py-3 text-center text-white bg-do-orange rounded-lg font-medium"
+								onClick={() => {
+									trackCta("nav_mobile", "Try now", tryHref);
+									setMobileOpen(false);
+								}}
+							>
+								Try now
+							</a>
+							<a
+								href={demoHref}
+								className="px-4 py-3 text-center text-do-text border border-do-border rounded-lg font-medium"
 								onClick={() => setMobileOpen(false)}
 							>
 								Book a demo
 							</a>
 							<a
 								href={contactHref}
-								className="px-4 py-3 text-center text-do-text border border-do-border rounded-lg font-medium"
+								className="px-4 py-3 text-center text-do-text-secondary font-medium"
 								onClick={() => setMobileOpen(false)}
 							>
 								Contact

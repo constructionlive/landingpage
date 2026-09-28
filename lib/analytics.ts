@@ -29,6 +29,16 @@ export const EVENTS = {
 	CONTACT_SUBMITTED: "contact_submitted",
 	CONTACT_FAILED: "contact_failed",
 
+	/* The /try onboarding. Three steps, three events, because the drop-off
+	   between them is the whole story: started-but-never-verified is bot
+	   traffic or a mail that landed in spam, verified-but-never-answered is a
+	   form that lost them. One "trial_submitted" event could not tell those
+	   apart, and they need opposite fixes. */
+	TRIAL_STARTED: "trial_started",
+	TRIAL_VERIFIED: "trial_verified",
+	TRIAL_COMPLETED: "trial_completed",
+	TRIAL_FAILED: "trial_failed",
+
 	/* The newsletter register. Always carries a `location`, for the same reason
 	   CTA_CLICKED does: the form appears in the footer of every page and again
 	   on /newsletter, and one number covering both can't tell you whether the

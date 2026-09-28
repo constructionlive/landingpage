@@ -246,3 +246,8 @@ export const contactHref = "/contact";
    explain what someone is signing up for. */
 export const newsletterHref = "/newsletter";
 export const demoHref = "/book";
+/* The self-serve door: company, name, a confirmed email and three questions,
+   then the founder sets the account up by hand. The primary call to action
+   everywhere it appears — a demo is a meeting someone has to want, this is a
+   form someone can fill in on site at lunch. */
+export const tryHref = "/try";
