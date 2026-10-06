@@ -29,6 +29,10 @@ export const EVENTS = {
 	CONTACT_SUBMITTED: "contact_submitted",
 	CONTACT_FAILED: "contact_failed",
 
+	/* The /data-deletion-request form. */
+	DATA_DELETION_SUBMITTED: "data_deletion_submitted",
+	DATA_DELETION_FAILED: "data_deletion_failed",
+
 	/* The /try onboarding. Three steps, three events, because the drop-off
 	   between them is the whole story: started-but-never-verified is bot
 	   traffic or a mail that landed in spam, verified-but-never-answered is a

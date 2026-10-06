@@ -12,6 +12,7 @@ import type * as agent from "../agent.js";
 import type * as agentAuth from "../agentAuth.js";
 import type * as auth from "../auth.js";
 import type * as contact from "../contact.js";
+import type * as dataDeletion from "../dataDeletion.js";
 import type * as earlyAccess from "../earlyAccess.js";
 import type * as emails from "../emails.js";
 import type * as functions from "../functions.js";
@@ -34,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   agentAuth: typeof agentAuth;
   auth: typeof auth;
   contact: typeof contact;
+  dataDeletion: typeof dataDeletion;
   earlyAccess: typeof earlyAccess;
   emails: typeof emails;
   functions: typeof functions;

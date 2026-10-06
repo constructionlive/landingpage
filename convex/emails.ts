@@ -448,6 +448,117 @@ export const sendContactMessageEmails = internalAction({
   },
 });
 
+/* ── Data deletion requests ─────────────────────────────────────────────── */
+
+const SCOPE_LABEL = {
+  associated: "Associated data only (keep the account)",
+  all: "All data, including the account",
+} as const;
+
+function dataDeletionReplyHtml(args: { firstName: string; rows: [string, string][] }) {
+  return brandedReplyHtml({
+    documentTitle: "We got your deletion request",
+    preheader: "Your deletion request is with the team. We confirm when it is done, within 30 days.",
+    eyebrow: "Deletion request received",
+    heading: `Thanks, ${escapeHtml(args.firstName)}.`,
+    paragraphs: [
+      `We&rsquo;ve logged your request. To make sure nobody can delete someone else&rsquo;s data, we may reply to this address first to confirm it&rsquo;s really you. The deletion is completed <strong style="color:${INK}; font-weight:600;">within 30 days</strong>, and you&rsquo;ll get a confirmation email when it&rsquo;s done.`,
+      `If your account belongs to an organization, records you filed into its shared projects stay with those projects as construction records, with your name and contact details removed. The full policy is at <a href="${SITE_ORIGIN}/privacy" style="color:${INK}; text-decoration:underline;">construction.live/privacy</a>.`,
+    ],
+    recapLabel: "What you asked for",
+    rows: args.rows,
+    closingNote: "Sent this by mistake, or want to change the scope? Just reply to this email.",
+    footerReason: "You&rsquo;re getting this because a data deletion request was submitted with your address at construction.live.",
+  });
+}
+
+/* Internal: only convex/dataDeletion.ts schedules this. */
+export const sendDataDeletionRequestEmails = internalAction({
+  args: {
+    name: v.string(),
+    email: v.string(),
+    company: v.optional(v.string()),
+    scope: v.union(v.literal("associated"), v.literal("all")),
+    details: v.optional(v.string()),
+  },
+  handler: async (_ctx, args) => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.warn("RESEND_API_KEY is missing; skipping data deletion request emails.");
+      return { sent: false as const, reason: "missing_api_key" as const };
+    }
+
+    const resend = new Resend(resendApiKey);
+    /* Falls back to the contact address so the request lands where the rest
+       of the privacy mail does, unless someone routes it elsewhere. */
+    const notifyTo =
+      process.env.DATA_DELETION_NOTIFICATION_EMAIL ??
+      process.env.CONTACT_NOTIFICATION_EMAIL ??
+      "rahul@construction.live";
+    const CONTACT_EMAIL = process.env.CONTACT_EMAIL ?? "hello@ai.construction.live";
+    const scopeLabel = SCOPE_LABEL[args.scope];
+
+    /* Mirrors the form in app/data-deletion-request/page.tsx. */
+    const rows: [string, string][] = [
+      ["Name", args.name],
+      ["Account email", args.email],
+      ["Company", args.company || "not given"],
+      ["Scope", scopeLabel],
+      ["Details", args.details || "not given"],
+      ["Requested", new Date().toISOString()],
+    ];
+
+    try {
+      await resend.emails.send({
+        from: `construction.live <${CONTACT_EMAIL}>`,
+        to: [notifyTo],
+        replyTo: args.email,
+        subject: `Data deletion request (${args.scope === "all" ? "ALL DATA" : "associated data"}) — ${args.email}`,
+        text: `${rows.map(([label, value]) => `${label}: ${value}`).join("\n")}\n\nThe privacy policy promises completion within 30 days and a confirmation email when done.`,
+        html: `<h2>Data deletion request</h2><table cellpadding="6" style="border-collapse:collapse">${rows
+          .map(
+            ([label, value]) =>
+              `<tr><td style="border:1px solid #ddd"><strong>${escapeHtml(label)}</strong></td><td style="border:1px solid #ddd">${escapeHtml(value).replace(/\n/g, "<br>")}</td></tr>`,
+          )
+          .join("")}</table><p>The privacy policy promises completion within 30 days and a confirmation email when done.</p>`,
+      });
+    } catch (error) {
+      console.error("Failed to send data deletion notification", { email: args.email, error });
+      return { sent: false as const, reason: "send_failed" as const };
+    }
+
+    /* Acknowledgement to the requester. Keep the promise identical to the
+       success screen on the page and to Section 9 of the privacy policy. */
+    const firstName = args.name.split(/\s+/)[0] || args.name;
+    const recap: [string, string][] = (
+      [
+        ["Account email", args.email],
+        ["Company", args.company ?? ""],
+        ["Scope", scopeLabel],
+        ["Details", args.details ?? ""],
+      ] as [string, string][]
+    ).filter(([, value]) => value.trim() !== "");
+
+    try {
+      await resend.emails.send({
+        from: `construction.live <${CONTACT_EMAIL}>`,
+        to: [args.email],
+        replyTo: notifyTo,
+        subject: "We got your data deletion request",
+        text: `Hi ${firstName},\n\nWe've logged your request. To make sure nobody can delete someone else's data, we may reply to this address first to confirm it's really you. The deletion is completed within 30 days, and you'll get a confirmation email when it's done.\n\nIf your account belongs to an organization, records you filed into its shared projects stay with those projects as construction records, with your name and contact details removed. Full policy: ${SITE_ORIGIN}/privacy\n\nWhat you asked for\n${recap
+          .map(([label, value]) => `${label}: ${value}`)
+          .join("\n")}\n\nSent this by mistake, or want to change the scope? Just reply to this email.\n\nconstruction.live`,
+        html: dataDeletionReplyHtml({ firstName, rows: recap }),
+      });
+    } catch (error) {
+      console.error("Failed to send data deletion acknowledgement", { email: args.email, error });
+      return { sent: true as const, autoReply: false as const };
+    }
+
+    return { sent: true as const, autoReply: true as const };
+  },
+});
+
 /* ── Newsletter ─────────────────────────────────────────────────────────── */
 
 /* Two opt-out URLs for the same token, and they are not interchangeable.

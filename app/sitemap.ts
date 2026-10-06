@@ -32,6 +32,7 @@ const staticRoutes: MetadataRoute.Sitemap = [
 	{ url: absoluteUrl("/newsletter"), changeFrequency: "monthly", priority: 0.7 },
 	{ url: absoluteUrl("/contact"), changeFrequency: "monthly", priority: 0.7 },
 	{ url: absoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.4 },
+	{ url: absoluteUrl("/data-deletion-request"), changeFrequency: "yearly", priority: 0.3 },
 ];
 
 /* The long-form articles under /resources and /compare. Read from the same

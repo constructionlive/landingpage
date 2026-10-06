@@ -278,4 +278,23 @@ export default defineSchema({
   })
     .index("by_normalizedEmail", ["normalizedEmail"])
     .index("by_createdAt", ["createdAt"]),
+
+  /* The /data-deletion-request form. A row per request so there is a dated
+     record of what was asked and when, which the privacy policy promises and
+     a regulator may ask for. The deletion itself is done by hand from the
+     notification email; `handledAt` is set from the admin side once it is. */
+  dataDeletionRequests: defineTable({
+    name: v.string(),
+    email: v.string(),
+    normalizedEmail: v.string(),
+    company: v.optional(v.string()),
+    /* "associated": the data tied to the account (recordings, reports, files)
+       but keep the account. "all": the account and everything with it. */
+    scope: v.union(v.literal("associated"), v.literal("all")),
+    details: v.optional(v.string()),
+    createdAt: v.number(),
+    handledAt: v.optional(v.number()),
+  })
+    .index("by_normalizedEmail", ["normalizedEmail"])
+    .index("by_createdAt", ["createdAt"]),
 });
