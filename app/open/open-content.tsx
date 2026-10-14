@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
 	Apple,
@@ -22,6 +22,7 @@ import SiteNav from "@/components/home/SiteNav";
 import SiteFooter from "@/components/home/SiteFooter";
 import { contactHref } from "@/components/home/nav-data";
 import { trackCta } from "@/lib/analytics";
+import DownloadPrompt, { type DownloadInfo } from "./DownloadPrompt";
 import { APPS, FILM, MANIFESTO, OPEN_FAQ, ROAD, STATS, type OpenApp } from "./content";
 import { formatReleaseDate, formatSize, type AppRelease, type ReleaseMap } from "./releases";
 
@@ -179,18 +180,26 @@ function DownloadButton({
 	size,
 	app,
 	primary,
+	onStart,
 }: {
 	platform: "mac" | "windows";
 	href: string;
 	size: string | null;
-	app: string;
+	app: OpenApp;
 	primary: boolean;
+	onStart: (info: DownloadInfo) => void;
 }) {
 	const label = platform === "mac" ? "Download for Mac" : "Download for Windows";
 	return (
 		<Link
 			href={href}
-			onClick={() => trackCta(`open_${app}`, label, href)}
+			/* The browser follows the link and starts the file; the prompt opens
+			   beside it. Not preventDefault: the download must never depend on
+			   the prompt. */
+			onClick={() => {
+				trackCta(`open_${app.slug}`, label, href);
+				onStart({ app: app.name, platform });
+			}}
 			className={`group inline-flex items-center gap-2.5 rounded-xl px-5 py-3.5 text-sm font-medium transition-all ${
 				primary
 					? "bg-do-orange text-white shadow-[0_0_30px_rgba(249,115,22,0.2)] hover:bg-do-orange-dark hover:shadow-[0_0_45px_rgba(249,115,22,0.35)]"
@@ -253,10 +262,12 @@ function AvailableApp({
 	app,
 	release,
 	index,
+	onStart,
 }: {
 	app: OpenApp;
 	release: AppRelease | undefined;
 	index: number;
+	onStart: (info: DownloadInfo) => void;
 }) {
 	const flip = index % 2 === 1;
 	const line = releaseLine(release);
@@ -304,8 +315,9 @@ function AvailableApp({
 								platform="mac"
 								href={release.mac.url}
 								size={formatSize(release.mac.sizeBytes)}
-								app={app.slug}
+								app={app}
 								primary
+								onStart={onStart}
 							/>
 						)}
 						{app.platforms?.includes("windows") && release?.windows && (
@@ -313,8 +325,9 @@ function AvailableApp({
 								platform="windows"
 								href={release.windows.url}
 								size={formatSize(release.windows.sizeBytes)}
-								app={app.slug}
+								app={app}
 								primary={false}
+								onStart={onStart}
 							/>
 						)}
 					</div>
@@ -490,6 +503,8 @@ function Road() {
 
 export default function OpenContent({ releases }: { releases: ReleaseMap }) {
 	const [openFaq, setOpenFaq] = useState<number | null>(0);
+	const [download, setDownload] = useState<DownloadInfo | null>(null);
+	const closePrompt = useCallback(() => setDownload(null), []);
 	const available = APPS.filter((app) => app.status === "available");
 	const building = APPS.filter((app) => app.status === "building");
 	const takeoff = releases.takeoff;
@@ -660,6 +675,7 @@ export default function OpenContent({ releases }: { releases: ReleaseMap }) {
 								app={app}
 								release={app.releaseKey ? releases[app.releaseKey] : undefined}
 								index={i}
+								onStart={setDownload}
 							/>
 						))}
 					</div>
@@ -771,6 +787,7 @@ export default function OpenContent({ releases }: { releases: ReleaseMap }) {
 			</section>
 
 			<SiteFooter />
+			<DownloadPrompt info={download} onClose={closePrompt} />
 		</main>
 	);
 }
