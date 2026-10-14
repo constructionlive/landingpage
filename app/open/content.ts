@@ -65,6 +65,7 @@ export const APPS: OpenApp[] = [
 			"Split, merge, rotate, reorder, compare revisions, layers, search, flattened export.",
 			"Native Rust, not a browser. An 859-page, 708 MB set opens in 21 ms. A 47 MB download.",
 			"The takeoff is a plain JSON file next to the PDF. A CLI and an MCP server for other tools.",
+			"Works from Claude Code: /plugin marketplace add constructionlive/takeoffbeam, then ask it to count the receptacles.",
 		],
 		status: "available",
 		platforms: ["mac", "windows"],
