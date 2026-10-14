@@ -5,12 +5,6 @@ import {
 	FileSignature,
 	CalendarRange,
 	FileText,
-	Lock,
-	HardDrive,
-	Github,
-	Gauge,
-	Wallet,
-	Layers,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -175,55 +169,74 @@ export const APPS: OpenApp[] = [
 	},
 ];
 
-/* ── Principles ───────────────────────────────────────────────────────────
-   What every app on the page is held to. Written as commitments rather than
-   features because they are the thing a buyer is actually weighing against
-   the commercial tool: not "does it do takeoff" but "will my data leave, will
-   it be worse, and what happens when you change your mind about free". */
-export interface Principle {
-	icon: LucideIcon;
-	title: string;
+/* ── The film ───────────────────────────────────────────────────────────
+   The Takeoff Desk launch film, 74 seconds, rendered entirely from code and
+   the real app (takeoff-desk/marketing). Transcoded to 1280p for the web;
+   the poster is the opening title card. */
+export const FILM = {
+	src: "/video/takeoff-desk-launch.mp4",
+	poster: "/images/open/launch-poster.jpg",
+	title: "Takeoff Desk launch film",
+	duration: "1:14",
+};
+
+/* ── Headline numbers ───────────────────────────────────────────────────
+   Every one is measured, on Takeoff Desk, and appears in the film. Nothing
+   here is a projection. */
+export const STATS = [
+	{ value: "21 ms", label: "to open an 859-page, 708 MB drawing set" },
+	{ value: "47 MB", label: "the whole app, native Rust, no browser" },
+	{ value: "0 bytes", label: "sent to a model vendor by default" },
+	{ value: "$0", label: "now, and not just for now" },
+];
+
+/* ── Manifesto ──────────────────────────────────────────────────────────
+   Four beliefs, in the order a contractor would object to them. Written as
+   positions, not features: the reader is weighing whether to trust free
+   software with sealed bids, and a feature list does not answer that. */
+export interface Belief {
+	numeral: string;
+	statement: string;
 	detail: string;
 }
 
-export const PRINCIPLES: Principle[] = [
+export const MANIFESTO: Belief[] = [
 	{
-		icon: Lock,
-		title: "100% local",
+		numeral: "01",
+		statement: "Your drawings are yours.",
 		detail:
-			"The app, the files and the model run on your machine. No account to use it, no telemetry of your documents, nothing sent to a model vendor unless you flip to a cloud model yourself.",
+			"They were yours before software existed, and a subscription should not change that. Every Open Construction app runs on your own machine. The files stay where you put them, the model reads them on your disk, and uninstalling us costs you nothing you made.",
 	},
 	{
-		icon: Gauge,
-		title: "On par with the commercial tool",
+		numeral: "02",
+		statement: "Local is the default, not the upgrade.",
 		detail:
-			"Each app has a named incumbent and ships when it can stand in for it on a real job. Takeoff Desk opens a 708 MB set in 21 milliseconds; that is the bar, not a demo.",
+			"The industry sells privacy as an enterprise tier. We think a two-person sub deserves the same guarantee as a public owner. So the apps work offline, need no account, and only reach a cloud model when you flip the switch yourself.",
 	},
 	{
-		icon: HardDrive,
-		title: "Plain files, native apps",
+		numeral: "03",
+		statement: "Free has to be at least as good.",
 		detail:
-			"Rust, not Electron, where it counts. Your takeoff is a JSON file next to the PDF, your documents are .docx and .xlsx. Uninstall us and you keep everything.",
+			"Free software that is worse is a tax on the people who cannot afford the real thing. Each app here has a named commercial incumbent, and it does not ship until it can stand in for that tool on a real job. The numbers in the film are the bar.",
 	},
 	{
-		icon: Github,
-		title: "Open where it can be",
+		numeral: "04",
+		statement: "Build it in the open.",
 		detail:
-			"Takeoff Desk is Apache 2.0 on GitHub. Read it, build it, fork it. The apps that follow go the same way as they mature.",
-	},
-	{
-		icon: Wallet,
-		title: "Free, not free for now",
-		detail:
-			"It runs on your electricity, so there is nothing for us to meter. The paid product is the shared platform for a team, which these apps connect to if you want them to.",
-	},
-	{
-		icon: Layers,
-		title: "Windows and Mac",
-		detail:
-			"Every app targets both. Takeoff Desk ships for both today; the desktop workspace is Apple Silicon first with Windows underway.",
+			"Takeoff Desk is Apache 2.0 on GitHub, down to the film you are about to watch. Read it, fork it, file the bug. The apps that follow go the same way as they mature, because software a trade relies on should not be able to disappear.",
 	},
 ];
+
+/* ── The road ───────────────────────────────────────────────────────────
+   Where the project is going, stated once: the whole construction office.
+   The six apps on the page are the stations on that road, in the order
+   they are being built. */
+export const ROAD = {
+	label: "Where this is going",
+	headline: "The whole construction office, one app at a time.",
+	detail:
+		"Takeoff shipped first because an estimator opens a drawing before anyone else touches a job. The full agentic workspace came with it. The next four follow the paperwork downstream: check the set, read the contract, build the schedule, write the documents.",
+};
 
 /* ── FAQ ────────────────────────────────────────────────────────────────── */
 export const OPEN_FAQ = [
