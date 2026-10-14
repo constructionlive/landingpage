@@ -5,3 +5,11 @@ out/
 .env.local
 *.tsbuildinfo
 next-env.d.ts
+
+# local recordings, not for the repo
+*.mov
+take off recording.mov
+*.MP4
+*.mp4
+# the compressed recordings the home page plays are kept
+!public/video/*.mp4

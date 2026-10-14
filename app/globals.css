@@ -728,3 +728,248 @@ body {
 .article-body .sources li {
 	margin-bottom: 0.5rem;
 }
+
+/* ── Homepage story (components/home/DeckHome.tsx) ──────────────────────
+   Dark by design: the wireframe scenes are drawn on the brand's navy, so the
+   block carries the `.dark` class and its own tokens regardless of the site
+   theme. The stage is pinned for the whole story; the steps scroll over it. */
+.deck {
+	position: relative;
+	background: #0a0e1a;
+	color: #e2e8f0;
+}
+.deck-stage {
+	position: sticky;
+	top: 0;
+	height: 100vh;
+	height: 100svh;
+	overflow: hidden;
+}
+.deck-canvas {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+.deck-labels {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+.deck-fallback {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	opacity: 0.5;
+}
+/* Projected 3D labels, placed by the scenes in viewport pixels. */
+.deck-labels .lbl {
+	position: absolute;
+	transform: translate(0, -50%);
+	font-family: "Inter", system-ui, sans-serif;
+	font-weight: 600;
+	font-size: clamp(14px, 1.6vw, 24px);
+	letter-spacing: -0.01em;
+	color: #e2e8f0;
+	white-space: nowrap;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+.deck-labels .lbl.in {
+	opacity: 1;
+}
+.deck-labels .lbl::before {
+	content: "";
+	display: inline-block;
+	width: 34px;
+	height: 1px;
+	background: #ff6b35;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.deck-panel {
+	display: none;
+	position: absolute;
+	right: clamp(16px, 3vw, 48px);
+	bottom: clamp(24px, 6vh, 64px);
+	width: min(42vw, 620px);
+	margin: 0;
+	border: 1px solid #1e293b;
+	background: rgba(17, 24, 39, 0.92);
+	padding: 10px;
+	z-index: 2;
+}
+.deck-panel.is-on {
+	display: block;
+}
+.deck-panel video {
+	display: block;
+	width: 100%;
+	max-height: 50vh;
+	background: #000;
+}
+.deck-panel figcaption {
+	margin-top: 8px;
+	font-family: "JetBrains Mono", monospace;
+	font-size: 11px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: #8892a4;
+}
+.deck-steps {
+	position: relative;
+	z-index: 1;
+	margin-top: -100vh;
+	margin-top: -100svh;
+	pointer-events: none;
+}
+.deck-step {
+	min-height: 100vh;
+	min-height: 100svh;
+}
+/* Copy is pinned in the stage and crossfades; the spacers only drive it. */
+.deck-copy {
+	position: absolute;
+	left: clamp(20px, 4vw, 64px);
+	top: clamp(88px, 14vh, 140px);
+	max-width: 56ch;
+	opacity: 0;
+	transform: translateY(10px);
+	transition: opacity 0.45s ease, transform 0.45s ease;
+	pointer-events: none;
+	z-index: 2;
+}
+.deck-copy.is-active {
+	opacity: 1;
+	transform: none;
+	transition-delay: 0.12s;
+}
+.deck-copy-hero {
+	top: auto;
+	bottom: clamp(56px, 10vh, 120px);
+}
+.deck-canvas {
+	transition: opacity 0.22s ease;
+}
+.deck-canvas.is-switching {
+	opacity: 0;
+}
+.deck-label {
+	font-family: "JetBrains Mono", monospace;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: #ff6b35;
+	margin: 0 0 12px;
+}
+.deck-h1 {
+	font-weight: 600;
+	font-size: clamp(44px, 7vw, 112px);
+	line-height: 1;
+	letter-spacing: -0.035em;
+	margin: 0;
+	text-wrap: balance;
+}
+.deck-h2 {
+	font-weight: 600;
+	font-size: clamp(24px, 2.8vw, 44px);
+	line-height: 1.12;
+	letter-spacing: -0.025em;
+	margin: 0;
+	text-wrap: balance;
+	text-shadow: 0 2px 24px rgba(10, 14, 26, 0.9);
+}
+.deck-sub {
+	font-size: clamp(16px, 1.5vw, 23px);
+	line-height: 1.45;
+	color: #cbd3de;
+	margin: 12px 0 0;
+	max-width: 52ch;
+	text-shadow: 0 2px 24px rgba(10, 14, 26, 0.9);
+}
+/* The next-step chevron, centred at the bottom of every frame. */
+.deck-next {
+	position: absolute;
+	left: 50%;
+	bottom: clamp(14px, 3vh, 28px);
+	transform: translateX(-50%);
+	width: 48px;
+	height: 48px;
+	border-radius: 999px;
+	border: 1px solid #334155;
+	background: rgba(17, 24, 39, 0.7);
+	color: #e2e8f0;
+	display: grid;
+	place-items: center;
+	cursor: pointer;
+	z-index: 3;
+	animation: deck-nudge 1.8s ease-in-out infinite;
+	transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.deck-next:hover,
+.deck-next:focus-visible {
+	border-color: #ff6b35;
+	color: #ff6b35;
+	background: rgba(17, 24, 39, 0.95);
+	outline: none;
+	animation: none;
+}
+.deck-hint {
+	font-family: "JetBrains Mono", monospace;
+	font-size: 11px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: #8892a4;
+	margin: 28px 0 0;
+	animation: deck-nudge 1.8s ease-in-out infinite;
+}
+@keyframes deck-nudge {
+	0%, 100% { transform: translate(-50%, 0); opacity: 0.7; }
+	50% { transform: translate(-50%, 6px); opacity: 1; }
+}
+@media (max-width: 720px) {
+	.deck-panel {
+		left: 16px;
+		right: 16px;
+		width: auto;
+		bottom: 16px;
+		padding: 6px;
+	}
+	.deck-panel video {
+		max-height: 30vh;
+	}
+	.deck-copy {
+		max-width: 100%;
+	}
+	.deck-labels .lbl {
+		font-size: 13px;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.deck-hint,
+	.deck-next {
+		animation: none;
+	}
+	.deck-copy,
+	.deck-canvas {
+		transition: none;
+	}
+}
+/* Auto-hiding header on the homepage; pointer devices only. */
+@media (hover: hover) {
+	main.nav-auto-hidden > nav {
+		opacity: 0;
+		pointer-events: none;
+	}
+	main > nav {
+		transition: opacity 0.3s ease;
+	}
+}
+/* Hero wireframe panel on the homepage (components/home/EngineeringHome.tsx):
+   the projected labels sit in a framed panel, not the full viewport. */
+.hero-stack .deck-labels .lbl {
+	font-size: 13px;
+}
