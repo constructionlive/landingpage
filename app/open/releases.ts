@@ -13,11 +13,16 @@ import { getRelease as getDesktopRelease, FALLBACK_DOWNLOAD_URL } from "../local
 const R2_BASE = "https://pub-061018a047d54079b309fb16a26a1ce0.r2.dev/";
 const TAKEOFF_MANIFEST_URL = `${R2_BASE}takeoff-desk/latest.json`;
 
-/* Used only if the manifest cannot be read. Safe to fall behind: the app
-   checks the same feed and updates itself once installed. */
-const TAKEOFF_FALLBACK = {
-	mac: `${R2_BASE}takeoff-desk/0.0.1/Takeoff-Desk-0.0.1-arm64.dmg`,
-	windows: `${R2_BASE}takeoff-desk/0.0.1/Takeoff-Desk-0.0.1-x64-setup.exe`,
+/* The buttons point at the stable `latest/` paths, which the publish script
+   overwrites on every release, rather than the versioned paths the manifest
+   lists. A link copied from this page into an email or a forum post then
+   keeps working for the newest build instead of the one that was current
+   the day it was pasted. The manifest is still read for the version line and
+   the date. */
+export const TAKEOFF_LATEST = {
+	mac: `${R2_BASE}takeoff-desk/latest/Takeoff-Desk-arm64.dmg`,
+	windows: `${R2_BASE}takeoff-desk/latest/Takeoff-Desk-x64-setup.exe`,
+	film: `${R2_BASE}takeoff-desk/latest/Takeoff-Desk-launch.mp4`,
 };
 
 export const TAKEOFF_GITHUB_URL = "https://github.com/constructionlive/takeoffbeam";
@@ -52,31 +57,28 @@ async function headSize(url: string): Promise<number | null> {
 }
 
 async function getTakeoffRelease(): Promise<AppRelease> {
+	const [macSize, winSize] = await Promise.all([
+		headSize(TAKEOFF_LATEST.mac),
+		headSize(TAKEOFF_LATEST.windows),
+	]);
+	const builds = {
+		mac: { url: TAKEOFF_LATEST.mac, sizeBytes: macSize },
+		windows: { url: TAKEOFF_LATEST.windows, sizeBytes: winSize },
+	};
 	try {
 		const response = await fetch(TAKEOFF_MANIFEST_URL, { next: { revalidate: 600 } });
 		if (!response.ok) throw new Error(`manifest ${response.status}`);
-		const manifest = (await response.json()) as {
-			version?: string;
-			date?: string;
-			downloads?: { "macos-arm64"?: string; "windows-x64"?: string };
-		};
-		const macUrl = manifest.downloads?.["macos-arm64"] ?? TAKEOFF_FALLBACK.mac;
-		const winUrl = manifest.downloads?.["windows-x64"] ?? TAKEOFF_FALLBACK.windows;
-		const [macSize, winSize] = await Promise.all([headSize(macUrl), headSize(winUrl)]);
+		const manifest = (await response.json()) as { version?: string; date?: string };
 		return {
 			version: manifest.version ?? null,
 			releaseDate: manifest.date ?? null,
-			mac: { url: macUrl, sizeBytes: macSize },
-			windows: { url: winUrl, sizeBytes: winSize },
+			...builds,
 		};
 	} catch (error) {
+		/* The buttons do not depend on the manifest, so this only costs the
+		   version line. */
 		console.error("/open: could not read the Takeoff Beam manifest", error);
-		return {
-			version: null,
-			releaseDate: null,
-			mac: { url: TAKEOFF_FALLBACK.mac, sizeBytes: null },
-			windows: { url: TAKEOFF_FALLBACK.windows, sizeBytes: null },
-		};
+		return { version: null, releaseDate: null, ...builds };
 	}
 }
 

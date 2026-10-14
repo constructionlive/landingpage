@@ -170,11 +170,13 @@ export const APPS: OpenApp[] = [
 ];
 
 /* ── The film ───────────────────────────────────────────────────────────
-   The Takeoff Beam launch film, 74 seconds, rendered entirely from code and
-   the real app (takeoff-desk/marketing). Transcoded to 1280p for the web;
-   the poster is the opening title card. */
+   The Takeoff Beam launch film, 74 seconds at 1080p, rendered entirely from
+   code and the real app (takeoff-desk/marketing). Served from the same R2
+   `latest/` path as the installers, so a re-rendered film ships with the
+   next release and never through this repo. The poster is the opening title
+   card. */
 export const FILM = {
-	src: "/video/takeoff-desk-launch.mp4",
+	src: "https://pub-061018a047d54079b309fb16a26a1ce0.r2.dev/takeoff-desk/latest/Takeoff-Desk-launch.mp4",
 	poster: "/images/open/launch-poster.jpg",
 	title: "Takeoff Beam launch film",
 	duration: "1:14",
