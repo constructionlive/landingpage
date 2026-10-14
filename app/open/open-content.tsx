@@ -542,25 +542,26 @@ export default function OpenContent({ releases }: { releases: ReleaseMap }) {
 						</p>
 
 						<div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-							<button
-								type="button"
-								onClick={() => window.dispatchEvent(new Event(PLAY_EVENT))}
-								className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-do-orange px-7 py-4 text-base font-medium text-white shadow-[0_0_30px_rgba(249,115,22,0.25)] transition-all hover:bg-do-orange-dark hover:shadow-[0_0_45px_rgba(249,115,22,0.4)]"
-							>
-								<Play className="h-4 w-4 fill-white" />
-								Watch the film
-								<span className="font-mono text-xs text-white/70">{FILM.duration}</span>
-							</button>
 							{takeoff.mac && (
 								<Link
 									href="#takeoff"
-									className="group inline-flex items-center justify-center gap-2.5 rounded-xl border border-do-border px-6 py-4 text-base font-medium text-do-text-secondary transition-all hover:border-do-border-accent hover:text-do-text"
+									onClick={() => trackCta("open_hero", "Get Takeoff Desk", "#takeoff")}
+									className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-do-orange px-7 py-4 text-base font-medium text-white shadow-[0_0_30px_rgba(249,115,22,0.25)] transition-all hover:bg-do-orange-dark hover:shadow-[0_0_45px_rgba(249,115,22,0.4)]"
 								>
-									<Download className="h-4 w-4" />
+									<Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
 									Get Takeoff Desk
-									<span className="font-mono text-xs text-do-text-muted">Mac · Windows</span>
+									<span className="font-mono text-xs text-white/70">Mac · Windows</span>
 								</Link>
 							)}
+							<button
+								type="button"
+								onClick={() => window.dispatchEvent(new Event(PLAY_EVENT))}
+								className="group inline-flex items-center justify-center gap-2.5 rounded-xl border border-do-border px-6 py-4 text-base font-medium text-do-text-secondary transition-all hover:border-do-border-accent hover:text-do-text"
+							>
+								<Play className="h-4 w-4 fill-current" />
+								Watch the film
+								<span className="font-mono text-xs text-do-text-muted">{FILM.duration}</span>
+							</button>
 						</div>
 					</motion.div>
 
