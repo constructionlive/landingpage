@@ -16,6 +16,7 @@ import {
 	ArrowLeftRight,
 	Waypoints,
 	Server,
+	Download,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -197,6 +198,17 @@ export const otherResourceLinks = [
    machine. A product surface rather than a resource, so it gets its own
    constant beside /hardware rather than living in the reading list. */
 export const localHref = "/local";
+/* The Open Construction project: every free desktop app (Takeoff Desk, the
+   local workspace, and the ones still being built) on one page with the
+   downloads. /local stays as the long-form page for the workspace itself. */
+export const openHref = "/open";
+export const openProject: NavItem & { blurb: string } = {
+	label: "Open Construction",
+	slug: "open",
+	href: openHref,
+	icon: Download,
+	blurb: "Free Windows and Mac apps for takeoff, contracts, schedules and documents. 100% local.",
+};
 
 /* Long-form articles. */
 export const resourcesHref = "/resources";

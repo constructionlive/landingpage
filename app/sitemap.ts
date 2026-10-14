@@ -17,6 +17,9 @@ const staticRoutes: MetadataRoute.Sitemap = [
 	/* The free desktop app. High priority because it is the lowest-friction way
 	   into the product and the only page with a download on it. */
 	{ url: absoluteUrl("/local"), changeFrequency: "weekly", priority: 0.9 },
+	/* The Open Construction project: all the free desktop apps and their
+	   downloads, including Takeoff Desk for Windows and Mac. */
+	{ url: absoluteUrl("/open"), changeFrequency: "weekly", priority: 0.9 },
 	{ url: absoluteUrl("/pricing"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/book"), changeFrequency: "monthly", priority: 0.9 },
 	/* The self-serve signup. Same priority as /book: it is the other door in. */

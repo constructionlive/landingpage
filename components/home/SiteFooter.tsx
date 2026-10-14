@@ -10,6 +10,7 @@ import {
 	companyLinks,
 	pricingHref,
 	privateCloud,
+	openProject,
 	newsletterHref,
 	demoHref,
 } from "./nav-data";
@@ -80,18 +81,23 @@ export default function SiteFooter() {
 
 						{/* Same placement as the mega menu: deployment sits under the four
 						    pillars, not as a fifth one. */}
-						<a
-							href={privateCloud.href}
-							className="group mt-8 pt-5 border-t border-do-border flex items-center gap-2.5"
-						>
-							<privateCloud.icon className="h-4 w-4 text-do-orange shrink-0" />
-							<span className="text-[13px] font-medium text-do-text group-hover:text-do-orange transition-colors">
-								{privateCloud.label}
-							</span>
-							<span className="hidden sm:inline text-[13px] text-do-text-secondary">
-								{privateCloud.blurb}
-							</span>
-						</a>
+						<div className="mt-8 pt-5 border-t border-do-border space-y-3">
+							{[privateCloud, openProject].map((link) => (
+								<a
+									key={link.href}
+									href={link.href}
+									className="group flex items-center gap-2.5"
+								>
+									<link.icon className="h-4 w-4 text-do-orange shrink-0" />
+									<span className="text-[13px] font-medium text-do-text group-hover:text-do-orange transition-colors">
+										{link.label}
+									</span>
+									<span className="hidden sm:inline text-[13px] text-do-text-secondary">
+										{link.blurb}
+									</span>
+								</a>
+							))}
+						</div>
 					</div>
 				</div>
 
