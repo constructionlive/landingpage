@@ -545,11 +545,11 @@ export default function OpenContent({ releases }: { releases: ReleaseMap }) {
 							{takeoff.mac && (
 								<Link
 									href="#takeoff"
-									onClick={() => trackCta("open_hero", "Get Takeoff Desk", "#takeoff")}
+									onClick={() => trackCta("open_hero", "Get Takeoff Beam", "#takeoff")}
 									className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-do-orange px-7 py-4 text-base font-medium text-white shadow-[0_0_30px_rgba(249,115,22,0.25)] transition-all hover:bg-do-orange-dark hover:shadow-[0_0_45px_rgba(249,115,22,0.4)]"
 								>
 									<Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-									Get Takeoff Desk
+									Get Takeoff Beam
 									<span className="font-mono text-xs text-white/70">Mac · Windows</span>
 								</Link>
 							)}
@@ -574,7 +574,7 @@ export default function OpenContent({ releases }: { releases: ReleaseMap }) {
 						<div className="pointer-events-none absolute -inset-8 rounded-[3rem] bg-do-orange/[0.1] blur-[90px]" />
 						<Film />
 						<p className="mt-4 text-center font-mono text-[11px] uppercase tracking-wider text-do-text-muted">
-							The Takeoff Desk launch film. Rendered from code and the real app, no screen recording.
+							The Takeoff Beam launch film. Rendered from code and the real app, no screen recording.
 						</p>
 					</motion.div>
 				</div>
@@ -597,7 +597,7 @@ export default function OpenContent({ releases }: { releases: ReleaseMap }) {
 						))}
 					</motion.dl>
 					<p className="mt-3 text-right font-mono text-[11px] uppercase tracking-wider text-do-text-muted">
-						Every number measured on Takeoff Desk. None projected.
+						Every number measured on Takeoff Beam. None projected.
 					</p>
 				</div>
 			</section>

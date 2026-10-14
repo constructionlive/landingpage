@@ -2,7 +2,7 @@
 
    Two apps, two manifests, because they are built by two different toolchains:
    the construction.live desktop app is an Electron build whose electron-builder
-   writes latest-mac.yml, and Takeoff Desk is a Rust app whose publish script
+   writes latest-mac.yml, and Takeoff Beam is a Rust app whose publish script
    writes takeoff-desk/latest.json. Both live on the same public R2 bucket and
    both are fetched with a revalidate window, so a new installer shows up on
    the page without a site deploy. The parsing for the first one already lives
@@ -70,7 +70,7 @@ async function getTakeoffRelease(): Promise<AppRelease> {
 			windows: { url: winUrl, sizeBytes: winSize },
 		};
 	} catch (error) {
-		console.error("/open: could not read the Takeoff Desk manifest", error);
+		console.error("/open: could not read the Takeoff Beam manifest", error);
 		return {
 			version: null,
 			releaseDate: null,

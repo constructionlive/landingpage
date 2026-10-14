@@ -18,7 +18,7 @@ const staticRoutes: MetadataRoute.Sitemap = [
 	   into the product and the only page with a download on it. */
 	{ url: absoluteUrl("/local"), changeFrequency: "weekly", priority: 0.9 },
 	/* The Open Construction project: all the free desktop apps and their
-	   downloads, including Takeoff Desk for Windows and Mac. */
+	   downloads, including Takeoff Beam for Windows and Mac. */
 	{ url: absoluteUrl("/open"), changeFrequency: "weekly", priority: 0.9 },
 	{ url: absoluteUrl("/pricing"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/book"), changeFrequency: "monthly", priority: 0.9 },

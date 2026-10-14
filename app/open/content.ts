@@ -54,7 +54,7 @@ export const APPS: OpenApp[] = [
 		slug: "takeoff",
 		releaseKey: "takeoff",
 		icon: Ruler,
-		name: "Takeoff Desk",
+		name: "Takeoff Beam",
 		replaces: "Bluebeam Revu",
 		tagline: "PDF viewer, markups and quantity takeoff, with an agent that works the sheet.",
 		detail:
@@ -73,7 +73,7 @@ export const APPS: OpenApp[] = [
 			src: "/images/open/takeoff-desk.png",
 			width: 1440,
 			height: 900,
-			alt: "Takeoff Desk with a drawing sheet open, a takeoff in progress and the markups list below",
+			alt: "Takeoff Beam with a drawing sheet open, a takeoff in progress and the markups list below",
 		},
 		source: "https://github.com/constructionlive/takeoffbeam",
 	},
@@ -170,18 +170,18 @@ export const APPS: OpenApp[] = [
 ];
 
 /* ── The film ───────────────────────────────────────────────────────────
-   The Takeoff Desk launch film, 74 seconds, rendered entirely from code and
+   The Takeoff Beam launch film, 74 seconds, rendered entirely from code and
    the real app (takeoff-desk/marketing). Transcoded to 1280p for the web;
    the poster is the opening title card. */
 export const FILM = {
 	src: "/video/takeoff-desk-launch.mp4",
 	poster: "/images/open/launch-poster.jpg",
-	title: "Takeoff Desk launch film",
+	title: "Takeoff Beam launch film",
 	duration: "1:14",
 };
 
 /* ── Headline numbers ───────────────────────────────────────────────────
-   Every one is measured, on Takeoff Desk, and appears in the film. Nothing
+   Every one is measured, on Takeoff Beam, and appears in the film. Nothing
    here is a projection. */
 export const STATS = [
 	{ value: "21 ms", label: "to open an 859-page, 708 MB drawing set" },
@@ -223,7 +223,7 @@ export const MANIFESTO: Belief[] = [
 		numeral: "04",
 		statement: "Build it in the open.",
 		detail:
-			"Takeoff Desk is Apache 2.0 on GitHub, down to the film you are about to watch. Read it, fork it, file the bug. The apps that follow go the same way as they mature, because software a trade relies on should not be able to disappear.",
+			"Takeoff Beam is Apache 2.0 on GitHub, down to the film you are about to watch. Read it, fork it, file the bug. The apps that follow go the same way as they mature, because software a trade relies on should not be able to disappear.",
 	},
 ];
 
@@ -248,7 +248,7 @@ export const OPEN_FAQ = [
 	{
 		question: "Why give this away?",
 		answer:
-			"Because the paid product is the shared project record for a team, and these apps are how one person meets the work before the team does. An estimator who has used Takeoff Desk for a month knows exactly what the platform adds. We would rather earn that than gate a PDF viewer.",
+			"Because the paid product is the shared project record for a team, and these apps are how one person meets the work before the team does. An estimator who has used Takeoff Beam for a month knows exactly what the platform adds. We would rather earn that than gate a PDF viewer.",
 	},
 	{
 		question: "Does anything leave my machine?",
@@ -258,7 +258,7 @@ export const OPEN_FAQ = [
 	{
 		question: "Is the code public?",
 		answer:
-			"Takeoff Desk is, under Apache 2.0, at github.com/constructionlive/takeoffbeam. The desktop workspace is not open source today. The apps still being built will be published as they reach a state worth reading.",
+			"Takeoff Beam is, under Apache 2.0, at github.com/constructionlive/takeoffbeam. The desktop workspace is not open source today. The apps still being built will be published as they reach a state worth reading.",
 	},
 	{
 		question: "What does the progress percentage mean?",
@@ -268,11 +268,11 @@ export const OPEN_FAQ = [
 	{
 		question: "Can I use these with the full platform?",
 		answer:
-			"Yes. Takeoff Desk writes the same takeoff file the platform reads, and the desktop workspace is the platform running against a local model. Start on one laptop, and if the whole office needs the shared record, nothing has to be redone.",
+			"Yes. Takeoff Beam writes the same takeoff file the platform reads, and the desktop workspace is the platform running against a local model. Start on one laptop, and if the whole office needs the shared record, nothing has to be redone.",
 	},
 	{
 		question: "Which machines?",
 		answer:
-			"Mac with Apple Silicon (M1 or newer, macOS 12+), and Windows 10 or 11 on x64 for Takeoff Desk. The construction.live desktop workspace is Apple Silicon today; a Windows build is in progress.",
+			"Mac with Apple Silicon (M1 or newer, macOS 12+), and Windows 10 or 11 on x64 for Takeoff Beam. The construction.live desktop workspace is Apple Silicon today; a Windows build is in progress.",
 	},
 ];
