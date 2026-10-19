@@ -9,7 +9,7 @@ import { ImageResponse } from "next/og";
    names do nothing here, so the brand tokens are inlined as literals. */
 
 export const alt =
-	"construction.live: AI to manage project paperwork.";
+	"construction.live: AI engineering for construction tech. Ship AI features contractors trust.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -83,12 +83,12 @@ export default function OpengraphImage() {
 							textTransform: "uppercase",
 						}}
 					>
-						Agentic AI for construction
+						AI engineering for construction tech
 					</div>
-					{/* Two lines, orange then white, mirroring the two-tone <h1> in
-					    components/Hero.tsx. Sized so the question clears 1040px on one
-					    line — wrapped, it breaks as "Drowned in project / paperwork?",
-					    which reads as two thoughts. Re-check this if the copy changes. */}
+					{/* Two lines, orange then white: the <h1> in
+					    components/home/EngineeringHome.tsx split in two. Sized so each
+					    line clears 1040px without wrapping. Re-check this if the copy
+					    changes. */}
 					<div
 						style={{
 							marginTop: 24,
@@ -100,7 +100,7 @@ export default function OpengraphImage() {
 							maxWidth: 1040,
 						}}
 					>
-						Drowned in project paperwork?
+						Ship AI features
 					</div>
 					<div
 						style={{
@@ -113,7 +113,7 @@ export default function OpengraphImage() {
 							maxWidth: 1040,
 						}}
 					>
-						Let our AI manage it!
+						contractors trust.
 					</div>
 				</div>
 
@@ -128,8 +128,8 @@ export default function OpengraphImage() {
 						color: TEXT_SECONDARY,
 					}}
 				>
-					Change orders, pay-app backup and daily reports, documented as they
-					happen.
+					Harness, memory, cost and review layers for takeoffs, estimates and
+					contract review.
 				</div>
 			</div>
 		),

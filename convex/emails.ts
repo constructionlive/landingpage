@@ -72,7 +72,7 @@ const SURFACE = "#f8fafc";
    text part: no apostrophes, so it needs no entity escaping. Keep it that way,
    or the two parts have to diverge again. */
 const HERO_LINE =
-  "Drowned in project paperwork? Let our AI manage it!";
+  "Ship AI features contractors trust.";
 
 /* Source lines for the internal notification.
 

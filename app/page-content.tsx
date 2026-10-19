@@ -4,10 +4,11 @@ import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 
 /* Homepage: construction.live as an AI engineering team for construction tech
-   companies and enterprise contractors.
+   companies.
 
-   EngineeringHome carries the hero, who we build for, the five engineering
-   disciplines, the team, deployments and the call to action. The blog teaser
+   EngineeringHome carries the hero, why AI features stall, who we build for,
+   the five engineering disciplines, how we engage, the team, deployments and
+   the call to action. The blog teaser
    and footer follow, so the rest of the site is reached the same way as
    before. Contractor pricing and the contractor demo CTA are left off this page
    because they sell a different offer; both components still exist, as does the

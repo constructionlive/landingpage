@@ -15,19 +15,19 @@ export const SITE_NAME = "construction.live";
    to carry two different taglines, so the search result and the LinkedIn
    preview advertised different products.
 
-   Both mirror the <h1> in components/Hero.tsx. When the hero headline changes,
+   Both mirror the <h1> in components/home/EngineeringHome.tsx. When the hero headline changes,
    change these, the card in app/opengraph-image.tsx and HERO_LINE in
    convex/emails.ts, or the site advertises one promise and the emails another.
 
    SERP_TITLE is kept under ~60 characters because Google truncates there.
    SOCIAL_TITLE runs the full line, where length costs nothing. */
-export const SERP_TITLE = "AI to Manage Construction Project Paperwork";
+export const SERP_TITLE = "AI Engineering for Construction Tech Companies";
 
 export const SOCIAL_TITLE =
-	"construction.live: Drowned in Project Paperwork? Let Our AI Manage It.";
+	"construction.live: AI engineering for construction tech. Ship AI features contractors trust.";
 
 export const SITE_DESCRIPTION =
-	"Agentic AI for construction. It reads every email, voice note, document revision and photo off your project, files it against the right job, links it to the drawing revision and schedule behind it, and flags the mismatches.";
+	"A specialist AI engineering team for construction tech companies. We build the harness, memory, cost and review layers that take AI features from demo to production: drawing takeoffs, estimates, contract review and field data.";
 
 /* The booking calendar. Was duplicated across four page files and
    convex/emails.ts; components/BookingLink.tsx is the only thing that should

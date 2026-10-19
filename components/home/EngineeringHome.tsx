@@ -1,7 +1,8 @@
 "use client";
 
 /* The homepage: construction.live as an AI engineering team for construction
-   tech companies and enterprise contractors.
+   tech companies, the software businesses putting AI into products that
+   contractors use.
 
    A plain, readable page on purpose. The scroll-driven deck (DeckHome) told a
    story to contractors; this page has to let a technical buyer scan what we
@@ -9,9 +10,10 @@
    piece is the hero's wireframe stack, a single calm scene from
    lib/deck/scenes.js, loaded on the client after mount and paused off screen.
 
-   Order: hero, who we build for, the five engineering disciplines (harness,
-   memory, cost, human in the loop, tooling), the team, past deployments, and
-   the call to action. */
+   Order: hero, why AI features stall in construction software, the products
+   we build for, the five engineering disciplines (harness, memory, cost, human
+   in the loop, tooling), how we engage, the team, deployments on live
+   projects, and the call to action. */
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
@@ -27,16 +29,57 @@ const disciplines = [
 	{ id: "tooling", n: "05", short: "Tooling" },
 ];
 
-const audiences = [
+/* The four ways AI features stall inside construction software, each answered
+   by one of the disciplines below. */
+const gaps = [
 	{
-		label: "Construction tech companies",
-		title: "You are putting AI into your product.",
-		body: "We engineer the parts that decide whether it works in production: agents that finish long tasks, memory that respects permissions, and unit costs that leave you a margin.",
+		href: "#harness",
+		title: "Long tasks drift.",
+		body: "A 400-sheet drawing set is not a prompt. The demo works on five sheets and falls apart on a real project.",
 	},
 	{
-		label: "Enterprise contractors",
-		title: "You want AI systems of your own.",
-		body: "We build them with your team, on your data, inside your security and approval structure, and hand over a system you own and can extend.",
+		href: "#memory",
+		title: "Tenant data has to stay put.",
+		body: "One customer's rates and lessons learned can never surface in another customer's estimate.",
+	},
+	{
+		href: "#cost",
+		title: "Inference eats the margin.",
+		body: "Frontier models on every step turn a profitable seat price into a loss on your heaviest users.",
+	},
+	{
+		href: "#control",
+		title: "Contractors will not trust a black box.",
+		body: "If an estimator cannot check the output and a PM cannot sign it off, the feature does not get used.",
+	},
+];
+
+const productTypes = [
+	"Takeoff and estimating",
+	"Preconstruction and bidding",
+	"Project management",
+	"Document control and RFIs",
+	"Field reporting and safety",
+	"Scheduling",
+	"Contract and claims",
+	"Construction ERP and finance",
+];
+
+const engagement = [
+	{
+		n: "1",
+		title: "Architecture review",
+		body: "We go through your AI roadmap, your data and your stack, and pick the feature with the most at stake for your customers.",
+	},
+	{
+		n: "2",
+		title: "Build with your team",
+		body: "Our engineers work in your repo and your cloud, alongside your product and engineering teams, shipping to your customers in stages.",
+	},
+	{
+		n: "3",
+		title: "Hand over",
+		body: "You own the code, the evaluation suites and any models we train. Your team runs it and extends it.",
 	},
 ];
 
@@ -192,15 +235,16 @@ export default function EngineeringHome() {
 				<div className="absolute inset-0 do-blueprint-grid pointer-events-none" />
 				<div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2">
 					<div>
-						<p className="do-section-label text-do-orange">AI engineering for construction</p>
+						<p className="do-section-label text-do-orange">AI engineering for construction tech</p>
 						<h1 className="mt-5 text-4xl font-semibold leading-[1.05] tracking-tight text-do-text md:text-5xl lg:text-6xl text-balance">
-							We engineer the AI systems construction runs on.
+							Ship AI features contractors trust.
 						</h1>
 						<p className="mt-6 text-lg leading-relaxed text-do-text-secondary md:text-xl">
 							construction.live is a specialist AI engineering team for construction tech
-							companies and enterprise contractors. We build the harness, memory, cost and
-							control layers that let AI do long, high-stakes work: drawing takeoffs,
-							estimates, contract review and field operations.
+							companies. We work inside your product team to build the harness, memory, cost and
+							review layers that take an AI feature from demo to production: drawing takeoffs,
+							estimates, contract review and field data, at the scale of your customers&apos; real
+							projects.
 						</p>
 						<div className="mt-8 flex flex-wrap gap-3">
 							<BookingLink
@@ -233,18 +277,55 @@ export default function EngineeringHome() {
 				</div>
 			</section>
 
-			{/* Who we build for */}
+			{/* Why AI features stall */}
 			<section className="border-t border-do-border py-20 md:py-24">
 				<div className="mx-auto max-w-6xl px-6">
-					<p className="do-section-label text-do-orange">Who we build for</p>
-					<div className="mt-8 grid gap-5 md:grid-cols-2">
-						{audiences.map((a) => (
-							<div key={a.label} className="rounded-2xl border border-do-border bg-do-bg-card p-7 md:p-9">
-								<p className="do-section-label">{a.label}</p>
-								<h2 className="mt-3 text-2xl font-semibold tracking-tight text-do-text">{a.title}</h2>
-								<p className="mt-3 text-[17px] leading-relaxed text-do-text-secondary">{a.body}</p>
-							</div>
+					<p className="do-section-label text-do-orange">The gap between demo and production</p>
+					<h2 className="mt-4 max-w-3xl text-3xl font-semibold leading-[1.1] tracking-tight text-do-text md:text-4xl text-balance">
+						Your AI demo works. Your customers&apos; projects are where it breaks.
+					</h2>
+					<div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+						{gaps.map((g) => (
+							<a
+								key={g.title}
+								href={g.href}
+								className="group rounded-2xl border border-do-border bg-do-bg-card p-6 transition-colors hover:border-do-orange/60"
+							>
+								<h3 className="text-lg font-semibold tracking-tight text-do-text group-hover:text-do-orange">
+									{g.title}
+								</h3>
+								<p className="mt-2 text-[15px] leading-relaxed text-do-text-secondary">{g.body}</p>
+							</a>
 						))}
+					</div>
+				</div>
+			</section>
+
+			{/* Who we build for */}
+			<section className="border-t border-do-border py-20 md:py-24">
+				<div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-12 lg:gap-16">
+					<div className="lg:col-span-5">
+						<p className="do-section-label text-do-orange">Who we build for</p>
+						<h2 className="mt-4 text-3xl font-semibold leading-[1.1] tracking-tight text-do-text md:text-4xl text-balance">
+							Software companies selling to builders.
+						</h2>
+						<p className="mt-5 text-lg leading-relaxed text-do-text-secondary">
+							Founders, CTOs and product teams with AI on the roadmap and customers waiting for
+							it. You know your product and your market. We bring the AI engineering and ten
+							years of knowing how the work is actually done on site.
+						</p>
+					</div>
+					<div className="lg:col-span-7">
+						<ul className="flex flex-wrap gap-2">
+							{productTypes.map((t) => (
+								<li
+									key={t}
+									className="rounded-full border border-do-border-accent px-4 py-2 text-sm text-do-text"
+								>
+									{t}
+								</li>
+							))}
+						</ul>
 					</div>
 				</div>
 			</section>
@@ -253,16 +334,17 @@ export default function EngineeringHome() {
 				id="harness"
 				n="01"
 				label="Harness engineering"
-				title="A controlled harness for long-horizon work."
-				intro="A takeoff across a full drawing set, an estimate or a contract review is hundreds of steps, not one prompt. We build harnesses that keep the model on a defined path, so long jobs finish correctly and can be trusted."
+				title="Agents that finish long construction tasks inside your product."
+				intro="A takeoff across a full drawing set, an estimate or a contract review is hundreds of steps, not one prompt. We build harnesses that keep the model on a defined path, so long jobs finish correctly on every customer's project, not just the demo set."
 				points={[
 					"Built for long-horizon tasks: drawing takeoffs, estimates, contract and specification review.",
 					"Full control of the run: defined steps, permitted tools, and validation at every stage.",
-					"Checkpoints and recovery, so hours of work survive a failure instead of starting over.",
-					"Embedded end to end: the office directs field operations, and the field reports straight back into the office systems.",
+					"Checkpoints and resumable runs, so hours of work survive a failure instead of starting over.",
+					"Evaluation suites built from real drawing sets, specs and contracts, so you measure accuracy before every release.",
+					"Fits your stack: your backend, your queues, your APIs, and the integrations your customers already use.",
 				]}
 			>
-				<Panel caption="Every step runs inside the harness">
+				<Panel caption="Every step runs inside the harness, and every release runs the evals">
 					<div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
 						<Step>Plan</Step>
 						<Step>Act</Step>
@@ -270,11 +352,11 @@ export default function EngineeringHome() {
 						<Step>Checkpoint</Step>
 					</div>
 					<div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-						<Step>Office</Step>
-						<span className="font-mono text-do-text-muted" aria-label="both ways">
-							⇄
+						<Step>Eval suite</Step>
+						<span className="font-mono text-do-text-muted" aria-label="then">
+							→
 						</span>
-						<Step>Field</Step>
+						<Step accent>Release</Step>
 					</div>
 				</Panel>
 			</Discipline>
@@ -283,20 +365,21 @@ export default function EngineeringHome() {
 				id="memory"
 				n="02"
 				label="Memory layers"
-				title="Context that holds across people, projects and the organisation."
-				intro="AI is only as good as what it remembers, and who it is allowed to remember it for. We design memory in three layers and engineer how information moves between them at the infrastructure level."
+				title="Memory that respects every customer, project and user."
+				intro="AI is only as good as what it remembers, and who it is allowed to remember it for. In a multi-tenant product that is an infrastructure problem. We design memory in layers and engineer how information moves between them."
 				points={[
-					"Information moves up only when someone promotes it, and down only to people cleared to see it.",
+					"Tenant isolation enforced in the data layer, not in the prompt. One customer's data never reaches another's.",
+					"Inside each customer, information moves up only when someone promotes it, and down only to people cleared to see it.",
 					"A private working note never surfaces in another team's estimate. A company-wide rate change reaches every live project.",
-					"Permissions are enforced in the data layer, not in the prompt. Get this wrong and the system either leaks data or starves the AI of context.",
+					"Mapped onto your existing auth and permission model, so there is one source of truth for who can see what.",
 				]}
 			>
-				<Panel caption="Three layers, one permission model">
+				<Panel caption="Layered memory, one permission model, isolated per customer">
 					<div className="space-y-2">
 						{[
-							["Organisation", "Standards, rates, lessons learned, past projects. Governed centrally."],
+							["Customer", "Their standards, rates, lessons learned and past projects. Isolated from every other tenant."],
 							["Project", "Drawings, RFIs, change orders, logs and decisions. Shared with the project team."],
-							["Personal", "Working notes, drafts and preferences. Private by default."],
+							["User", "Working notes, drafts and preferences. Private by default."],
 						].map(([name, desc]) => (
 							<div
 								key={name}
@@ -314,13 +397,13 @@ export default function EngineeringHome() {
 				id="cost"
 				n="03"
 				label="Cost engineering"
-				title="The right model for each step, at a cost that scales."
-				intro="Model prices differ by orders of magnitude. For an enterprise team, or a product with thousands of users, that difference decides whether AI pays for itself. We measure cost per task and engineer it down."
+				title="Unit economics that leave you a margin."
+				intro="Model prices differ by orders of magnitude. Across thousands of users and drawing sets, that difference decides whether an AI feature grows your gross margin or eats it. We measure cost per task and engineer it down."
 				points={[
 					"Routing: each step goes to the smallest model that does it reliably. Frontier models only where they earn it.",
 					"Smaller specialised models, trained on construction work, for high-volume steps like sheet classification and extraction.",
 					"Caching and batching for repeat work across drawing sets and revisions.",
-					"Cost per takeoff, per estimate and per review tracked, so you can price your product or budget your rollout with confidence.",
+					"Cost per takeoff, per estimate and per review, tracked per customer, so you can price AI tiers with confidence.",
 				]}
 			>
 				<Panel caption="Example routing for a takeoff and estimate">
@@ -352,16 +435,16 @@ export default function EngineeringHome() {
 				id="control"
 				n="04"
 				label="Human in the loop"
-				title="AI does the work. People keep the authority."
-				intro="In construction, who signs off matters as much as what was done. Every task the AI completes is verified, and that verification follows your chain of authority."
+				title="Review flows your customers will actually use."
+				intro="In construction, who signs off matters as much as what was done. Your customers will only rely on AI output their own people can check and approve. We build that verification into your product, following their chain of authority."
 				points={[
-					"Role-based access: each person sees and approves only what their role allows.",
+					"Role-based authority mapped to your permission model: each person sees and approves only what their role allows.",
 					"Layered review: an estimator checks the takeoff, a PM approves the estimate, a director signs off the contract position.",
-					"Clean handovers: work passes from one person to the next with its full context and history attached.",
-					"A complete record of every AI action and every human decision, so the hierarchy of decision-making always holds.",
+					"Low-confidence items flagged and routed for review, so people check what matters instead of everything.",
+					"A full audit trail of every AI action and human decision, and corrections fed back into your evaluation suites.",
 				]}
 			>
-				<Panel caption="Each level verifies before work moves on, and can send it back">
+				<Panel caption="Built into your product: each level verifies before work moves on, and can send it back">
 					<div className="grid gap-2 sm:grid-cols-4">
 						<Step>AI drafts</Step>
 						<Step>Estimator verifies</Step>
@@ -375,13 +458,13 @@ export default function EngineeringHome() {
 				id="tooling"
 				n="05"
 				label="Tooling"
-				title="Workspaces where AI and people work side by side."
-				intro="AI should not sit in a chat box next to the real work. We put it inside the tools, running in parallel with your people on the same drawing, the same document and the same record."
+				title="Proven building blocks, so you don't start from a blank repo."
+				intro="AI should not sit in a chat box next to the real work. We have built the pieces that put it inside the tools, running alongside people on the same drawing, document and record, and we bring them to your build."
 				points={[
 					"Takeoff Beam: our takeoff tool. The AI marks up the drawings and estimators verify them.",
 					"Our own collaborative document editor, built on Tiptap, where AI and people draft proposals, reports and contract reviews together.",
-					"A field app where crews report by voice, photo or message, straight into the office record.",
-					"Connected to the platforms you already run, so the work stays where your teams are.",
+					"Field capture by voice, photo or message, flowing straight into the office record.",
+					"Connectors for the platforms contractors already run, such as Procore, SharePoint and Google Drive.",
 				]}
 			>
 				<Link
@@ -393,6 +476,25 @@ export default function EngineeringHome() {
 				</Link>
 			</Discipline>
 
+			{/* How we engage */}
+			<section className="border-t border-do-border py-20 md:py-24">
+				<div className="mx-auto max-w-6xl px-6">
+					<p className="do-section-label text-do-orange">How we engage</p>
+					<h2 className="mt-4 max-w-3xl text-3xl font-semibold leading-[1.1] tracking-tight text-do-text md:text-4xl text-balance">
+						An extension of your engineering team, not a black box vendor.
+					</h2>
+					<ol className="mt-10 grid gap-4 md:grid-cols-3">
+						{engagement.map((e) => (
+							<li key={e.n} className="rounded-2xl border border-do-border bg-do-bg-card p-7">
+								<span className="font-mono text-sm text-do-orange">{e.n}</span>
+								<h3 className="mt-3 text-xl font-semibold tracking-tight text-do-text">{e.title}</h3>
+								<p className="mt-2 text-[15px] leading-relaxed text-do-text-secondary">{e.body}</p>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+
 			{/* Team */}
 			<section className="border-t border-do-border py-20 md:py-24">
 				<div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-12 lg:gap-16">
@@ -403,9 +505,9 @@ export default function EngineeringHome() {
 						</h2>
 					</div>
 					<p className="text-lg leading-relaxed text-do-text-secondary lg:col-span-7">
-						Ten years lived on mining and construction sites. Deep AI expertise that works as
-						your in-house tech team. Behind us, a team across intelligence, cyber security,
-						engineering and claims.
+						Ten years lived on mining and construction sites, and deep AI engineering. We know
+						what your customers do on site and what it takes to make AI do it with them. Behind
+						us, a team across intelligence, cyber security, engineering and claims.
 					</p>
 				</div>
 			</section>
@@ -415,8 +517,12 @@ export default function EngineeringHome() {
 				<div className="mx-auto max-w-6xl px-6">
 					<p className="do-section-label text-do-orange">Deployments</p>
 					<h2 className="mt-4 text-3xl font-semibold tracking-tight text-do-text md:text-4xl">
-						Where this already runs.
+						Proven on live projects.
 					</h2>
+					<p className="mt-4 max-w-3xl text-lg leading-relaxed text-do-text-secondary">
+						Every one of these ran on real construction work, which is the bar your customers
+						will hold your AI to.
+					</p>
 					<div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 						{deployments.map((d) => (
 							<p
@@ -434,12 +540,12 @@ export default function EngineeringHome() {
 			<section id="book-a-demo" className="border-t border-do-border py-24 md:py-32">
 				<div className="mx-auto max-w-3xl px-6 text-center">
 					<h2 className="text-3xl font-semibold leading-[1.1] tracking-tight text-do-text md:text-5xl text-balance">
-						Building AI for construction? Bring us the hardest task on your list.
+						Building AI into a construction product? Bring us the hardest feature on your roadmap.
 					</h2>
 					<p className="mt-6 text-lg leading-relaxed text-do-text-secondary">
-						A working session with our engineers. Bring one workflow, a takeoff, an estimate or
-						a contract review, and we will walk through how we would build its harness, memory,
-						cost model and controls.
+						A working session with our engineers. Bring one feature, a takeoff, an estimate, a
+						contract review or a field workflow, and we will walk through how we would build its
+						harness, memory, cost model and review flow inside your product.
 					</p>
 					<div className="mt-9 flex flex-wrap justify-center gap-3">
 						<BookingLink

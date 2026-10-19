@@ -25,7 +25,7 @@ export const organizationSchema = {
 		height: 512,
 	},
 	description:
-		"Agentic AI for construction. Unified field intelligence that turns emails, voice notes, photos and drawing revisions into change-order and pay-app documentation.",
+		"A specialist AI engineering team for construction tech companies. We build the harness, memory, cost and review layers that take AI features from demo to production.",
 	address: {
 		"@type": "PostalAddress",
 		addressLocality: "Toronto",
