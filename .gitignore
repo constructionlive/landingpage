@@ -13,3 +13,5 @@ take off recording.mov
 *.mp4
 # the compressed recordings the home page plays are kept
 !public/video/*.mp4
+# and the Halo trailer and hero loop on /halo
+!public/halo/*.mp4

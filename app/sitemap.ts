@@ -20,6 +20,8 @@ const staticRoutes: MetadataRoute.Sitemap = [
 	/* The Open Construction project: all the free desktop apps and their
 	   downloads, including Takeoff Beam for Windows and Mac. */
 	{ url: absoluteUrl("/open"), changeFrequency: "weekly", priority: 0.9 },
+	/* Halo, the agents-as-a-racing-team side project. */
+	{ url: absoluteUrl("/halo"), changeFrequency: "monthly", priority: 0.6 },
 	{ url: absoluteUrl("/pricing"), changeFrequency: "monthly", priority: 0.9 },
 	{ url: absoluteUrl("/book"), changeFrequency: "monthly", priority: 0.9 },
 	/* The self-serve signup. Same priority as /book: it is the other door in. */
