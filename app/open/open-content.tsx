@@ -23,7 +23,7 @@ import SiteFooter from "@/components/home/SiteFooter";
 import { contactHref } from "@/components/home/nav-data";
 import { trackCta } from "@/lib/analytics";
 import DownloadPrompt, { type DownloadInfo } from "./DownloadPrompt";
-import { APPS, FILM, MANIFESTO, OPEN_FAQ, ROAD, STATS, type OpenApp } from "./content";
+import { APPS, COMMUNITY, FILM, MANIFESTO, OPEN_FAQ, ROAD, STATS, type OpenApp } from "./content";
 import { formatReleaseDate, formatSize, type AppRelease, type ReleaseMap } from "./releases";
 
 /* The Open Construction project.
@@ -57,6 +57,25 @@ function WindowsMark({ className }: { className?: string }) {
 		</svg>
 	);
 }
+
+/* lucide has no brand marks for these either. Simplified single-path glyphs. */
+function DiscordMark({ className }: { className?: string }) {
+	return (
+		<svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
+			<path d="M20.32 4.37A19.8 19.8 0 0 0 15.4 2.85a13.7 13.7 0 0 0-.63 1.29 18.4 18.4 0 0 0-5.5 0 12.6 12.6 0 0 0-.64-1.29 19.7 19.7 0 0 0-4.92 1.53C.6 9.05-.24 13.6.18 18.1a19.9 19.9 0 0 0 6.03 3.05c.49-.67.92-1.37 1.3-2.11a12.9 12.9 0 0 1-2.04-.98c.17-.13.34-.26.5-.39a14.2 14.2 0 0 0 12.06 0l.5.39c-.65.39-1.33.71-2.04.98.37.74.81 1.45 1.3 2.11a19.8 19.8 0 0 0 6.03-3.05c.5-5.2-.84-9.72-3.5-13.73ZM8.02 15.33c-1.18 0-2.15-1.09-2.15-2.42s.95-2.42 2.15-2.42c1.2 0 2.17 1.1 2.15 2.42 0 1.33-.95 2.42-2.15 2.42Zm7.96 0c-1.18 0-2.15-1.09-2.15-2.42s.95-2.42 2.15-2.42c1.2 0 2.17 1.1 2.15 2.42 0 1.33-.94 2.42-2.15 2.42Z" />
+		</svg>
+	);
+}
+
+function WhatsAppMark({ className }: { className?: string }) {
+	return (
+		<svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
+			<path d="M12.04 2a9.9 9.9 0 0 0-8.53 14.94L2 22l5.2-1.47A9.9 9.9 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.08.87.83-3-.2-.31a8.2 8.2 0 1 1 6.95 3.77Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.22-.08-.39-.12-.55.12-.16.25-.63.8-.78.97-.14.16-.29.18-.53.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.71-1.33.08-.16.04-.3-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.3c-.22.25-.86.84-.86 2.05 0 1.2.88 2.37 1 2.53.12.17 1.73 2.64 4.2 3.7 1.56.68 2.17.73 2.95.62.48-.07 1.46-.6 1.67-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.17-.47-.29Z" />
+		</svg>
+	);
+}
+
+const COMMUNITY_MARKS = { discord: DiscordMark, whatsapp: WhatsAppMark };
 
 /* ── The film ──────────────────────────────────────────────────────────────
    Autoplays muted and looping, the way a launch film on a product page is
@@ -706,6 +725,54 @@ export default function OpenContent({ releases }: { releases: ReleaseMap }) {
 						{building.map((app, i) => (
 							<BuildingApp key={app.slug} app={app} index={i} />
 						))}
+					</div>
+				</div>
+			</section>
+
+			{/* ── Community ──────────────────────────────────────────────────── */}
+			<section id="community" className={`relative py-24 md:py-28 ${SCROLL_MT}`}>
+				<div className="relative z-10 mx-auto max-w-6xl px-6">
+					<motion.div className="mb-12 max-w-2xl" {...rise}>
+						<span className="do-section-label text-do-orange">Community</span>
+						<h2 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-do-text md:text-4xl lg:text-5xl">
+							Build it with the people using it.
+						</h2>
+						<p className="mt-5 text-lg leading-relaxed text-do-text-secondary">
+							Estimators, PMs and developers trading notes on what works, what breaks
+							and what to build next. Free to join, leave whenever you like.
+						</p>
+					</motion.div>
+
+					<div className="grid gap-5 md:grid-cols-2">
+						{COMMUNITY.map((channel, i) => {
+							const Mark = COMMUNITY_MARKS[channel.key];
+							return (
+								<motion.a
+									key={channel.key}
+									href={channel.href}
+									target="_blank"
+									rel="noopener noreferrer"
+									onClick={() => trackCta("open_community", channel.cta, channel.href)}
+									className="group flex flex-col rounded-2xl border border-do-border bg-do-bg-card p-6 transition-colors hover:border-do-border-accent md:p-7"
+									{...rise}
+									transition={{ duration: 0.5, delay: i * 0.08 }}
+								>
+									<div className="flex items-center gap-3">
+										<div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-do-orange/20 bg-do-orange/10">
+											<Mark className="h-5 w-5 text-do-orange" />
+										</div>
+										<h3 className="text-xl font-bold leading-tight tracking-tight text-do-text">
+											{channel.name}
+										</h3>
+									</div>
+									<p className="mt-4 text-[15px] leading-relaxed text-do-text-secondary">{channel.detail}</p>
+									<span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-do-orange">
+										{channel.cta}
+										<ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+									</span>
+								</motion.a>
+							);
+						})}
 					</div>
 				</div>
 			</section>

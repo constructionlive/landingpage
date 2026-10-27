@@ -15,3 +15,6 @@ take off recording.mov
 !public/video/*.mp4
 # and the Halo trailer and hero loop on /halo
 !public/halo/*.mp4
+
+# macOS Finder metadata
+.DS_Store

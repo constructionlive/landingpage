@@ -242,6 +242,25 @@ export const ROAD = {
 };
 
 /* ── FAQ ────────────────────────────────────────────────────────────────── */
+/* Where the people using and building these apps talk. Discord for the
+   threads and the build log, WhatsApp for the ones who live on their phone. */
+export const COMMUNITY = [
+	{
+		key: "discord",
+		name: "Discord",
+		href: "https://discord.gg/3QuS2s933",
+		detail: "Bug reports, feature requests, early builds and the build log, in threads you can search later.",
+		cta: "Join the Discord",
+	},
+	{
+		key: "whatsapp",
+		name: "WhatsApp",
+		href: "https://chat.whatsapp.com/Bn5I2SThexaBiLjnvnSHcU",
+		detail: "Release notes and quick questions, on the phone you already carry on site.",
+		cta: "Join the WhatsApp group",
+	},
+] as const;
+
 export const OPEN_FAQ = [
 	{
 		question: "What is the Open Construction project?",
